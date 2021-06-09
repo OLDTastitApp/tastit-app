@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="30" height="30" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Grille_de_répétition_7" data-name="Grille de répétition 7" clip-path="url(#clip-path)">
+    <g transform="translate(-102 -758)">
+      <g id="Icon_search" transform="translate(102 758)">
+        <path id="Shape" d="M22.739,24.071a1.325,1.325,0,0,1-.942-.389l-6.888-6.89a9.324,9.324,0,1,1,1.883-1.883l6.89,6.888a1.332,1.332,0,0,1-.942,2.274ZM9.325,2.664a6.66,6.66,0,1,0,6.66,6.661A6.668,6.668,0,0,0,9.325,2.664Z" transform="translate(3 3)" fill="#000"/>
+      </g>
+    </g>
+  </g>
+</svg>
