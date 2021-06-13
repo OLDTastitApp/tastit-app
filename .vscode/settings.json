@@ -1,0 +1,26 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+
+        "__tests__": true,
+        "node_modules": true,
+        ".buckconfig": true,
+        ".editorconfig": true,
+        ".eslintrc.js": true,
+        ".flowconfig": true,
+        ".gitattributes": true,
+        ".gitignore": true,
+        ".prettierrc.js": true,
+        ".svgrrc": true,
+        ".watchmanconfig": true,
+        "babel.config.js": true,
+        "declarations.d.ts": true,
+        "metro.config.js": true,
+        "react-native.config.js": true,
+        "yarn.lock": true,
+    }
+}

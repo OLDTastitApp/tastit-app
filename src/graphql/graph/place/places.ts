@@ -9,9 +9,10 @@ import { Establishment } from '@types'
 type Place = Establishment
 
 export type PlacesArgs = {
+    searchText?: string,
     around?: number[],
-    cursor?: string,
-    search?: string,
+    radius?: number,
+    after?: string,
     first: number,
 }
 
@@ -21,29 +22,26 @@ export type PlacesResult = {
 
 export const PLACES = gql`
     query Places(
+        $searchText: String
         $around: [Float!]
-        $cursor: String
-        $search: String
+        $after: String
         $first: Int!
     ) {
         places(
+            searchText: $searchText
             around: $around
-            search: $search
-            after: $cursor
+            after: $after
             first: $first
         ) {
             edges {
                 cursor
                 node {
-                    cover(format: "default") {
-                        value
-                        type
-                    }
-                    location
+                    longitude
+                    latitude
                     address
                     rating
                     rating
-                    types
+                    cover
                     name
                     id
                 }

@@ -70,8 +70,10 @@ export default memo((props: Props) => {
                 <BottomSheetModal
                     onChange={handleSheetChanges}
                     animatedIndex={animatedIndex}
+                    // enableDismissOnClose={false}
                     snapPoints={snapPoints}
                     handleComponent={null}
+                    stackBehavior='push'
                     ref={modalRef}
                     index={0}
                 >

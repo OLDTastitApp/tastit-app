@@ -22,6 +22,7 @@ module.exports = {
         '@contexts': './src/contexts',
         '@services': './src/services',
         '@screens': './src/screens',
+        '@helpers': './src/helpers',
         '@graphql': './src/graphql',
         '@utils': './src/utils',
         '@types': './src/types',

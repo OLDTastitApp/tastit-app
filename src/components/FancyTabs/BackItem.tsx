@@ -36,7 +36,7 @@ export default class BackItem extends PureComponent<Props> {
                 <Text
                     style={[
                         styles.name,
-                        { color },
+                        // { color },
                     ]}
                 >
                     {item.name}
@@ -57,14 +57,23 @@ export default class BackItem extends PureComponent<Props> {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         paddingVertical: 5,
+
+        // Added:
+        backgroundColor: '#f8f8f8',
+        paddingHorizontal: 15,
+        marginHorizontal: 5,
+        borderRadius: 100,
     },
     name: {
         fontFamily: font.regular,
         textAlign: 'center',
-        color: 'white',
+        // color: 'white',
         fontSize: 16,
+
+        // Added
+        color: '#646E75',
     },
 })
 

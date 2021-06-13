@@ -91,6 +91,7 @@ export default (props: Props) => {
                     onFocus={props.onFocus}
                     onBlur={props.onBlur}
                     style={styles.input}
+                    autoCorrect={false}
                 />
             </Animated.View>
         </View>

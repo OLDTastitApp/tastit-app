@@ -129,6 +129,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
     renderFrontItem = ({ item, index }) => (
         <FrontItem
             size={this.state.sizes[index]}
+            color={this.props.color}
             key={item.id}
             item={item}
         />
@@ -136,7 +137,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
 
     render() {
         const { sizes } = this.state;
-        const { data } = this.props;
+        const { data, color } = this.props;
 
         const wrapperX = Animated.add(
             Animated.multiply(-1, this.scrollX),
@@ -154,11 +155,12 @@ export default class FancyTabs extends PureComponent<Props, State> {
                     <Animated.FlatList
                         contentContainerStyle={styles.padding}
                         showsHorizontalScrollIndicator={false}
+                        keyboardShouldPersistTaps='handled'
                         renderItem={this.renderBackItem}
                         keyExtractor={({ id }) => id}
+                        ref={this.flatListRef as any}
                         scrollEventThrottle={16}
                         onScroll={this.onScroll}
-                        ref={this.flatListRef as any}
                         data={data}
                         horizontal
                     />
@@ -178,6 +180,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
                             <Animated.View
                                 style={[
                                     { width: this.cursorWidth },
+                                    color && { backgroundColor: color },
                                     styles.cursor,
                                 ]}
                             >
@@ -212,6 +215,7 @@ FancyTabs.defaultProps = {
 // Styles
 const styles = StyleSheet.create({
     container: {
+        // backgroundColor: 'blue',
         marginBottom: 20,
         flex: 1,
     },
@@ -223,11 +227,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     cursor: {
-        backgroundColor: '#171717',
+        // backgroundColor: '#171717',
+        // backgroundColor: 'red',
         overflow: 'hidden',
         borderRadius: 200,
     },
     content: {
+        // backgroundColor: 'green',
         flexDirection: 'row',
     },
 })
@@ -245,6 +251,7 @@ export type Props = {
         index: number,
         item: Item,
     }) => void,
+    color?: string,
     data: Item[],
 }
 

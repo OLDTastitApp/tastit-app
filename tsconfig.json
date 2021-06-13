@@ -20,6 +20,8 @@
             "@services": ["./src/services"],
             "@screens*": ["./src/screens*"],
             "@screens": ["./src/screens"],
+            "@helpers*": ["./src/helpers*"],
+            "@helpers": ["./src/helpers"],
             "@graphql*": ["./src/graphql*"],
             "@graphql": ["./src/graphql"],
             "@utils*": ["./src/utils*"],
