@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.3.19",
-    "@gorhom/bottom-sheet": "^3",
+    "@gorhom/bottom-sheet": "4.0.0-alpha.11",
     "@react-native-async-storage/async-storage": "1.15.4",
     "@react-native-community/blur": "3.6.0",
     "@react-native-community/geolocation": "2.0.2",

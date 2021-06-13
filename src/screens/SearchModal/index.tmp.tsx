@@ -3,8 +3,8 @@ import React, { memo, useState, useCallback, useRef, useMemo, useEffect } from '
 
 // Components
 import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native'
-import Animated, { useAnimatedStyle, useCode, call, interpolate, interpolateNode, useValue, useSharedValue, Extrapolate } from 'react-native-reanimated'
-import BottomSheet, { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import Animated, { useCode, call, interpolate, interpolateNode, useValue, useSharedValue, Extrapolate } from 'react-native-reanimated'
+import BottomSheet, { BottomSheetModal} from '@gorhom/bottom-sheet'
 import GastronomyView from './GastronomyView'
 import DieteticsView from './DieteticsView'
 import DistrictView from './DistrictView'
@@ -34,28 +34,25 @@ export default memo((props: Props) => {
     const scrollViewRef = useRef<ScrollView>(null);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
-    // const animatedPosition = useSharedValue(0);
+    const animatedPosition = useSharedValue(0);
     const animatedIndex = useSharedValue(0);
-
-    // const animatedIndex = useValue(0);
-
     // const position = useValue(0);
     // const { current: position } = useRef(new Animated.Value(0));
 
-    // const snapPoints = useMemo(() => [40, 200, 500], []);
+    const snapPoints = useMemo(() => [100, 200, 500], []);
     // const position = useValue(0);
-    // const translateY = () => interpolateNode(animatedPosition.value, {
-    //     inputRange: [0, 100],
-    //     outputRange: [0, 200],
-    //     // extrapolate: Extrapolate.CLAMP,
-    // });
+    const translateY = useMemo(() => interpolateNode(animatedPosition.value, {
+        inputRange: [0, 200],
+        outputRange: [0, 200],
+        // extrapolate: Extrapolate.CLAMP,
+    }), [snapPoints]);
     
     // const translateY = useMemo(
-    //     () => interpolateNode(animatedIndex, {
-    //         extrapolate: Extrapolate.CLAMP,
+    //     () => interpolateNode(animatedIndex.value, {
+    //         // extrapolate: Extrapolate.CLAMP,
     //         inputRange: [0, 1],
     //         // outputRange: [200, 0],
-    //         outputRange: [100, 0],
+    //         outputRange: [0, 100],
     //     }),
     //     []
     // );
@@ -84,21 +81,7 @@ export default memo((props: Props) => {
     //     outputRange: [0, 200],
     // })
 
-    const buttonStyle = useAnimatedStyle(() => ({
-        transform: [
-            {
-                translateY: interpolate(
-                    animatedIndex.value,
-                    [0, 1],
-                    [100, 0],
-                    Extrapolate.CLAMP
-                ),
-            },
-        ],
-    }));
-
-    // const [districtSelection, setDistrictSelection] = useState<District[]>([]);
-    const [districts, setDistricts] = useState<string[]>([]);
+    const [districtSelection, setDistrictSelection] = useState<District[]>([]);
 
     // const filters = useFilters();
 
@@ -123,92 +106,67 @@ export default memo((props: Props) => {
         []
     );
 
-    const modalRef = useRef<BottomSheetModal>(null);
-
-    const onPresentModalPress = useCallback(() => {
-        modalRef.current?.present();
-    }, []);
-
-    useEffect(
-        () => {
-            setTimeout(() => {
-                modalRef.current?.present();
-            }, 1000)
-        },
-        []
-    );
-
     // const snapPoints = [0, '30%', '60%', '90%']
 
     return (
         <>
-            <BottomSheetModalProvider>
-                <BottomSheetModal
-                    onChange={handleSheetChanges}
-                    // animatedPosition={animatedPosition}
-                    animatedIndex={animatedIndex}
-                    // dismissOnPanDown={false}
-                    // animatedIndex={animatedIndex}
-                    // animatedPosition={position}
-                    // animatedPosition={position}
-                    // style={styles.container}
-                    snapPoints={snapPoints}
-                    handleComponent={null}
-                    ref={modalRef}
-                    // ref={bottomSheetRef}
-                    // index={1}
-                    index={0}
+            <BottomSheet
+                onChange={handleSheetChanges}
+                animatedPosition={animatedPosition}
+                animatedIndex={animatedIndex}
+                // animatedPosition={position}
+                // animatedPosition={position}
+                style={styles.container}
+                snapPoints={snapPoints}
+                handleComponent={null}
+                // ref={bottomSheetRef}
+                // index={1}
+                // enableOverDrag={false}
+                index={1}
+            >
+                <Header
+                    onChanged={onIndexChanged}
+                    index={index}
+                />
+
+                <ScrollView
+                    scrollEnabled={false}
+                    ref={scrollViewRef}
+                    horizontal
                 >
-                    <Header
-                        onChanged={onIndexChanged}
-                        index={index}
-                    />
+                    <DistrictView />
+                    <PricingView />
+                    <DieteticsView />
+                    <GastronomyView />
+                </ScrollView>
 
-                    <ScrollView
-                        scrollEnabled={false}
-                        ref={scrollViewRef}
-                        horizontal
-                    >
-                        <DistrictView
-                            onChange={setDistricts}
-                            selection={districts}
-                        />
-                        <PricingView />
-                        <DieteticsView />
-                        <GastronomyView />
-                    </ScrollView>
-
-                </BottomSheetModal>
-            </BottomSheetModalProvider>
+            </BottomSheet>
 
             <Animated.View
-                style={[{
+                style={{
                     // padding
                     // paddingBottom: ui.safePaddingBottom,
-                    paddingBottom: ui.safePaddingBottom,
-                    backgroundColor: 'white',
+                    marginBottom: ui.safePaddingBottom,
+                    backgroundColor: 'purple',
                     position: 'absolute',
                     width: '100%',
-                    // opacity: 0.1,
                     // paddingHorizontal: 20,
                     // flex: 1,
                     // padding
                     bottom: 0,
-                    // transform: [{ translateY }],
-                }, buttonStyle]}
+                    transform: [{ translateY }],
+                }}
             >
                 <View style={{
-                    // backgroundColor: 'white',
+                    backgroundColor: 'purple',
                     marginHorizontal: 20,
                     // margin
                     // paddingHorizontal: 5,
-                    // padding: 5,
-                    paddingTop: 10,
+                    padding: 5,
                     borderRadius: 14,
-                    // opacity: 0.1,
                 }}>
                     <View style={{
-                        backgroundColor: color.primary,
+                        // backgroundColor: color.primary,
                         // marginHorizontal: 20,
                         // marginVertical: 10,
                         justifyContent: 'center',
@@ -233,8 +191,8 @@ export default memo((props: Props) => {
 })
 
 // Constants
-const { width, height } = Dimensions.get('window')
-const snapPoints = ['30%', '60%', '90%']
+const { width } = Dimensions.get('window')
+// const snapPoints = [0, '30%', '60%', '90%']
 
 // Styles
 const styles = StyleSheet.create({
@@ -245,12 +203,10 @@ const styles = StyleSheet.create({
         shadowRadius: 16.00,
         // paddingTop: 20,
         elevation: 24,
-        // flex: 1,
         shadowOffset: {
             height: 12,
             width: 0,
         },
-        // flex: 1,
     },
 })
 

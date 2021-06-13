@@ -7,7 +7,7 @@ import BottomSheet, {
     BottomSheetScrollView,
     useBottomSheetSpringConfigs,
     useBottomSheetTimingConfigs
-} from '@gorhom/bottom-sheet';
+} from '@gorhom/bottom-sheet'
 
 
 export default memo((props: Props) => {
@@ -34,15 +34,17 @@ export default memo((props: Props) => {
     );
 
     return (
-        <View style={styles.container}>
+        // <View style={styles.container}>
             <BottomSheetScrollView
                 contentContainerStyle={{
                     backgroundColor: 'green',
+                    // minHeight: 2000,
+                    width,
                 }}
             >
                 {data.map(renderItem)}
             </BottomSheetScrollView>
-        </View>
+        // </View>
     )
 })
 
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
         // height: 100,
         width,
+        // flex: 1,
     },
 })
 
