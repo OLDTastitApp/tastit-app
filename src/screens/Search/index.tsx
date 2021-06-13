@@ -2,79 +2,53 @@
 import React, { memo, useState, useRef, useEffect, useCallback } from 'react'
 
 // Components
-import { View, Animated, ScrollView, LayoutAnimation, StyleSheet } from 'react-native'
+import { View, ScrollView, LayoutAnimation, StyleSheet, Keyboard } from 'react-native'
+import Animated from 'react-native-reanimated'
+import Background from './Background'
 import Header from './Header'
 
 
 export default memo((props: Props) => {
 
+    const { animatedIndex } = props;
+
     // const onFocus: () => 
-    const [value, setValue] = useState<string>();
+    const [searchText, setSearchText] = useState<string>();
     const [focused, setFocused] = useState(false);
     const [visible, setVisible] = useState(false);
-    const { current: progress } = useRef(new Animated.Value(0));
-
-    // useEffect(
-    //     () => {
-    //         if (focused) {
-    //             setVisible(true);
-    //         }
-
-    //         Animated.spring(progress, {
-    //             toValue: +focused,
-    //             useNativeDriver: true,
-    //         }).start(() => {
-    //             if (!focused) {
-    //                 setVisible(false);
-    //             }
-    //         });
-    //     },
-    //     [focused]
-    // );
 
     const onBackPress = () => {
-        props.onBackPress();        
+        if (!focused) {
+            props.onBackPress();
+        } else {
+            Keyboard.dismiss();
+            onBlur();
+        }
     };
 
-    const onFocus = useCallback(
-        () => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            setFocused(true);
-        },
-        []
-    );
-
-    const onBlur = useCallback(
-        () => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            setFocused(false);
-        },
-        []
-    );
+    const onFocus = () => setFocused(true);
+    const onBlur = () => setFocused(false);
 
     return (
         <View
             style={[StyleSheet.absoluteFill, { flex: 1 }]}
             pointerEvents='box-none'
         >
-            {focused && (
-                <Animated.View style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: 'white',
-                }}>
-
-                </Animated.View>
-            )}
+            <Background focused={focused} />
 
             <Header
                 onBackPress={onBackPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                searchText={searchText}
+                animatedIndex={animatedIndex}
+                onSearchTextChanged={setSearchText}
+                focused={focused}
             />
 
             {focused && (
                 <ScrollView
-                    keyboardShouldPersistTaps='handled'
+                    // keyboardShouldPersistTaps='handled'
                     style={{
                     // backgroundColor: 'blue',
                     // flex: 1,
@@ -92,12 +66,14 @@ export default memo((props: Props) => {
 // Styles
 const styles = StyleSheet.create({
     background: {
-
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'white',
     },
 })
 
 // Types
 export type Props = {
     // ...
+    animatedIndex: Animated.SharedValue<number>,
     onBackPress: () => void,
 }

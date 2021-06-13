@@ -4,6 +4,7 @@ import React, { memo, useState, useCallback, useRef, useMemo, useEffect } from '
 // Components
 import EstablishmentDetails from '../EstablishmentDetails'
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
+import { useSharedValue } from 'react-native-reanimated'
 import SearchModal from '../SearchModal'
 import Search from '../Search'
 import Marker from './Marker'
@@ -46,6 +47,8 @@ export default memo(() => {
     const navigation = useNavigation();
 
     // const searchRef = useRef<SearchRef>(null);
+
+    const animatedIndex = useSharedValue(0);
 
     const [districtSelection, setDistrictSelection] = useState<District[]>([]);
     const [establishment, setEstablishment] = useState<Establishment>();
@@ -148,11 +151,13 @@ export default memo(() => {
             /> */}
 
             <SearchModal
+                animatedIndex={animatedIndex}
             />
 
             <Search
                 // onPlacePress={onPlacePress}
                 // ref={searchRef}
+                animatedIndex={animatedIndex}
                 onBackPress={onBackPress}
             />
 

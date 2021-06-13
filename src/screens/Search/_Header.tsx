@@ -1,50 +1,21 @@
 // React
-import React from 'react'
+import React, { memo, useState } from 'react'
 
 // Components
-import Animated, { useAnimatedStyle, interpolate, Extrapolate, interpolateNode } from 'react-native-reanimated'
+import { BlurView } from '@react-native-community/blur'
+import Feather from 'react-native-vector-icons/Feather'
 import { View, TextInput, StatusBar, StyleSheet } from 'react-native'
 import ArrowLeftIcon from '@assets/images/arrow-left.svg'
 import SearchIcon from '@assets/images/search.svg'
 import { TouchableScale } from '@components'
 
 // Constants
-import { ui, font, color, hitSlop } from '@constants'
+import { ui, font, color, style, hitSlop } from '@constants'
 
 
-export default (props: Props) => {
+export default memo((props: Props) => {
 
-    const { animatedIndex } = props;
-
-    const style = useAnimatedStyle(
-        () => ({
-            opacity: interpolate(
-                animatedIndex.value,
-                [1, 1.5],
-                [1, 0],
-                Extrapolate.CLAMP,
-            ),
-            transform: [
-                {
-                    scale: interpolate(
-                        animatedIndex.value,
-                        [1, 1.5],
-                        [1, 0.8],
-                        Extrapolate.CLAMP,
-                    ),
-                },
-                {
-                    translateY: interpolate(
-                        animatedIndex.value,
-                        [1.5, 2],
-                        [0, -1000],
-                        Extrapolate.CLAMP,
-                    ),
-                },
-            ],
-        }),
-        []
-    );
+    // const { focused } = props;
 
     // const onPress = () => {
     //     if (focused) {
@@ -71,55 +42,48 @@ export default (props: Props) => {
                 />
             </TouchableScale>
 
-            <Animated.View
-                style={[
-                    styles.shadow,
-                    styles.bar,
-                    style,
-                ]}
-            >
+            <View style={styles.content}>
                 <SearchIcon
                     fill={color.dark}
                     height={20}
                     width={20}
                 />
                 <TextInput
-                    onChangeText={props.onSearchTextChanged}
                     placeholderTextColor={color.mediumGray}
                     placeholder='Rechercher ...'
-                    value={props.searchText}
                     onFocus={props.onFocus}
                     onBlur={props.onBlur}
                     style={styles.input}
                 />
-            </Animated.View>
+            </View>
         </View>
     )
-}
+})
 
 // Styles
 const styles = StyleSheet.create({
     container: {
         paddingTop: ui.safePaddingTop + 10,
         justifyContent: 'space-between',
+        // backgroundColor: 'yellow',
+        // height: 180,
+        // width: 100,
     },
     button: {
         alignSelf: 'flex-start',
         marginLeft: 20,
     },
-    bar: {
+    content: {
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 15,
+        shadowColor: "#000",
+        shadowOpacity: 0.20,
+        shadowRadius: 4.65,
         borderRadius: 14,
         paddingLeft: 15,
         marginTop: 15,
-    },
-    shadow: {
-        shadowColor: '#000',
-        shadowOpacity: 0.20,
-        shadowRadius: 4.65,
         elevation: 8,
         shadowOffset: {
             height: 4,
@@ -137,14 +101,14 @@ const styles = StyleSheet.create({
 })
 
 // Types
-type Props = {
-    onSearchTextChanged: (searchText: string) => void,
-    animatedIndex: Animated.SharedValue<number>,
+export type Props = {
     // onSearchPress: () => void,
     // onClosePress: () => void,
+    // onBackPress: () => void,
+    // focused?: boolean,
+
+    onTextChanged: (value: string) => void,
     onBackPress: () => void,
     onFocus: () => void,
     onBlur: () => void,
-    searchText: string,
-    // focused?: boolean,
 }
