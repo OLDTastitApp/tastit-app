@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         bottom: 0,
+        // top: 500,
+        // zIndex: 100000,
     },
     wrapper: {
         marginHorizontal: 20,

@@ -2,14 +2,20 @@
 import React, { memo, useState, useRef, useEffect, useCallback } from 'react'
 
 // Components
-import { View, Text, ScrollView, StyleSheet, Keyboard } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Keyboard } from 'react-native'
+import EmptyPlaceholder from './EmptyPlaceholder'
 import Animated from 'react-native-reanimated'
 import SectionHeader from './SectionHeader'
 import Background from './Background'
+import NoResults from './NoResults'
+import PlaceItem from './PlaceItem'
 import Header from './Header'
 
 // Helpers
 import { usePlaces } from '@helpers'
+
+// Types
+import { Props as PlaceItemProps } from './PlaceItem'
 
 
 export default memo((props: Props) => {
@@ -19,9 +25,9 @@ export default memo((props: Props) => {
     // const onFocus: () => 
     const [searchText, setSearchText] = useState<string>();
     const [focused, setFocused] = useState(false);
-    const [visible, setVisible] = useState(false);
+    const [index, setIndex] = useState(0);
 
-    const empty = !(searchText?.length > 0);
+    const searchTextEmpty = !(searchText?.length > 0);
 
     const onBackPress = () => {
         // const empty = !(searchText?.length > 0);
@@ -39,10 +45,24 @@ export default memo((props: Props) => {
     const onBlur = () => setFocused(false);
 
     const [places, placesResult] = usePlaces({
-        skip: empty,
+        skip: searchTextEmpty,// || index !== 0,
         searchText,
         first: 10,
     });
+
+    const onPlacePress = useCallback<OnPlacePress>(
+        place => {
+            Keyboard.dismiss();
+            props.onPlacePress(place);
+        },
+        [props.onPlacePress]
+    );
+
+    // console.log(`searchText: ${searchText}`)
+    // console.log(`places: ${places?.edges?.length}`)
+    const hasPlaces = places?.edges?.length > 0;
+    const noResults = searchText?.length > 0 && !hasPlaces;
+    const empty = !(searchText?.length > 0) && !hasPlaces;
 
     return (
         <View
@@ -63,16 +83,35 @@ export default memo((props: Props) => {
             {focused && (
                 <>
                     <SectionHeader
-                        onChanged={() => {}}
-                        index={0}
+                        onChanged={setIndex}
+                        index={index}
                     />
 
-                    <ScrollView keyboardShouldPersistTaps='handled'>
-                        {/* <View style={{
-                            backgroundColor: 'purple',
-                            height: 100,
-                        }} /> */}
-                    </ScrollView>
+                    <FlatList
+                        renderItem={({ item }) => (
+                            <PlaceItem
+                                onPress={onPlacePress}
+                                item={item.node}
+                            />
+                        )}
+                        ListEmptyComponent={() => (
+                            empty ? (
+                                <EmptyPlaceholder />
+                            ) : noResults ? (
+                                <NoResults />
+                            ) : null
+                        )}
+                        contentContainerStyle={{ paddingVertical: 20 }}
+                        keyExtractor={({ node: { id } }) => id}
+                        keyboardShouldPersistTaps='handled'
+                        data={places?.edges}
+                    />
+
+                    {/* <ScrollView keyboardShouldPersistTaps='handled'>
+                        <Text>
+                            {placesResult.error && JSON.stringify(placesResult.error, null, 4)}
+                        </Text>
+                    </ScrollView> */}
                 </>
             )}
         </View>
@@ -89,7 +128,9 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    // ...
     animatedIndex: Animated.SharedValue<number>,
+    onPlacePress: OnPlacePress,
     onBackPress: () => void,
 }
+
+type OnPlacePress = PlaceItemProps['onPress']

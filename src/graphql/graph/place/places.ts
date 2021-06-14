@@ -3,10 +3,8 @@ import gql from 'graphql-tag'
 
 // Types
 import { Connection } from '../../types'
-import { Establishment } from '@types'
+import { Place } from '@types'
 
-
-type Place = Establishment
 
 export type PlacesArgs = {
     searchText?: string,

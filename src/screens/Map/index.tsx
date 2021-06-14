@@ -2,18 +2,19 @@
 import React, { memo, useState, useCallback, useRef, useMemo, useEffect } from 'react'
 
 // Components
-import EstablishmentDetails from '../EstablishmentDetails'
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
+import SearchModalFooter from '../SearchModal/Footer'
+import PlaceDetailsModal from '../PlaceDetailsModal'
 import SearchModal from '../SearchModal'
 import Search from '../Search'
 import Marker from './Marker'
-import NavBar from './NavBar'
 import Map from './Map'
 
 // Helpers
-import { useIsFocused } from '@react-navigation/native'
-import { useNavigation } from '@navigation/utils'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+// import { useNavigation } from '@navigation/utils'
 import useFilters from './useFilters'
 import useRegion from './useRegion'
 import usePlaces from './usePlaces'
@@ -22,8 +23,8 @@ import usePlaces from './usePlaces'
 import { font, color, style } from '@constants'
 
 // Types
-// import { Ref as SearchRef, Props as SearchProps } from '../Search'
-import { District, Establishment } from '@types'
+import { Props as SearchProps } from '../Search'
+import { District, Establishment, Place } from '@types'
 import { Props as MarkerProps } from './Marker'
 import { Props as MapProps } from './Map'
 // import { Establishment,  } from './data'
@@ -47,11 +48,13 @@ export default memo(() => {
     const navigation = useNavigation();
 
     // const searchRef = useRef<SearchRef>(null);
+    const searchModalRef = useRef<BottomSheetModal>(null);
+    const placeDetailsModalRef = useRef<BottomSheetModal>(null);
 
     const animatedIndex = useSharedValue(0);
 
     const [districtSelection, setDistrictSelection] = useState<District[]>([]);
-    const [establishment, setEstablishment] = useState<Establishment>();
+    const [place, setPlace] = useState<Place>();
 
     const [location, setLocation] = useState([2.3488, 48.8534]);
     // const [region, setRegion] = useRegion({
@@ -66,22 +69,22 @@ export default memo(() => {
     }, []);
 
     const onBackPress = () => {
-        setEstablishment(null);
+        setPlace(null);
         places.clear();
         setTimeout(() => {
             navigation.goBack();
         }, 250)
     };
 
-    const onClosePress = () => setEstablishment(null);
+    const onClosePress = () => setPlace(null);
     
     const onMarkerPress = useCallback<OnMarkerPress>(
-        establishment => setEstablishment(establishment),
+        place => setPlace(place),
         []
     );
 
     const onPlacePress = useCallback<OnPlacePress>(
-        place => setEstablishment(place),
+        place => setPlace(place),
         []
     );
 
@@ -132,8 +135,7 @@ export default memo(() => {
         []
     );
     return (
-        // <View style={style.container}>
-        <View style={{ flex: 1, backgroundColor: 'red' }}>
+        <View style={style.container}>
 
             <Map
                 initialRegion={initialRegion}
@@ -143,21 +145,27 @@ export default memo(() => {
                 data={places.data}
             />
 
-            {/* <NavBar
-                onSearchPress={onSearchPress}
-                onClosePress={onClosePress}
-                onBackPress={onBackPress}
-                // focused={!!establishment}
-            /> */}
+            <BottomSheetModalProvider>
+                <SearchModal
+                    animatedIndex={animatedIndex}
+                    modalRef={searchModalRef}
+                />
 
-            <SearchModal
+                <PlaceDetailsModal
+                    modalRef={placeDetailsModalRef}
+                    place={place}
+                />
+            </BottomSheetModalProvider>
+
+            <SearchModalFooter
                 animatedIndex={animatedIndex}
+                onPress={() => {}}
+                disabled={false}
             />
 
             <Search
-                // onPlacePress={onPlacePress}
-                // ref={searchRef}
                 animatedIndex={animatedIndex}
+                onPlacePress={onPlacePress}
                 onBackPress={onBackPress}
             />
 
@@ -203,7 +211,7 @@ export default memo(() => {
 })
 
 // Types
-// type OnPlacePress = SearchProps['onPlacePress']
+type OnPlacePress = SearchProps['onPlacePress']
 
 type OnRegionChanged = MapProps['onChanged']
 

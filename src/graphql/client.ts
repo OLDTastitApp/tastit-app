@@ -30,16 +30,18 @@ const authLink = setContext(async (_, { headers }) => {
     try {
         const client = OAuth.getClient('app');
         const token = await client.getToken();
+
+        return { headers };
         
-        if (!token) return { headers };
+        // if (!token) return { headers };
         
-        const authorization = `Bearer ${token.accessToken}`;
-        return {
-            headers: {
-                ...headers,
-                authorization,
-            },
-        };
+        // const authorization = `Bearer ${token.accessToken}`;
+        // return {
+        //     headers: {
+        //         ...headers,
+        //         authorization,
+        //     },
+        // };
 
     } catch (e) {
         console.log(e);
