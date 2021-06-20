@@ -2,14 +2,22 @@
 import React, { memo, useState, useRef, useEffect, useCallback } from 'react'
 
 // Components
-import { View, Animated, StatusBar, StyleSheet } from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { View, Image, Animated, StatusBar, StyleSheet } from 'react-native'
 import ImageEditor from '@react-native-community/image-editor'
-import { RNCamera } from 'react-native-camera'
+import Feather from 'react-native-vector-icons/Feather'
+import { RNCamera, Constants } from 'react-native-camera'
+import ImagePicker from 'react-native-image-crop-picker'
 import { TouchableScale } from '@components'
 
 // Constants
 import { ui, color } from '@constants'
 
+const cameraTypes = [
+    RNCamera.Constants.Type.front,
+    RNCamera.Constants.Type.back,
+]
 
 export default memo((props: Props) => {
 
@@ -19,6 +27,7 @@ export default memo((props: Props) => {
     const [locked, setLocked] = useState(false);
     const [mounted, setMounted] = useState(false);
     const { current: opacity } = useRef(new Animated.Value(1));
+    const [cameraType, setCameraType] = useState(RNCamera.Constants.Type.back);
 
     useEffect(
         () => { setTimeout(() => setMounted(true), 250); },
@@ -82,6 +91,39 @@ export default memo((props: Props) => {
         []
     );
 
+    const onLibraryPress = async () => {
+        const result = await ImagePicker.openPicker({
+            compressImageQuality: 0.5,
+            mediaType: 'photo',
+        });
+        const { width, height, sourceURL: pictureUri } = result;
+        const thumbnailUri = await ImageEditor.cropImage(pictureUri, {
+            displaySize: {
+                height: 100 * height / width,
+                width: 100,
+            },
+            size: { width, height },
+            offset: { x: 0, y: 0 },
+        });
+        props.onCaptured({
+            // pictureBase64: `data:image;base64,${result.base64}`,
+            // pictureBase64: result.base64,
+            // base64: `data:image;base64,${result.base64}`,
+            // pictureBase64: result.uri,
+            thumbnailUri,
+            pictureUri,
+        });
+        // console.log(JSON.stringify(result, null, 4))
+    };
+
+    const onRotatePress = () => {
+        setCameraType((value: any) => (
+            value === RNCamera.Constants.Type.front
+            ? RNCamera.Constants.Type.back
+            : RNCamera.Constants.Type.front
+        ));
+    };
+
     return (
         <View style={styles.container}>
 
@@ -92,18 +134,48 @@ export default memo((props: Props) => {
                     <RNCamera
                         style={StyleSheet.absoluteFill}
                         captureAudio={false}
+                        type={cameraType}
                         ref={cameraRef}
                         useNativeZoom
                     />
+                    {/* <Image
+                        style={StyleSheet.absoluteFill}
+                        source={{ uri: pictureUri }}
+                    /> */}
 
-                    <TouchableScale
-                        style={styles.button}
-                        activeScale={0.96}
-                        disabled={locked}
-                        onPress={onPress}
-                    >
+                    <View style={styles.footer}>
 
-                    </TouchableScale>
+                        <TouchableScale
+                            onPress={onLibraryPress}
+                            style={styles.action}
+                            activeScale={0.98}
+                        >
+                            <Feather
+                                color={color.dark}
+                                name='image'
+                                size={28}
+                            />
+                        </TouchableScale>
+
+                        <TouchableScale
+                            style={styles.button}
+                            activeScale={0.96}
+                            disabled={locked}
+                            onPress={onPress}
+                        />
+
+                        <TouchableScale
+                            onPress={onRotatePress}
+                            style={styles.action}
+                            activeScale={0.98}
+                        >
+                            <MaterialIcons
+                                name='flip-camera-android'
+                                color={color.dark}
+                                size={30}
+                            />
+                        </TouchableScale>
+                    </View>
                 </>
             )}
 
@@ -129,18 +201,38 @@ const styles = StyleSheet.create({
     overlay: {
         backgroundColor: 'black',
     },
+    footer: {
+        // alignSelf: 'center',
+        bottom: ui.safePaddingBottom + 10,
+        // justifyContent: 'space-between',
+        // justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
+        // justifyContent: 'center',
+        // backgroundColor: 'purple',
+        alignItems: 'center',
+        position: 'absolute',
+        flexDirection: 'row',
+        width: '100%',
+        // paddingHorizontal: 20,
+        // height: '100%',
+        // top: 0,
+    },
     button: {
         width: 80,
         height: 80,
         borderColor: 'white',
         borderWidth: 6,
-        position: 'absolute',
-        bottom: ui.safePaddingBottom + 10,
-        alignSelf: 'center',
         backgroundColor: '#ffffff55',
-        // backgroundColor: `${color.primary}55`,
-        // backgroundColor: '#00000055',
         borderRadius: 80,
+    },
+    action: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: '#fffa',
+        marginHorizontal: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 })
 
@@ -155,3 +247,7 @@ export type CaptureArgs = {
     thumbnailUri?: string,
     pictureUri?: string,
 }
+
+//#region 
+const pictureUri = 'https://images.pexels.com/photos/4236824/pexels-photo-4236824.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+//#endregion

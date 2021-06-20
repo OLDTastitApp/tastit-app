@@ -38,6 +38,7 @@ export default memo((props: Props) => {
                 <View style={styles.placeholder}>
                     {!empty && (
                         <Filter
+                            disableCache
                             image={(
                                 <Image
                                     style={styles.image}
