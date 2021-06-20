@@ -12,13 +12,19 @@ import DistrictView from './DistrictView'
 import PricingView from './PricingView'
 import Footer from './Footer'
 
+// Types
+import { Pricing } from '@types'
+
 
 export default memo((props: Props) => {
 
     const { animatedIndex, modalRef } = props;
 
     const [index, setIndex] = useState(0);
+    const [pricing, setPricing] = useState<Pricing>();
     const [districts, setDistricts] = useState<string[]>([]);
+    const [dietetics, setDietetics] = useState<string[]>([]);
+    const [gastronomies, setGastronomies] = useState<string[]>([]);
 
     const scrollViewRef = useRef<ScrollView>(null);
 
@@ -60,6 +66,8 @@ export default memo((props: Props) => {
             <BottomSheetModal
                 onChange={handleSheetChanges}
                 animatedIndex={animatedIndex}
+                enableDismissOnClose={false}
+                enablePanDownToClose={false}
                 snapPoints={snapPoints}
                 handleComponent={null}
                 stackBehavior='push'
@@ -80,9 +88,18 @@ export default memo((props: Props) => {
                         onChange={setDistricts}
                         selection={districts}
                     />
-                    <PricingView />
-                    <DieteticsView />
-                    <GastronomyView />
+                    <PricingView
+                        onChange={setPricing}
+                        selection={pricing}
+                    />
+                    <DieteticsView
+                        onChange={setDietetics}
+                        selection={dietetics}
+                    />
+                    <GastronomyView
+                        onChange={setGastronomies}
+                        selection={gastronomies}
+                    />
                 </ScrollView>
 
             </BottomSheetModal>

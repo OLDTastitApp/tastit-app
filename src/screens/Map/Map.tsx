@@ -12,7 +12,7 @@ import { font, color } from '@constants'
 import * as themes from './themes'
 
 // Types
-import { Establishment } from '@types'
+import { Place } from '@types'
 // import { Establishment } from './data'
 
 // Data
@@ -23,10 +23,18 @@ export default memo((props: Props) => {
 
     const [loaded, setLoaded] = useState(false);
 
-    const { initialRegion, /*focusedPlace*/ } = props;
+    // const { initialRegion, focusedPlace } = props;
+    const { location, focusedPlace } = props;
     // const { longitude, latitude } = region;
 
-    const { results } = response;
+    const initialRegion = {
+        longitude: location[0],
+        latitude: location[1],
+        longitudeDelta: 0.02,
+        latitudeDelta: 0.02,
+    };
+
+    // const { results } = response;
 
     const mapRef = useRef<MapView>();
 
@@ -42,23 +50,24 @@ export default memo((props: Props) => {
     //     []
     // );
 
-    // useEffect(
-    //     () => {
-    //         if (focusedPlace) {
-    //             // ...
-    //             const [longitude, latitude] = focusedPlace.location;
-    //             mapRef.current.animateCamera({
-    //                 // longitude,
-    //                 center: {
-    //                     longitude,
-    //                     latitude,
-    //                 }
-    //                 // latitude,
-    //             });
-    //         }
-    //     },
-    //     [focusedPlace]
-    // );
+    useEffect(
+        () => {
+            if (focusedPlace) {
+                // ...
+                // const [longitude, latitude] = focusedPlace.location;
+                const { longitude, latitude } = focusedPlace;
+                // mapRef.current.animateCamera({
+                //     // longitude,
+                //     center: {
+                //         longitude,
+                //         latitude,
+                //     }
+                //     // latitude,
+                // });
+            }
+        },
+        [focusedPlace]
+    );
 
     const onPress = useCallback(
         () =>  {
@@ -71,27 +80,32 @@ export default memo((props: Props) => {
 
     // if (!loaded) return null;
 
-    console.log(`+Rendering Map component`);
+    console.log(`+Rendering Map component: ${props?.data?.length}`);
 
     return (
         <>
             <MapView
-                // onRegionChangeComplete={props.onChanged}
+                onRegionChangeComplete={props.onChanged}
                 customMapStyle={themes.silver}
                 // customMapStyle={themes.dark}
                 initialRegion={initialRegion}
-                provider={PROVIDER_GOOGLE}
+                // provider={PROVIDER_GOOGLE}
                 onMapReady={onMapReady}
-                showsMyLocationButton
+                // showsMyLocationButton
                 style={styles.map}
                 // region={region}
                 loadingEnabled
                 ref={mapRef}
-                // liteMode
+                liteMode
             >
-                {/* {props.data?.map((item, index) => (
-                    props.renderMarker({ item, index, focusedPlace })
-                ))} */}
+                {props.data?.map((item, index) => (
+                    props.renderMarker({
+                        item: item.node,
+                        focusedPlace,
+                        index,
+                    })
+                ))}
+                
                 {/* {results.map((result, i) => (
                     <Marker
                         onPress={props?.onMarkerPress}
@@ -116,16 +130,17 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    // renderMarker: (info: RenderMarkerInfo) => JSX.Element,
-    // onMarkerPress: (item: Establishment) => void,
-    // onChanged: (region: Region) => void,
-    // focusedPlace?: Establishment,
-    // data?: Establishment[],
-    initialRegion: Region,
+    renderMarker: (info: RenderMarkerInfo) => JSX.Element,
+    onMarkerPress: (item: Place) => void,
+    onChanged: (region: Region) => void,
+    data?: { node: Place }[],
+    // initialRegion: Region,
+    focusedPlace?: Place,
+    location?: number[],
 }
 
 type RenderMarkerInfo = {
-    focusedPlace: Establishment,
-    item: Establishment,
+    focusedPlace: Place,
     index: number,
+    item: Place,
 }

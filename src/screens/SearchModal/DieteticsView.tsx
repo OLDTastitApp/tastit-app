@@ -1,67 +1,108 @@
 // React
-import React, { memo, useMemo, useCallback } from 'react'
+import React, { memo, useRef, useMemo, useCallback } from 'react'
 
 // Components
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
-import BottomSheet, {
-    BottomSheetScrollView,
-    useBottomSheetSpringConfigs,
-    useBottomSheetTimingConfigs
-} from '@gorhom/bottom-sheet'
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import DieteticItem from './DieteticItem'
+
+// Icons
+import GlutenFreeIcon from '@assets/images/dietetic/gluten-free.svg'
+import VegetarianIcon from '@assets/images/dietetic/vegetarian.svg'
+import HalalIcon from '@assets/images/dietetic/halal.svg'
+// import VeganIcon from '@assets/images/dietetic/vegan.svg'
+
+// Types
+import { Props as DieteticItemProps } from './DieteticItem'
+import { Dietetic } from '@types'
 
 
 export default memo((props: Props) => {
 
-    const data = useMemo(
-        () =>
-          Array(50)
-            .fill(0)
-            .map((_, index) => `index-${index}`),
-        []
+    const { current: selectionSet } = useRef<Set<string>>(new Set);
+    const { selection, onChange } = props;
+
+    useMemo(
+        () => {
+            selectionSet.clear();
+            selection.forEach(id => selectionSet.add(id));
+        },
+        [selection]
     );
 
-    const renderItem = useCallback(
-        item => (
-          <TouchableOpacity key={item} style={{
-            padding: 6,
-            margin: 6,
-            backgroundColor: '#eee',
-          }}>
-            <Text>{item}</Text>
-          </TouchableOpacity>
-        ),
+    const onRemovePress = useCallback<OnRemovePress>(
+        item => {
+            const updatedSet = new Set(selectionSet);
+            updatedSet.delete(item.id);
+            onChange([...updatedSet.values()]);
+        },
+        [selection]
+    );
+
+    const onSelectPress = useCallback<OnSelectPress>(
+        item => {
+            const updatedSet = new Set(selectionSet);
+            updatedSet.add(item.id);
+            onChange([...updatedSet.values()]);
+        },
         []
     );
 
     return (
-        // <View style={styles.container}>
-            <BottomSheetScrollView
-                contentContainerStyle={{
-                    backgroundColor: 'green',
-                    // minHeight: 2000,
-                    width,
-                }}
-            >
-                {data.map(renderItem)}
-            </BottomSheetScrollView>
-        // </View>
+        <View style={styles.container}>
+            <BottomSheetFlatList
+                contentContainerStyle={styles.content}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={({ id }) => id}
+                data={dietetics}
+                renderItem={({ item }) => (
+                    <DieteticItem
+                        selected={selectionSet.has(item.id)}
+                        onRemovePress={onRemovePress}
+                        onSelectPress={onSelectPress}
+                        item={item}
+                    />
+                )}
+                ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                )}
+            />
+        </View>
     )
 })
 
 // Constants
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
+
+const dietetics: Dietetic[] = [
+    { id: 'vegetarian', name: 'Végérarien', Icon: VegetarianIcon },
+    { id: 'halal', name: 'Halal', Icon: HalalIcon },
+    // { id: 'vegan', name: 'Vegan', Icon: VeganIcon },
+    { id: 'gluten-free', name: 'Sans gluten', Icon: GlutenFreeIcon },
+]
 
 // Styles
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'blue',
-        // height: 100,
         width,
-        // flex: 1,
+    },
+    content: {
+        paddingBottom: height + 300,
+        // paddingHorizontal: 10,
+    },
+    separator: {
+        backgroundColor: '#f0f0f0',
+        marginHorizontal: 20,
+        height: 1,
     },
 })
 
 // Types
-type Props = {
-    // ...
+export type Props = {
+    onChange: (selection: string[]) => void,
+    selection: string[],
 }
+
+type OnRemovePress = DieteticItemProps ['onRemovePress']
+
+type OnSelectPress = DieteticItemProps ['onSelectPress']

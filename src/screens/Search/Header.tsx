@@ -3,7 +3,7 @@ import React from 'react'
 
 // Components
 import Animated, { useAnimatedStyle, interpolate, Extrapolate, interpolateNode } from 'react-native-reanimated'
-import { View, TextInput, StatusBar, StyleSheet } from 'react-native'
+import { View, TextInput, StatusBar, StyleSheet, useWindowDimensions } from 'react-native'
 import ArrowLeftIcon from '@assets/images/arrow-left.svg'
 import SearchIcon from '@assets/images/search.svg'
 import { TouchableScale } from '@components'
@@ -14,12 +14,12 @@ import { ui, font, color, hitSlop } from '@constants'
 
 export default (props: Props) => {
 
-    const { animatedIndex } = props;
+    const { searchAnimatedIndex, detailsAnimatedPosition } = props;
 
-    const style = useAnimatedStyle(
+    const searchStyle = useAnimatedStyle(
         () => ({
             opacity: interpolate(
-                animatedIndex.value,
+                searchAnimatedIndex.value,
                 [1, 1.5],
                 [1, 0],
                 Extrapolate.CLAMP,
@@ -27,7 +27,7 @@ export default (props: Props) => {
             transform: [
                 {
                     scale: interpolate(
-                        animatedIndex.value,
+                        searchAnimatedIndex.value,
                         [1, 1.5],
                         [1, 0.8],
                         Extrapolate.CLAMP,
@@ -35,9 +35,32 @@ export default (props: Props) => {
                 },
                 {
                     translateY: interpolate(
-                        animatedIndex.value,
+                        searchAnimatedIndex.value,
                         [1.5, 2],
                         [0, -1000],
+                        Extrapolate.CLAMP,
+                    ),
+                },
+            ],
+        }),
+        []
+    );
+
+    const { height } = useWindowDimensions();
+
+    const detailsStyle = useAnimatedStyle(
+        () => ({
+            opacity: interpolate(
+                detailsAnimatedPosition.value,
+                [0.9 * height, height],
+                [0, 1],
+            ),
+            transform: [
+                {
+                    translateY: interpolate(
+                        detailsAnimatedPosition.value,
+                        [0.9 * height, height],
+                        [-300, 0],
                         Extrapolate.CLAMP,
                     ),
                 },
@@ -71,28 +94,30 @@ export default (props: Props) => {
                 />
             </TouchableScale>
 
-            <Animated.View
-                style={[
-                    styles.shadow,
-                    styles.bar,
-                    style,
-                ]}
-            >
-                <SearchIcon
-                    fill={color.dark}
-                    height={20}
-                    width={20}
-                />
-                <TextInput
-                    onChangeText={props.onSearchTextChanged}
-                    placeholderTextColor={color.mediumGray}
-                    placeholder='Rechercher ...'
-                    value={props.searchText}
-                    onFocus={props.onFocus}
-                    onBlur={props.onBlur}
-                    style={styles.input}
-                    autoCorrect={false}
-                />
+            <Animated.View style={detailsStyle}>
+                <Animated.View
+                    style={[
+                        styles.shadow,
+                        styles.bar,
+                        searchStyle,
+                    ]}
+                >
+                    <SearchIcon
+                        fill={color.dark}
+                        height={20}
+                        width={20}
+                    />
+                    <TextInput
+                        onChangeText={props.onSearchTextChanged}
+                        placeholderTextColor={color.mediumGray}
+                        placeholder='Rechercher ...'
+                        value={props.searchText}
+                        onFocus={props.onFocus}
+                        onBlur={props.onBlur}
+                        style={styles.input}
+                        autoCorrect={false}
+                    />
+                </Animated.View>
             </Animated.View>
         </View>
     )
@@ -139,8 +164,9 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
+    detailsAnimatedPosition: Animated.SharedValue<number>,
+    searchAnimatedIndex: Animated.SharedValue<number>,
     onSearchTextChanged: (searchText: string) => void,
-    animatedIndex: Animated.SharedValue<number>,
     // onSearchPress: () => void,
     // onClosePress: () => void,
     onBackPress: () => void,

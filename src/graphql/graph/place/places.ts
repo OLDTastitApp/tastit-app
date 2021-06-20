@@ -22,12 +22,14 @@ export const PLACES = gql`
     query Places(
         $searchText: String
         $around: [Float!]
+        $radius: Int
         $after: String
         $first: Int!
     ) {
         places(
             searchText: $searchText
             around: $around
+            radius: $radius
             after: $after
             first: $first
         ) {

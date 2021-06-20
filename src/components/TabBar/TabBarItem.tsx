@@ -45,21 +45,21 @@ export default memo((props: Props) => {
             onPress={onPress}
         >
             {route.name === 'Favorites' ? (
-                // <Icon
-                //     // fill={focused ? color.primary : `${color.primary}22`}
-                //     // fill={focused ? color.primary : `${color.darkGray}`}
-                //     fill={focused ? color.primary : `${color.dark}`}
-                //     // name={name}
-                //     // size={70}
-                //     height={120}
-                // />
-                <View style={{
-                    backgroundColor: 'white',
-                    borderRadius: 70,
-                    height: 70,
-                    width: 70,
-                }}
+                <Icon
+                    // fill={focused ? color.primary : `${color.primary}22`}
+                    // fill={focused ? color.primary : `${color.darkGray}`}
+                    fill={focused ? color.primary : `${color.dark}`}
+                    // name={name}
+                    // size={70}
+                    height={120}
                 />
+                // <View style={{
+                //     backgroundColor: 'white',
+                //     borderRadius: 70,
+                //     height: 70,
+                //     width: 70,
+                // }}
+                // />
             ) : (
                 <Icon
                     fill={focused ? color.primary : `${color.light}`}

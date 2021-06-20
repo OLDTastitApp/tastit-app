@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 })
 
 // Types
-type Props = {
+export type Props = {
     onChange: (selection: string[]) => void,
     selection: string[],
     // data: District[],

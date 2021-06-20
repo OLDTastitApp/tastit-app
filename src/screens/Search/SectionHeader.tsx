@@ -40,8 +40,8 @@ export default memo((props: Props) => {
 // Constants
 const sections = [
     { id: 'top', name: 'Top' },
-    { id: 'accounts', name: 'Accounts' },
-    { id: 'places', name: 'Places' },
+    { id: 'accounts', name: 'Comptes' },
+    { id: 'places', name: 'Lieux' },
     { id: 'hashtags', name: 'Hashtags' },
 ]
 

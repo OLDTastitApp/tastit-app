@@ -11,8 +11,7 @@ import { Marker } from 'react-native-maps'
 import { color, style } from '@constants'
 
 // Types
-// import { Establishment } from './data'
-import { Establishment } from '@types'
+import { Place } from '@types'
 
 
 export default memo((props: Props) => {
@@ -42,9 +41,11 @@ export default memo((props: Props) => {
         props?.onPress?.(item);
     };
 
-    const size = selected ? 50 : 30;
+    // const size = selected ? 50 : 30;
+    const size = 30;
 
-    const [longitude, latitude] = item.location;
+    // const [longitude, latitude] = item.location;
+    const { longitude, latitude } = item;
 
     const coordinate = {
         // longitude: item.geometry.location.lng,
@@ -53,7 +54,7 @@ export default memo((props: Props) => {
         latitude,
     };
 
-    // console.log(`Rendering marker: ${item.name}`)
+    console.log(`Rendering marker: ${item.name}`)
 
     const key = `${selected ? 's:' : ''}${props.id}`;
 
@@ -76,22 +77,22 @@ export default memo((props: Props) => {
                     // },
                 ]}
             >
-                <Feather
+                {/* <Feather
                     color='#fa7268'
                     name='map-pin'
                     size={size}
-                />
-                {/* <Icon
+                /> */}
+                <Icon
                     height={size}
                     width={size}
-                /> */}
-                {selected && (
+                />
+                {/* {selected && (
                     <View style={[styles.box, style.shadow]}>
                         <Text style={styles.name}>
                             {item.name}
                         </Text>
                     </View>
-                )}
+                )} */}
             </Animated.View>
         </Marker>
     )
@@ -119,8 +120,8 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    onPress: (item: Establishment) => void,
-    item: Establishment,
+    onPress: (item: Place) => void,
     selected?: boolean,
+    item: Place,
     id: string,
 }

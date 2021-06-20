@@ -14,10 +14,12 @@ import Map from './Map'
 
 // Helpers
 import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useWindowDimensions } from 'react-native'
 // import { useNavigation } from '@navigation/utils'
 import useFilters from './useFilters'
 import useRegion from './useRegion'
-import usePlaces from './usePlaces'
+// import usePlaces from './usePlaces'
+import { usePlaces } from '@helpers'
 
 // Constants
 import { font, color, style } from '@constants'
@@ -42,6 +44,8 @@ const initialRegion = {
     latitude: 48.8534,
 };
 
+const defaultLocation = [2.3488, 48.8534];
+
 export default memo(() => {
 
     const focused = useIsFocused();
@@ -51,12 +55,16 @@ export default memo(() => {
     const searchModalRef = useRef<BottomSheetModal>(null);
     const placeDetailsModalRef = useRef<BottomSheetModal>(null);
 
-    const animatedIndex = useSharedValue(0);
+    const { height } = useWindowDimensions();
+
+    const searchAnimatedIndex = useSharedValue(0);
+    const detailsAnimatedPosition = useSharedValue(height);
 
     const [districtSelection, setDistrictSelection] = useState<District[]>([]);
     const [place, setPlace] = useState<Place>();
 
-    const [location, setLocation] = useState([2.3488, 48.8534]);
+    const [location, setLocation] = useState(defaultLocation);
+    const [mapLocation, setMapLocation] = useState(defaultLocation);
     // const [region, setRegion] = useRegion({
     //     defaultLongitude: 2.3488,
     //     defaultLatitude: 48.8534,
@@ -69,11 +77,15 @@ export default memo(() => {
     }, []);
 
     const onBackPress = () => {
-        setPlace(null);
-        places.clear();
-        setTimeout(() => {
-            navigation.goBack();
-        }, 250)
+        if (place) {
+            setPlace(null);
+            // places.clear();
+        } else {
+            searchModalRef.current.snapToIndex(0);
+            setLocation(defaultLocation);
+            setTimeout(() => navigation.goBack(), 250);
+            // places.clear();
+        }
     };
 
     const onClosePress = () => setPlace(null);
@@ -91,9 +103,9 @@ export default memo(() => {
     const onRegionChanged = useCallback<OnRegionChanged>(
         region => {
             const { longitude, latitude } = region;
-            setLocation([longitude, latitude]);
+            setMapLocation([longitude, latitude]);
             // setRegion(value => ({ ...value, longitude, latitude }));
-            // console.log(JSON.stringify(region))
+            // console.log('location changed: ', JSON.stringify(region))
         },
         []
     );
@@ -105,13 +117,47 @@ export default memo(() => {
     );
 
     const onSearchHerePress = useCallback(
-        (location: number[]) => {
-            places.fetch({ around: location, first: 5 });
+        // (location: number[]) => {
+        async () => {
+            console.log('search here pressed !')
+            // places.fetch({ around: location, first: 5 });
+            // const result = await placesResult.refetch({
+            //     around: location,
+            //     radius: 10000,
+            //     first: 10,
+            // });
+            setLocation(mapLocation);
+            searchModalRef.current.snapToIndex(0);
+
+            // console.log(`places fetched !!: ${result?.data.places?.edges?.[0]?.node.name}`);
+            // console.log(`places error !!: ${JSON.stringify(result, null, 4)}`);
         },
-        []
+        // [location]
+        [mapLocation]
     );
 
-    const places = usePlaces();
+    // const skipRefetch = !!location && JSON.stringify(location) != JSON.stringify(mapLocation);
+    // const skipRefetch = JSON.stringify(location) != JSON.stringify(mapLocation);
+
+    const [places, placesResult] = usePlaces({
+        // skip: searchTextEmpty,// || index !== 0,
+        // searchText,
+        // skip: skipRefetch,
+        around: location ?? defaultLocation,
+        // skip: !location,
+
+        radius: 10000,
+        first: 10,
+    });
+
+    useEffect(
+        () => {
+            console.log(`places changed: ${places?.edges?.[0]?.node.name}`);
+        },
+        [places]
+    );
+
+    // const places = usePlaces();
     
     // useEffect(
     //     () => {
@@ -134,37 +180,53 @@ export default memo(() => {
         ),
         []
     );
+
+    const onPlaceDetailsClosed = useCallback(() => setPlace(null), []);
+
+    if (placesResult.error) {
+        return (<ScrollView>
+            <Text>{JSON.stringify(placesResult.error, null, 4)}</Text>
+        </ScrollView>)
+    }
+
     return (
         <View style={style.container}>
 
             <Map
-                initialRegion={initialRegion}
-                // focusedPlace={establishment}
-                // onChanged={onRegionChanged}
-                // renderMarker={renderMarker}
-                data={places.data}
+                // initialRegion={initialRegion}
+                onMarkerPress={onMarkerPress}
+                onChanged={onRegionChanged}
+                renderMarker={renderMarker}
+                location={location || defaultLocation}
+                focusedPlace={place}
+                data={places?.edges}
             />
 
             <BottomSheetModalProvider>
                 <SearchModal
-                    animatedIndex={animatedIndex}
+                    animatedIndex={searchAnimatedIndex}
                     modalRef={searchModalRef}
                 />
 
                 <PlaceDetailsModal
+                    animatedPosition={detailsAnimatedPosition}
+                    onClosed={onPlaceDetailsClosed}
                     modalRef={placeDetailsModalRef}
                     place={place}
                 />
             </BottomSheetModalProvider>
 
             <SearchModalFooter
-                animatedIndex={animatedIndex}
-                onPress={() => {}}
+                detailsAnimatedPosition={detailsAnimatedPosition}
+                animatedIndex={searchAnimatedIndex}
+                // onPress={() => {}}
+                onPress={onSearchHerePress}
                 disabled={false}
             />
 
             <Search
-                animatedIndex={animatedIndex}
+                detailsAnimatedPosition={detailsAnimatedPosition}
+                searchAnimatedIndex={searchAnimatedIndex}
                 onPlacePress={onPlacePress}
                 onBackPress={onBackPress}
             />

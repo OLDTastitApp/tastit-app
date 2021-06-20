@@ -6,13 +6,16 @@ import Animated, { useAnimatedStyle, interpolate, Extrapolate } from 'react-nat
 import { View, Text, StyleSheet } from 'react-native'
 import { TouchableScale } from '@components'
 
+// Helpers
+import { useWindowDimensions } from 'react-native'
+
 // Constants
 import { ui, color } from '@constants'
 
 
 export default memo((props: Props) => {
 
-    const { animatedIndex } = props;
+    const { animatedIndex, detailsAnimatedPosition } = props;
 
     const buttonStyle = useAnimatedStyle(
         () => ({
@@ -30,23 +33,53 @@ export default memo((props: Props) => {
         []
     );
 
+    const { height } = useWindowDimensions();
+
+    const detailsStyle = useAnimatedStyle(
+        () => ({
+            // opacity: interpolate(
+            //     detailsAnimatedPosition.value,
+            //     [0.9 * height, height],
+            //     [0, 1],
+            // ),
+            transform: [
+                {
+                    translateY: interpolate(
+                        detailsAnimatedPosition.value,
+                        [0.9 * height, height],
+                        [100, 0],
+                        Extrapolate.CLAMP,
+                    ),
+                },
+            ],
+        }),
+        []
+    );
+
     return (
         <Animated.View
             style={[
                 styles.container,
-                buttonStyle,
+                detailsStyle,
             ]}
         >
-            <View style={styles.wrapper}>
-                <TouchableScale
-                    onPress={props.onPress}
-                    style={styles.button}
-                >
-                    <Text style={styles.title}>
-                        Rechercher
-                    </Text>
-                </TouchableScale>
-            </View>
+            <Animated.View
+                style={[
+                    styles.container,
+                    buttonStyle,
+                ]}
+            >
+                <View style={styles.wrapper}>
+                    <TouchableScale
+                        onPress={props.onPress}
+                        style={styles.button}
+                    >
+                        <Text style={styles.title}>
+                            Rechercher
+                        </Text>
+                    </TouchableScale>
+                </View>
+            </Animated.View>
         </Animated.View>
     )
 })
@@ -55,7 +88,6 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         paddingBottom: ui.safePaddingBottom,
-        backgroundColor: 'white',
         position: 'absolute',
         width: '100%',
         bottom: 0,
@@ -84,6 +116,7 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
+    detailsAnimatedPosition: Animated.SharedValue<number>,
     animatedIndex: Animated.SharedValue<number>,
     onPress: () => void,
     disabled: boolean,

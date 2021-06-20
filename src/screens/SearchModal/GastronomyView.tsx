@@ -1,34 +1,101 @@
 // React
-import React, { memo } from 'react'
+import React, { memo, useRef, useMemo, useCallback } from 'react'
 
 // Components
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import GastronomyItem from './GastronomyItem'
+
+// Types
+import { Props as GastronomyItemProps } from './GastronomyItem'
+import { Gastronomy } from '@types'
 
 
 export default memo((props: Props) => {
 
+    const { current: selectionSet } = useRef<Set<string>>(new Set);
+    const { selection, onChange } = props;
+
+    useMemo(
+        () => {
+            selectionSet.clear();
+            selection.forEach(id => selectionSet.add(id));
+        },
+        [selection]
+    );
+
+    const onRemovePress = useCallback<OnRemovePress>(
+        item => {
+            const updatedSet = new Set(selectionSet);
+            updatedSet.delete(item.id);
+            onChange([...updatedSet.values()]);
+        },
+        [selection]
+    );
+
+    const onSelectPress = useCallback<OnSelectPress>(
+        item => {
+            const updatedSet = new Set(selectionSet);
+            updatedSet.add(item.id);
+            onChange([...updatedSet.values()]);
+        },
+        []
+    );
+
     return (
         <View style={styles.container}>
-            <Text>
-                Gastronomie
-            </Text>
+            <BottomSheetScrollView
+                contentContainerStyle={styles.content}
+                showsVerticalScrollIndicator={false}
+            >
+                {gastronomies.map(item => {
+                    return (
+                        <GastronomyItem
+                            selected={selectionSet.has(item.id)}
+                            onRemovePress={onRemovePress}
+                            onSelectPress={onSelectPress}
+                            key={item.id}
+                            item={item}
+                        />
+                    )
+                })}
+            </BottomSheetScrollView>
         </View>
     )
 })
 
 // Constants
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
+
+const gastronomies: Gastronomy[] = [
+    { id: 'bistro', name: 'Bistro' },
+    { id: 'pizzeria', name: 'Pizzeria' },
+    { id: 'bar', name: 'Bar' },
+    { id: 'street-food', name: 'Street food' },
+    { id: 'grec-restaurant', name: 'Restaurant Grec' },
+    { id: 'kebab', name: 'Kebab' },
+    { id: 'fast-food', name: 'Fast food' },
+]
 
 // Styles
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'green',
-        height: 100,
         width,
+    },
+    content: {
+        paddingBottom: height + 300,
+        paddingHorizontal: 15,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
 })
 
 // Types
-type Props = {
-    // ...
+export type Props = {
+    onChange: (selection: string[]) => void,
+    selection: string[],
 }
+
+type OnRemovePress = GastronomyItemProps['onRemovePress']
+
+type OnSelectPress = GastronomyItemProps['onSelectPress']

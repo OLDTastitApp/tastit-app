@@ -6,7 +6,7 @@ import { useApolloClient } from '@apollo/client'
 import * as graph from '@graphql/graph'
 
 // Types
-import { Establishment } from '@types'
+import { Place } from '@types'
 
 
 type FetchArgs = graph.PlacesArgs
@@ -14,7 +14,7 @@ type FetchArgs = graph.PlacesArgs
 export default () => {
 
     // const [data, setData] = useState<graph.PlacesResult['places']['edges'][0]['node'][]>([]);
-    const [data, setData] = useState<Establishment[]>([]);
+    const [data, setData] = useState<Place[]>([]);
 
     const client = useApolloClient();
 

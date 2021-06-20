@@ -20,7 +20,7 @@ import { Props as PlaceItemProps } from './PlaceItem'
 
 export default memo((props: Props) => {
 
-    const { animatedIndex } = props;
+    const { searchAnimatedIndex, detailsAnimatedPosition } = props;
 
     // const onFocus: () => 
     const [searchText, setSearchText] = useState<string>();
@@ -72,8 +72,9 @@ export default memo((props: Props) => {
             <Background focused={focused} />
 
             <Header
+                detailsAnimatedPosition={detailsAnimatedPosition}
+                searchAnimatedIndex={searchAnimatedIndex}
                 onSearchTextChanged={setSearchText}
-                animatedIndex={animatedIndex}
                 onBackPress={onBackPress}
                 searchText={searchText}
                 onFocus={onFocus}
@@ -101,9 +102,10 @@ export default memo((props: Props) => {
                                 <NoResults />
                             ) : null
                         )}
-                        contentContainerStyle={{ paddingVertical: 20 }}
+                        contentContainerStyle={{ paddingVertical: 20, paddingBottom: 300 }}
                         keyExtractor={({ node: { id } }) => id}
                         keyboardShouldPersistTaps='handled'
+                        // keyboardDismissMode='on-drag'
                         data={places?.edges}
                     />
 
@@ -128,7 +130,8 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    animatedIndex: Animated.SharedValue<number>,
+    detailsAnimatedPosition: Animated.SharedValue<number>,
+    searchAnimatedIndex: Animated.SharedValue<number>,
     onPlacePress: OnPlacePress,
     onBackPress: () => void,
 }

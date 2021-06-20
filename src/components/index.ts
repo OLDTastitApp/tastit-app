@@ -3,6 +3,7 @@ export { default as TouchableScale, Props as TouchableScaleProps } from './Touc
 export { default as PicturePicker, Props as PicturePickerProps } from './PicturePicker'
 export { default as TabBarItem, Props as TabBarItemProps } from './TabBarItem'
 export { default as FancyTabs, Props as FancyTabsProps } from './FancyTabs'
+export { default as Timetable, Props as TimetableProps } from './Timetable'
 export { default as Rating, Props as RatingProps } from './Rating'
 export { default as TabBar, Props as TabBarProps } from './TabBar'
 export { default as Switch, Props as SwitchProps } from './Switch'

@@ -4,7 +4,7 @@ import * as graph from '@graphql/graph'
 
 
 type Args = {
-    searchText: string,
+    searchText?: string,
     around?: number[],
     radius?: number,
     skip?: boolean,
