@@ -15,7 +15,8 @@ export default memo((props: Props) => {
     const [index, setIndex] = useState<number>();
     
     const services = ['Facebook', 'Instagram', 'WhatsApp'];
-    const colors = ['#2d88ff', '#E1306C', '#65cf72'];
+    // const colors = ['#2d88ff', '#E1306C', '#65cf72'];
+    const colors = [color.primary, color.primary, color.primary];
 
     const buttonBackgroundColor = (i: number) => ({
         backgroundColor: i === index ? colors[i] : 'transparent'

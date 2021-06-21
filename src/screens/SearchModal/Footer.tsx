@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'Avenir Next',
-        fontWeight: '500',
+        fontWeight: 'bold',
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
     },
 })
 

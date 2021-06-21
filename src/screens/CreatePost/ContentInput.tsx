@@ -91,7 +91,9 @@ const styles = StyleSheet.create({
     input: {
         // backgroundColor: 'purple',
         justifyContent: 'flex-start',
-        fontFamily: font.regular,
+        // fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
         // paddingVertical: 10,
         color: color.dark,
         marginLeft: 20,

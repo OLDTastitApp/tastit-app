@@ -2,8 +2,8 @@
 import React, { memo } from 'react'
 
 // Components
-import Feather from 'react-native-vector-icons/Feather'
 import { View, StatusBar, StyleSheet } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 import { TouchableScale } from '@components'
 
 // Constants

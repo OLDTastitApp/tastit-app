@@ -29,8 +29,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     title: {
-        fontFamily: font.semiBold,
-        color: color.darkGray,
+        // fontFamily: font.semiBold,
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
+        // color: color.darkGray,
+        color: color.dark,
         marginBottom: 10,
         fontSize: 20,
     },

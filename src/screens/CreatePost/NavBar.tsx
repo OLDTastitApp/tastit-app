@@ -29,22 +29,30 @@ export default memo((props: Props) => {
                 >
                     <Feather
                         name='arrow-left'
-                        size={30}
+                        size={26}
                     />
                 </TouchableScale>
 
-                <Text
+                {/* <Text
                     adjustsFontSizeToFit
                     style={styles.title}
                     numberOfLines={1}
                 >
                     Nouvelle publication
-                </Text>
+                </Text> */}
 
                 <View style={styles.right} />
             </View>
 
-            <View style={styles.separator} />
+            <Text
+                adjustsFontSizeToFit
+                style={styles.title}
+                numberOfLines={1}
+            >
+                Nouvelle publication
+            </Text>
+
+            {/* <View style={styles.separator} /> */}
         </>
     )
 })
@@ -58,10 +66,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontFamily: font.bold,
-        textAlign: 'center',
-        fontSize: 20,
-        flex: 1,
+        // fontFamily: font.bold,
+        fontFamily: 'Avenir Next',
+        // textAlign: 'center',
+        fontWeight: '600',
+        fontSize: 26,
+        // flex: 1,
+        
+        marginLeft: 10,
+        marginBottom: 10,
     },
     left: {
         justifyContent: 'center',
