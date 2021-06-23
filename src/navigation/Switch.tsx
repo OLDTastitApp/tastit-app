@@ -45,7 +45,7 @@ export default () => {
                     />
                     <Stack.Screen
                         component={Screenshot}
-                        name='Screenshot'
+                        name='ScreenshotStack'
                     />
                 </>
             )}

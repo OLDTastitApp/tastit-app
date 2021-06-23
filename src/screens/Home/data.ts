@@ -21,23 +21,44 @@ const randomPicture = () => {
 
 export const posts: Post[] = [...Array(3)].map(
     () => ({
-        // pictureUris: [image.food()],
-        pictureUris: [randomPicture()],
-        createdAt: date.recent(),
-        id: datatype.uuid(),
-        position: {
-            longitude: +address.longitude(),
-            latitude: +address.latitude(),
-            name: address.city(),
-        },
-        user: {
-            pictureUri: 'https://randomuser.me/api/portraits/men/32.jpg',
-            firstName: name.firstName(),
-            // pictureUri: image.avatar(),
-            lastName: name.lastName(),
+        picture: {
             id: datatype.uuid(),
+            type: 'uri',
+            value: randomPicture(),
         },
-        description: lorem.sentence(20),
+        author: {
+            // cover: '',
+            cover: {
+                id: datatype.uuid(),
+                type: 'uri',
+                value: randomPicture(),
+            },
+            firstName: 'Raphael',
+            lastName: 'Hadjadj',
+        },
+        place: {
+            id: datatype.uuid(),
+            name: `Au vieux Paris d'Arcole`,
+        },
+        // content: `Je viens de découvrir ce merveilleux restaurant au cœur du 16e, le service était juste whaou! Le plat était délicieux et le cadre est très agréable ^^`,
+        content: `Je viens de découvrir ce merveilleux restaurant au cœur du 16e, le service était juste whaou! Le plat était délicieux`,
+        // pictureUris: [image.food()],
+        // pictureUris: [randomPicture()],
+        // createdAt: date.recent(),
+        id: datatype.uuid(),
+        // position: {
+        //     longitude: +address.longitude(),
+        //     latitude: +address.latitude(),
+        //     name: address.city(),
+        // },
+        // user: {
+        //     pictureUri: 'https://randomuser.me/api/portraits/men/32.jpg',
+        //     firstName: name.firstName(),
+        //     // pictureUri: image.avatar(),
+        //     lastName: name.lastName(),
+        //     id: datatype.uuid(),
+        // },
+        // description: lorem.sentence(20),
 
     })
 )

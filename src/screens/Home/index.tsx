@@ -3,7 +3,6 @@ import React, { memo } from 'react'
 
 // Components
 import { View, Text, FlatList, StatusBar, ScrollView } from 'react-native'
-import BubbleTransition from './BubbleTransition'
 import PostItem from './PostItem'
 import Header from './Header'
 
@@ -14,22 +13,23 @@ import usePosts from './usePosts'
 import { font, color } from '@constants'
 
 // Data
-// import { posts } from './data'
+import { posts } from './data'
+import { Post } from '@types'
 
 
 export default memo(() => {
 
     // console.log(JSON.stringify(posts, null, 4))
 
-    const [posts, fetchMore, postsResult] = usePosts({
-        first: 5,
-    });
+    // const [posts, fetchMore, postsResult] = usePosts({
+    //     first: 5,
+    // });
 
     // console.log('---posts2:', JSON.stringify(posts, null, 4));
 
-    if (postsResult.loading || postsResult.error) {
-        return null;
-    }
+    // if (postsResult.loading || postsResult.error) {
+    //     return null;
+    // }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
@@ -37,8 +37,10 @@ export default memo(() => {
             <StatusBar barStyle='light-content' />
 
             <FlatList
-                data={posts.edges}
+                // data={posts.edges}
+                data={posts}
                 contentContainerStyle={{
+                    backgroundColor: 'red',
                     paddingBottom: 30,
                     // flexGrow: 1,
                 }}
@@ -46,10 +48,12 @@ export default memo(() => {
                 // ListHeaderComponent={(
                 //     <Header title='New posts' />
                 // )}
-                keyExtractor={({ node }) => node.id}
+                // keyExtractor={({ node }) => node.id}
+                keyExtractor={({ id }) => id}
                 renderItem={({ item }) => (
                     <PostItem
-                        item={item.node}
+                        // item={item.node}
+                        item={item}
                     />
                 )}
             />

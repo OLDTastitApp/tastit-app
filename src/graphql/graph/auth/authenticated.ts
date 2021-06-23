@@ -1,15 +1,18 @@
 // GraphQL
 import { gql } from '@apollo/client'
 
+// Types
+import { RoleName } from '@types'
 
-export type AuthenticatedPayload = boolean
 
 export type AuthenticatedResult = {
-    authenticated: AuthenticatedPayload,
+    authenticated: boolean,
+    role: RoleName,
 }
 
 export const AUTHENTICATED = gql`
     query Authenticated {
         authenticated @client
+        role @client
     }
 `

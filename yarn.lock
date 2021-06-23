@@ -989,6 +989,13 @@
   dependencies:
     deep-assign "^3.0.0"
 
+"@react-native-community/async-storage@1.12.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
+  integrity sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg==
+  dependencies:
+    deep-assign "^3.0.0"
+
 "@react-native-community/blur@3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-3.6.0.tgz#31c9e0f2770519c9b5c4f99418f192246f0d4db8"
@@ -1153,6 +1160,11 @@
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/image-editor/-/image-editor-2.3.0.tgz#8ac6c3691fd2c762d2abeb84c01a3b201bac3b1e"
   integrity sha512-+UJY8WkTkfSkjoU5blQnEI7tTg11jJLoM+YojjiQpEopUaRlYQU4SZ9Zd6F6wWfvc9bjvIeMY6FlKuESK/q4fQ==
+
+"@react-native-google-signin/google-signin@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-6.0.1.tgz#c953c24c74c42009f59213015d4bdd4e58133c54"
+  integrity sha512-8Kyt3v6JcAQoJqZau3z4Mj+8R5Zv1yB8TfL/iCrB6ZI9lIR7gm4wuNzgpNSjX7OwNTboyhBek9Tjx8qJj7a6Mw==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -1390,6 +1402,11 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
+
+"@types/faker@5.5.6":
+  version "5.5.6"
+  resolved "https://registry.yarnpkg.com/@types/faker/-/faker-5.5.6.tgz#039b700a9d8ad9150ecc842bf5e717e2027b6f75"
+  integrity sha512-UCRj0kLg4sXs2XFVm48OU/wIjyJZkpRkwxhRGVQb5l5GmemkeW22WTz9iiDhYPBUqTzDsIWzhFRuF/4DD5+q2Q==
 
 "@types/geojson@^7946.0.7":
   version "7946.0.7"
@@ -4593,6 +4610,11 @@ jsonify@~0.0.0:
     array-includes "^3.1.2"
     object.assign "^4.1.2"
 
+jwt-decode@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
 kind-of@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-2.0.1.tgz#018ec7a4ce7e3a86cb9141be519d24c8faa981b5"
@@ -5889,6 +5911,11 @@ react-native-codegen@^0.0.6:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-fbsdk-next@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-4.3.0.tgz#750952a9c2159a7eed830846a3814ab8ce03ba0c"
+  integrity sha512-wJUSgM6hq/gImnp/HflTI5750GNADtxCEEhDD6lXJDPuNfAPfAXi54XcAVa5nbijJMCBr+z3wFZ/gF8PrqdxTQ==
 
 react-native-fs@2.18.0:
   version "2.18.0"

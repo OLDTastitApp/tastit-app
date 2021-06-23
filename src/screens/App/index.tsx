@@ -18,7 +18,7 @@ import { LogBox, Platform, UIManager } from 'react-native'
 // import useConfigureOneSignal from './useConfigureOneSignal'
 // import useConfigurePassbase from './useConfigurePassbase'
 // import useConfigureStripe from './useConfigureStripe'
-import useConfigureAuth from './useConfigureAuth'
+import useRestoreAuth from '@helpers/useRestoreAuth'
 
 
 // Ignore specific warnings
@@ -44,10 +44,10 @@ export default memo(() => {
     // const configureOneSignalResult = useConfigureOneSignal();
     // const configurePassbaseResult = useConfigurePassbase();
     // const configureStripeResult = useConfigureStripe();
-    const configureAuthResult = useConfigureAuth();
+    const restoreAuthResult = useRestoreAuth();
 
-    // const loaded = true;
-    const loaded = configureAuthResult.complete;
+    const loaded = true;
+    // const loaded = restoreAuthResult.complete;
         // && configureOneSignalResult.complete
         // && configurePassbaseResult.complete
         // && configureStripeResult.complete

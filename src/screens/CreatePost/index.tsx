@@ -24,7 +24,7 @@ import { ui, font, color } from '@constants'
 
 // Types
 import { MessagePopupRef } from '@components'
-import { Establishment } from '@types'
+import { Establishment, User } from '@types'
 
 
 export default memo(() => {
@@ -45,6 +45,7 @@ export default memo(() => {
 
     // @TODO: rename setPlace
     const [place, setEstablishment] = useState<Establishment>();
+    const [friends, setFriends] = useState<User[]>([]);
 
     const [submit, submitResult] = useSubmit({
         picture: pictureBase64,
@@ -60,7 +61,10 @@ export default memo(() => {
     };
 
     const onTagFriendsPress = () => {
-        // ...
+        navigation.navigate(
+            'SelectFriends',
+            { setFriends }
+        );
     };
 
     const disabled = !(

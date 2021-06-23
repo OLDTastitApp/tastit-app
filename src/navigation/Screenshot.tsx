@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
 import SelectEstablishment from '@screens/SelectEstablishment'
+import SelectFriends from '@screens/SelectFriends'
 import CreatePost from '@screens/CreatePost'
 import Screenshot from '@screens/Screenshot'
 
@@ -32,6 +33,10 @@ export default () => (
         <Stack.Screen
             component={SelectEstablishment}
             name='SelectEstablishment'
+        />
+        <Stack.Screen
+            component={SelectFriends}
+            name='SelectFriends'
         />
     </Stack.Navigator>
 )

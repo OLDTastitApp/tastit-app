@@ -9,7 +9,7 @@ const shared = {
     OAuthPhoneIssuer: '',
     OAuthId: 'com.tastit.app',
     name: app.displayName,
-    version: app.version,
+    // version: app.version,
     OneSignalAppId: '',
     SentryDSN: '',
 }

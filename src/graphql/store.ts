@@ -9,8 +9,9 @@ import { Store } from './types'
 
 
 const store: Store = {
-    authenticated: false,
+    authenticated: true,
     appName: app.name,
+    role: '',
 }
 
 export const initializeStore = async (
@@ -22,6 +23,7 @@ export const initializeStore = async (
             query {
                 authenticated
                 appName
+                role
             }
         `,
   });

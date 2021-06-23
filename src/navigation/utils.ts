@@ -2,7 +2,7 @@
 import * as RNN from '@react-navigation/native'
 
 // Types
-import { Establishment, Me } from '@types'
+import { Establishment, User, Me } from '@types'
 
 
 type Route<TRouteName> = {
@@ -23,6 +23,7 @@ type Navigation = Omit<
     ReturnType<typeof RNN.useNavigation>,
     'navigate'
 > & {
+    goBack?: () => void,
     navigate: <TRouteName extends RouteName>(
         routeName: TRouteName,
         params?: Params<TRouteName>,
@@ -33,6 +34,8 @@ type Navigation = Omit<
 export type Params<TRouteName> =
     TRouteName extends 'SelectEstablishment'
     ? SelectEstablishmentParams
+    : TRouteName extends 'SelectFriends'
+    ? SelectFriendsParams
     : TRouteName extends 'EditProfile'
     ? EditProfileParams
     : TRouteName extends 'CreatePost'
@@ -41,6 +44,7 @@ export type Params<TRouteName> =
 
 export type RouteName =
     | 'SelectEstablishment'
+    | 'SelectFriends'
     | 'EditProfile'
     | 'Screenshot'
     | 'CreatePost'
@@ -55,6 +59,10 @@ export type RouteName =
 
 type SelectEstablishmentParams = {
     setEstablishment: (value: Establishment) => void,
+}
+
+type SelectFriendsParams = {
+    setFriends: (value: User[]) => void,
 }
 
 type EditProfileParams = {

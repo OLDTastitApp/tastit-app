@@ -58,7 +58,7 @@ export default memo((props: Props) => {
     // On nested routes
     const hidden = route.state?.index > 0
         || focusedOptions.tabBarVisible === false
-        || route.name === 'Screenshot'
+        || route.name === 'ScreenshotStack'
         || route.name === 'Map';
         // || route.name === 'Search';
 
@@ -109,7 +109,7 @@ export default memo((props: Props) => {
     const onPress = useCallback<OnPress>(
         ({ route, focused }) => {
             if (route.name === 'Camera') {
-                return navigation.navigate('Screenshot');
+                return navigation.navigate('ScreenshotStack');
             }
 
             const event = navigation.emit({

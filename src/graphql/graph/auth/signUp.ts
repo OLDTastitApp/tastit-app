@@ -5,43 +5,31 @@ import { gql } from '@apollo/client'
 import { User } from '@types'
 
 
-export type LogInMethod =
-    | 'CREDENTIALS'
-    | 'FACEBOOK'
-    | 'GOOGLE'
-    | 'APPLE'
-
-export type LogInArgs = {
+export type SignUpArgs = {
     input: {
-        accessToken: string,
-        method: 'FACEBOOK',
-    } | {
-        accessToken: string,
-        method: 'GOOGLE',
-        idToken: string,
-    } | {
-        accessToken: string,
-        method: 'APPLE',
-    } | {
-        method: 'CREDENTIALS',
-        username: string,
+        firstName: string,
+        lastName: string,
         password: string,
+        nickname: string,
+        birthdate: Date,
+        email: string,
+        phone: string,
     },
 }
 
-export type LogInResult = {
-    logIn: {
+export type SignUpResult = {
+    signUp: {
         refreshToken: string,
         accessToken: string,
         user: User,
     },
 }
 
-export const LOG_IN = gql`
-    mutation LogIn(
-        $input: LogInInput!
+export const SIGN_UP = gql`
+    mutation SignUp(
+        $input: SignUpInput!
     ) {
-        logIn(
+        signUp(
             input: $input
         ) {
             refreshToken

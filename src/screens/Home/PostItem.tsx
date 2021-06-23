@@ -81,19 +81,21 @@ export default memo((props: Props) => {
                 </View>
             </View>
 
-            <View />
+            {/* <View /> */}
 
             <View style={{
                 // backgroundColor: 'red',
                 // height: 50,
                 // paddingBottom: 0,
                 // marginHorizontal: 10,
+                flex: 1,
+                justifyContent: 'flex-end',
             }}>
                 <LinearGradient
-                    colors={['#000', 'transparent']}
+                    colors={['#000f', '#0000']}
                     style={styles.gradient}
                     start={{ x: 0, y: 1 }}
-                    end={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 0.6 }}
                 />
 
                 <View style={[styles.header, { paddingTop: 100 }]}>
@@ -102,21 +104,32 @@ export default memo((props: Props) => {
                         source={{ uri: author.cover?.value }}
                         style={styles.avatar}
                     />
-                    
-                    <View style={{ flex: 1, marginHorizontal: 10 }}>
-                        <Text style={styles.name}>
-                            {/* @{user.firstName}{user.lastName} */}
-                            {username}
-                        </Text>
-                        <Text style={styles.position}>
-                            At {place?.name}
-                        </Text>
-                    </View>
-                </View>
 
-                <Text style={styles.description}>
-                    {/* {item.description} */}
+                    <Text style={styles.name}>
+                        {firstName}
+                    </Text>
+                </View>
+                
+                <Text style={styles.position}>
+                    {item.place.name}
                 </Text>
+
+                <View style={{
+                    // marginLeft: 10,
+                    // width: '90%',
+                    marginTop: 10,
+                    marginBottom: 50,
+                    marginHorizontal: 20,
+                }}>
+                    <Text style={{
+                        fontSize: 14,
+                        color: '#fffc',
+                        fontWeight: '600',
+                        fontFamily: 'Avenir Next',
+                    }} numberOfLines={3}>
+                        {item.content}
+                    </Text>
+                </View>
 
                 <View style={{ marginBottom: 70 }} />
             </View>
@@ -139,23 +152,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // marginHorizontal: é
         alignItems: 'center',
-        marginHorizontal: 10,
+        marginHorizontal: 20,
     },
     avatar: {
-        borderRadius: 50,
-        height: 50,
-        width: 50,
+        borderRadius: 40,
+        height: 40,
+        width: 40,
     },
     name: {
-        fontFamily: font.bold,
-        color: color.light,
-        fontSize: 14,
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
+        color: 'white',
+        marginLeft: 10,
+        fontSize: 16,
     },
     position: {
-        fontFamily: font.black,
-        // color: color.lightGray,
-        color: color.primary,
-        fontSize: 14,
+        fontFamily: 'Avenir Next',
+        marginHorizontal: 20,
+        fontWeight: '700',
+        color: 'white',
+        marginTop: 10,
+        fontSize: 16,
     },
     date: {
         fontFamily: font.regular,
@@ -164,10 +181,10 @@ const styles = StyleSheet.create({
     },
     description: {
         fontFamily: font.regular,
+        // marginHorizontal: 10,
         marginVertical: 10,
         color: color.light,
         fontSize: 14,
-        marginHorizontal: 10,
     },
     picture: {
         borderRadius: 10,
