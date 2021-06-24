@@ -4,6 +4,7 @@ export { default as PicturePicker, Props as PicturePickerProps } from './Picture
 export { default as TabBarItem, Props as TabBarItemProps } from './TabBarItem'
 export { default as FancyTabs, Props as FancyTabsProps } from './FancyTabs'
 export { default as Timetable, Props as TimetableProps } from './Timetable'
+export { default as UserItem, Props as UserItemProps } from './UserItem'
 export { default as Rating, Props as RatingProps } from './Rating'
 export { default as TabBar, Props as TabBarProps } from './TabBar'
 export { default as Switch, Props as SwitchProps } from './Switch'

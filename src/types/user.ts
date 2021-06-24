@@ -17,6 +17,7 @@ export type User = {
     firstName: string,
     lastName: string,
     roles?: Role[],
-    cover: Image,
+    // cover: Image,
+    cover: string,
     id: string,
 }

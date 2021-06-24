@@ -17,7 +17,7 @@ import { StatusBarProps } from 'react-native'
 
 export default memo((props: Props) => {
 
-    const { barStyle = 'dark-content' } = props;
+    const { barStyle = 'dark-content', canSubmit } = props;
 
     return (
         <>
@@ -29,10 +29,6 @@ export default memo((props: Props) => {
                     onPress={props.onBackPress}
                     style={styles.left}
                 >
-                    {/* <Feather
-                        name='arrow-left'
-                        size={26}
-                    /> */}
                     <ArrowLeftIcon
                         fill={color.dark}
                         height={20}
@@ -45,11 +41,23 @@ export default memo((props: Props) => {
                     style={styles.title}
                     numberOfLines={1}
                 >
-                    {/* Où êtes vous ? */}
-                    {/* Tagger des amis */}
+                    Rechercher
                 </Text>
 
-                <View style={styles.right} />
+                <TouchableScale
+                    onPress={props.onSubmitPress}
+                    disabled={!props.canSubmit}
+                    style={styles.right}
+                >
+                    <Text
+                        style={[
+                            styles.submit,
+                            !canSubmit && styles.disabled,
+                        ]}
+                    >
+                        Terminer
+                    </Text>
+                </TouchableScale>
             </View>
             
 
@@ -65,10 +73,10 @@ export default memo((props: Props) => {
                     width={20}
                 />
                 <TextInput
-                    // onChangeText={props.onSearchTextChanged}
+                    onChangeText={props.onSearchTextChanged}
                     placeholderTextColor={color.mediumGray}
                     placeholder='Rechercher ...'
-                    // value={props.searchText}
+                    value={props.searchText}
                     // onFocus={props.onFocus}
                     // onBlur={props.onBlur}
                     style={styles.input}
@@ -88,7 +96,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        // fontFamily: font.bold,
         fontFamily: 'Avenir Next',
         textAlign: 'center',
         fontWeight: '500',
@@ -98,17 +105,27 @@ const styles = StyleSheet.create({
     left: {
         justifyContent: 'center',
         height: 50,
-        width: 50,
+        width: 100,
     },
     right: {
-        height: '100%',
-        width: 50,
+        alignItems: 'flex-end',
+        width: 100,
+    },
+    submit: {
+        fontFamily: 'Avenir Next',
+        color: color.primary,
+        fontWeight: '600',
+        fontSize: 16,
+    },
+    disabled: {
+        color: color.mediumGray,
     },
     bar: {
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 15,
+        marginBottom: 20,
         borderRadius: 14,
         paddingLeft: 15,
         // marginTop: 15,
@@ -135,6 +152,10 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
+    onSearchTextChanged: (value: string) => void,
     barStyle?: StatusBarProps['barStyle'],
+    onSubmitPress: () => void,
     onBackPress: () => void,
+    canSubmit: boolean,
+    searchText: string,
 }
