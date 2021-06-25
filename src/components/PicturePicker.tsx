@@ -17,7 +17,7 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { color, font, ui } from '@constants'
 
 // Types
-import { ImagePickerOptions, ImagePickerResponse } from 'react-native-image-picker'
+// import { ImagePickerOptions, ImagePickerResponse } from 'react-native-image-picker'
 
 
 export default memo((props: Props) => {

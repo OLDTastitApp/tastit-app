@@ -35,7 +35,7 @@ export default () => {
             {!authenticated ? (
                 <Stack.Screen
                     component={Auth}
-                    name='Auth'
+                    name='AuthStack'
                 />
             ) : (
                 <>
