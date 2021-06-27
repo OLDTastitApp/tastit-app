@@ -6,6 +6,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
+import AddPlace from '@screens/AddPlace'
 import Screenshot from './Screenshot'
 import BottomTab from './BottomTab'
 import Auth from './Auth'
@@ -46,6 +47,10 @@ export default () => {
                     <Stack.Screen
                         component={Screenshot}
                         name='ScreenshotStack'
+                    />
+                    <Stack.Screen
+                        component={AddPlace}
+                        name='AddPlace'
                     />
                 </>
             )}

@@ -40,6 +40,8 @@ export type Params<TRouteName> =
     ? EditProfileParams
     : TRouteName extends 'CreatePost'
     ? CreatePostParams
+    : TRouteName extends 'AddPlace'
+    ? AddPlaceParams
     : never
 
 export type RouteName =
@@ -51,6 +53,7 @@ export type RouteName =
     | 'Favorites'
     | 'BottomTab'
     | 'Settings'
+    | 'AddPlace'
     | 'Profile'
     | 'Search'
     | 'SignUp'
@@ -73,4 +76,8 @@ type CreatePostParams = {
     pictureBase64?: string,
     pictureUri: string,
     filter: string,
+}
+
+type AddPlaceParams = {
+    placeId: string,
 }

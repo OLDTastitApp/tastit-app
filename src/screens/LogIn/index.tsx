@@ -10,7 +10,8 @@ import NavBar from './NavBar'
 import Form from './Form'
 
 // Helpers
-import useLogInWithCredentials from './useLogIn'
+// import useLogInWithCredentials from './useLogIn'
+import { useLogIn } from '@helpers'
 
 // Constants
 import { ui, font, color } from '@constants'
@@ -23,22 +24,11 @@ export default memo(() => {
 
     const navigation = useNavigation();
 
-    const [logInWithCredentials, logInWithCredentialsResult] = useLogInWithCredentials();
-
-    const onApplePress = () => {
-        // ...
-    };
-
-    const onFacebookPress = () => {
-        // ...
-    };
-
-    const onGooglePress = () => {
-        // ...
-    };
+    const [actions, logInResult] = useLogIn();
 
     const onCredentialsPress: OnCredentialsPress = form => {
-        logInWithCredentials(form);
+        const { email: username, password } = form;
+        actions.logInWithCredentials({ username, password });
     };
 
     const onForgotPress = () => {
@@ -70,24 +60,24 @@ export default memo(() => {
             <View style={{ alignItems: 'center' }}>
                 <AppleSignIn
                     title='Continuer avec Apple'
-                    onPress={onApplePress}
+                    onPress={actions.logInWithApple}
                 />
                 <FacebookSignIn
                     title='Continuer avec Facebook'
-                    onPress={onFacebookPress}
+                    onPress={actions.logInWithFacebook}
                 />
                 <GoogleSignIn
                     title='Continuer avec Google'
-                    onPress={onGooglePress}
+                    onPress={actions.logInWithGoogle}
                 />
             </View>
 
             {/* <View style={{ flexGrow: 1 }} /> */}
 
             <Form
-                disabled={logInWithCredentialsResult.loading}
                 onPrivacyPolicyPress={onPrivacyPolicyPress}
                 onSubmitPress={onCredentialsPress}
+                disabled={logInResult.loading}
                 onForgotPress={onForgotPress}
                 onTOSPress={onTOSPress}
             />

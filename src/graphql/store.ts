@@ -9,7 +9,6 @@ import { Store } from './types'
 
 
 const store: Store = {
-    // authenticated: true,
     authenticated: false,
     appName: app.name,
     role: '',

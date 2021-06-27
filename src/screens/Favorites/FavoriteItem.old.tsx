@@ -2,8 +2,7 @@
 import React, { memo } from 'react'
 
 // Components
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import Image from 'react-native-fast-image'
+import { View, TouchableOpacity, Text, Image, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import Feather from 'react-native-vector-icons/Feather'
@@ -14,7 +13,7 @@ import { TouchableScale, Rating } from '@components'
 import { font, color } from '@constants'
 
 // Types
-import { Place } from '@types'
+import { Establishment } from '@types'
 
 
 export default memo((props: Props) => {
@@ -29,9 +28,9 @@ export default memo((props: Props) => {
 
     const reduced = Math.random() > 0.5;
 
-    // const count = item.ratingCount >= 100 ? '100+' : item.ratingCount;
+    const count = item.ratingCount >= 100 ? '100+' : item.ratingCount;
 
-    // const liked = Math.random() > 0.3;
+    const liked = Math.random() > 0.3;
     
     return (
         <TouchableScale
@@ -41,38 +40,31 @@ export default memo((props: Props) => {
         >
             <View style={styles.cover}>
                 <Image
-                    source={{ uri: item.cover }}
+                    source={{ uri: item.coverUri }}
                     style={styles.image}
                 />
-                {/* <LinearGradient
+                <LinearGradient
                     colors={['#000000', 'transparent']}
                     end={{ x: 0.5, y: 0.5 }}
                     style={styles.gradient}
                     start={{ x: 1, y: 0 }}
-                /> */}
+                />
             </View>
 
             <View style={styles.header}>
                 <Text
-                    style={{
-                        marginHorizontal: 10,
-                        // margin
-                        fontFamily: 'Avenir Next',
-                        fontWeight: 'bold',
-                        color: color.dark,
-                        fontSize: 24,
-                    }}
+                    style={styles.title}
                     numberOfLines={1}
                 >
                     {item.name}
                 </Text>
 
-                {/* <Text style={styles.pricing}>
+                <Text style={styles.pricing}>
                     {pricing}
-                </Text> */}
+                </Text>
             </View>
 
-            {/* <View style={styles.content}>
+            <View style={styles.content}>
                 <Rating value={item.rating} />
                 <Text
                     style={styles.count}
@@ -104,7 +96,7 @@ export default memo((props: Props) => {
                     color='white'
                     size={24}
                 />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
         </TouchableScale>
     )
@@ -114,22 +106,15 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        marginHorizontal: 20,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
-        borderRadius: 20,
-        paddingBottom: 10,
-        // marginHorizontal: 2,
-        // marginVertical: 2,
-        // borderRadius: 10,
-        // padding: 5,
+        marginHorizontal: 2,
+        marginVertical: 2,
+        borderRadius: 10,
+        padding: 5,
         flex: 1,
     },
     cover: {
         overflow: 'hidden',
-        borderRadius: 20,
-        // borderTopLeftRadius: 10,
-        // borderTopRightRadius: 10,
+        borderRadius: 10,
     },
     image: {
         height: 200,
@@ -190,7 +175,7 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    onPress: (item: Place) => void,
+    onPress: (item: Establishment) => void,
+    item: Establishment,
     liked?: boolean,
-    item: Place,
 }

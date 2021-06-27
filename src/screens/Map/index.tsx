@@ -48,7 +48,7 @@ const defaultLocation = [2.3488, 48.8534];
 
 export default memo(() => {
 
-    const focused = useIsFocused();
+    // const focused = useIsFocused();
     const navigation = useNavigation();
 
     // const searchRef = useRef<SearchRef>(null);
@@ -70,7 +70,7 @@ export default memo(() => {
     //     defaultLatitude: 48.8534,
     // });
 
-    const filters = useFilters();
+    // const filters = useFilters();
 
     const onFiltersChanged = useCallback(() => {
         console.log(`Filters changed !`);

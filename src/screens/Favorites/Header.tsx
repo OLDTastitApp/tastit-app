@@ -4,6 +4,7 @@ import React, { memo } from 'react'
 // Components
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import Entypo from 'react-native-vector-icons/Entypo'
 import HeartIcon from '@assets/images/heart.svg'
 import { TouchableScale } from '@components'
 
@@ -34,10 +35,15 @@ export default memo((props: Props) => {
                 <TouchableScale
                     onPress={props.onSharePress}
                 >
-                    <MaterialCommunityIcons
+                    {/* <MaterialCommunityIcons
                         color={color.darkGray}
                         name='share'
                         size={30}
+                    /> */}
+                    <Entypo
+                        name='dots-three-horizontal'
+                        color={color.dark}
+                        size={20}
                     />
                 </TouchableScale>
 
@@ -50,7 +56,8 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         paddingTop: ui.safePaddingTop + 10,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        backgroundColor: '#f8f8f8',
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',

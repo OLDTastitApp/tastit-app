@@ -1,4 +1,6 @@
 export * from './establishment'
+export * from './connection'
+export * from './placeList'
 export * from './favorite'
 export * from './place'
 export * from './post'

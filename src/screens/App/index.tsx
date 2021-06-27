@@ -1,5 +1,5 @@
 // React
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 
 // Components
 import { Host } from 'react-native-portalize'
@@ -13,6 +13,10 @@ import AppNavigator from '@navigation'
 // Utils
 import Geolocation from '@react-native-community/geolocation'
 import { LogBox, Platform, UIManager } from 'react-native'
+
+// Services
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { Settings as FacebookSettings } from 'react-native-fbsdk-next'
 
 // Helpers
 // import useConfigureOneSignal from './useConfigureOneSignal'
@@ -41,13 +45,25 @@ if (Platform.OS === 'android') {
 
 export default memo(() => {
 
+    useEffect(
+        () => {
+            // Facebook
+            FacebookSettings.setAdvertiserTrackingEnabled(true);
+            FacebookSettings.initializeSDK();
+
+            // Google
+            GoogleSignin.configure();
+        },
+        []
+    );
+
     // const configureOneSignalResult = useConfigureOneSignal();
     // const configurePassbaseResult = useConfigurePassbase();
     // const configureStripeResult = useConfigureStripe();
     const restoreAuthResult = useRestoreAuth();
 
-    const loaded = true;
-    // const loaded = restoreAuthResult.complete;
+    // const loaded = true;
+    const loaded = restoreAuthResult.complete;
         // && configureOneSignalResult.complete
         // && configurePassbaseResult.complete
         // && configureStripeResult.complete

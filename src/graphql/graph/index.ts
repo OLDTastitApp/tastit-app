@@ -1,3 +1,4 @@
+export * from './placeList'
 export * from './place'
 export * from './post'
 export * from './user'

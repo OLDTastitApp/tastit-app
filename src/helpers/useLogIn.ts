@@ -75,10 +75,13 @@ export default () => {
 
     const logInWithGoogle = async () => {
         try {
+            console.log(`GOOGLE: before`);
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             const token = await GoogleSignin.getTokens();
             const { idToken, accessToken } = token;
+
+            console.log(`GOOGLE: after: ${accessToken}, ${idToken}`);
 
             return await mutate({
                 method: 'GOOGLE',

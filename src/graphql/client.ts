@@ -44,6 +44,7 @@ export const client = new ApolloClient({
 // Links
 const authLink = getAuthLink(client);
 const httpLink = new HttpLink({ uri: env.GraphQLUri });
+console.log(`GraphQLUri: ${env.GraphQLUri}`)
 const link = ApolloLink.from([authLink, httpLink]);
 
 // Initialize client

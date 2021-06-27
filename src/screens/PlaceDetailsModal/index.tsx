@@ -4,9 +4,18 @@ import React, { RefObject, memo, useEffect } from 'react'
 // Components
 import { View, Text, Image, ScrollView, StyleSheet, Dimensions } from 'react-native'
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
+import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
+
+// Icons
+import HeartFilledIcon from '@assets/icons/heart-filled.svg'
+import HeartIcon from '@assets/icons/heart.svg'
+
+// Helpers
+import { useNavigation } from '@navigation/utils'
 
 // Constants
 import { color, ui } from '@constants'
@@ -17,7 +26,9 @@ import { Place } from '@types'
 
 export default memo((props: Props) => {
 
-    const { modalRef, place, onClosed, animatedPosition } = props;
+    const navigation = useNavigation();
+
+    const { modalRef, place, favorited, onClosed, animatedPosition } = props;
 
     useEffect(
         () => {
@@ -33,6 +44,16 @@ export default memo((props: Props) => {
     );
 
     if (place == null) return null;
+
+    const LikeIcon = favorited ? HeartFilledIcon : HeartIcon;
+
+    const onFavoritePress = (favorited: boolean) => {
+        // ...
+    };
+
+    const onAddToListPress = () => {
+        navigation.navigate('AddPlace', { placeId: place.id });
+    };
 
     return (
         <BottomSheetModal
@@ -56,9 +77,33 @@ export default memo((props: Props) => {
                     style={styles.image}
                 />
 
-                <Text style={styles.name}>
-                    {place.name}
-                </Text>
+                <View style={styles.header}>
+                    <Text style={styles.name}>
+                        {place.name}
+                    </Text>
+
+                    <TouchableScale
+                        onPress={() => onFavoritePress(true)}
+                        style={styles.icon}
+                    >
+                        <LikeIcon
+                            fill={color.primary}
+                            height={20}
+                            width={20}
+                        />
+                    </TouchableScale>
+                    <TouchableScale
+                        onPress={onAddToListPress}
+                        style={styles.icon}
+                    >
+                        <Feather
+                            // fill={color.primary}
+                            color={color.primary}
+                            name='plus'
+                            size={24}
+                        />
+                    </TouchableScale>
+                </View>
 
                 <View style={styles.rating}>
                     <Rating
@@ -143,12 +188,20 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         height: 300,
     },
+    header: {
+        flexDirection: 'row',
+        marginTop: 20,
+    },
     name: {
         fontFamily: 'Avenir Next',
         fontWeight: 'bold',
         color: color.dark,
-        marginTop: 20,
         fontSize: 24,
+        flex: 1,
+    },
+    icon: {
+        justifyContent: 'center',
+        paddingHorizontal: 10,
     },
     rating: {
         flexDirection: 'row',
@@ -195,5 +248,6 @@ export type Props = {
     animatedPosition: Animated.SharedValue<number>,
     modalRef: RefObject<BottomSheetModal>,
     onClosed: () => void,
+    favorited?: boolean,
     place?: Place,
 }
