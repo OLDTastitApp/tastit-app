@@ -22,6 +22,7 @@ export default (args: Args) => {
     >(
         graph.PLACES,
         {
+            fetchPolicy: 'cache-and-network',
             variables: {
                 searchText,
                 around,

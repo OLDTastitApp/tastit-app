@@ -4,6 +4,7 @@ import React, { memo } from 'react'
 // Components
 import Feather from 'react-native-vector-icons/Feather'
 import { View, Text, StyleSheet } from 'react-native'
+import MainIcon from '@assets/images/main.svg'
 import { TouchableScale } from '@components'
 
 // Constants
@@ -19,13 +20,29 @@ export default memo((props: Props) => {
             style={styles.container}
             onPress={props.onPress}
         >
-            <View
+            {/* <View
                 style={styles.thumbnail}
             >
                 <Feather
                     color='white'
                     name='plus'
                     size={20}
+                />
+            </View> */}
+            <View style={{
+                // backgroundColor: 'purple',
+                overflow: 'hidden',
+                height: 60,
+                width: 60,
+            }}>
+                <MainIcon
+                    fill={color.primary}
+                    style={{
+                        left: -10,
+                        top: -3,
+                    }}
+                    height={80}
+                    width={80}
                 />
             </View>
 

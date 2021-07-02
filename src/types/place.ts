@@ -22,12 +22,23 @@ export type Gastronomy = {
 }
 
 export type Place = {
+    favorited?: boolean,
     longitude: number,
     latitude: number,
     pricing?: number,
     address: string,
     rating: number,
-    cover?: string,
+    liked: boolean,
+    cover?: Image,
     name: string,
+    id: string,
+}
+
+export type Image = {
+    format: string,
+    height: number,
+    width: number,
+    url: string,
+    key: string,
     id: string,
 }

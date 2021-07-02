@@ -2,7 +2,8 @@
 import React, { memo, useRef, useCallback, useState } from 'react'
 
 // Components
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native'
+import { MessagePopup } from '@components'
 import NewPlaceListModal from './NewPlaceListModal'
 import NewPlaceListItem from './NewPlaceListItem'
 import PlaceListItem from './PlaceListItem'
@@ -18,6 +19,7 @@ import { style } from '@constants'
 // Types
 import { Props as NewPlaceListModalProps, Ref as NewPlaceListModalRef } from './NewPlaceListModal'
 import { Props as PlaceListItemProps } from './PlaceListItem'
+import { MessagePopupRef } from '@components'
 
 
 export default memo(function AddPlace() {
@@ -26,6 +28,7 @@ export default memo(function AddPlace() {
     const { params } = useRoute<'AddPlace'>();
 
     const modalRef = useRef<NewPlaceListModalRef>(null);
+    const successRef = useRef<MessagePopupRef>(null);
 
     const [placeLists, placeListsResult] = usePlaceLists({ first: 100 });
 
@@ -46,12 +49,20 @@ export default memo(function AddPlace() {
 
     const onItemPress = useCallback<OnItemPress>(
         async item => {
-            console.log(`onItemPress: ${item.name}`);
-            await addPlace({
-                placeId: params.placeId,
-                placeListId: item.id,
-            });
-            navigation.goBack();
+            // console.log(`addPlace: ${JSON.stringify({
+            //     placeId: params.placeId,
+            //     placeListId: item.id,
+            // })}`);
+            try {
+                await addPlace({
+                    placeId: params.placeId,
+                    placeListId: item.id,
+                });
+                await successRef.current?.show();
+                navigation.goBack();
+            } catch (e) {
+                console.log(e)
+            }
         },
         []
     );
@@ -68,7 +79,14 @@ export default memo(function AddPlace() {
     };
 
     // console.log(placeListsResult.error)
-    console.log(placeLists)
+    // console.log(placeLists)
+    if (placeListsResult.error) {
+        return <ScrollView>
+            <Text>
+                {JSON.stringify(placeListsResult.error, null, 4)}
+            </Text>
+        </ScrollView>
+    }
 
     return (
         <View style={style.container}>
@@ -97,6 +115,11 @@ export default memo(function AddPlace() {
             <NewPlaceListModal
                 onSubmit={onCreateSubmit}
                 ref={modalRef}
+            />
+
+            <MessagePopup
+                message={'Ajouté'}
+                ref={successRef}
             />
         </View>
     )

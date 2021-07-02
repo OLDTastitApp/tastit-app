@@ -7,7 +7,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import MainIcon from '@assets/images/main.svg'
 import { TouchableScale } from '@components'
 
-
 // Utils
 import { ui, font, color } from '@constants'
 

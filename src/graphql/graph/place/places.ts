@@ -1,4 +1,5 @@
 // GraphQL
+import { IMAGE_FRAGMENT } from '../image'
 import gql from 'graphql-tag'
 
 // Types
@@ -36,12 +37,15 @@ export const PLACES = gql`
             edges {
                 cursor
                 node {
+                    cover {
+                        ...ImageFragment
+                    }
                     longitude
                     latitude
                     address
                     rating
                     rating
-                    cover
+                    liked
                     name
                     id
                 }
@@ -54,4 +58,5 @@ export const PLACES = gql`
             }
         }
     }
+    ${IMAGE_FRAGMENT}
 `

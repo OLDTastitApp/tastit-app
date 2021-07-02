@@ -1,5 +1,8 @@
 export type Image = {
-    type: 'uri' | 'base64',
-    value: string,
-    id?: string,
+    format: string,
+    height: number,
+    width: number,
+    url: string,
+    key: string,
+    id: string,
 }

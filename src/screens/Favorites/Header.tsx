@@ -73,9 +73,11 @@ const styles = StyleSheet.create({
         width: 40,
     },
     title: {
-        fontFamily: font.bold,
+        // fontFamily: font.bold,
+        fontFamily: 'Avenir Next',
+        fontWeight: '700',
         color: color.dark,
-        fontSize: 20,
+        fontSize: 22,
         flex: 1,
     },
 })

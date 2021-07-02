@@ -53,14 +53,14 @@ export default memo(() => {
         [posts]
     );
 
-    if (!me?.user) return null;
+    // if (!me?.user) return null;
 
-    if (meResult.loading) return null;
+    // if (meResult.loading) return null;
 
-    if (meResult.error) {
-        console.log(meResult.error);
-        return null;
-    }
+    // if (meResult.error) {
+    //     console.log(meResult.error);
+    //     return null;
+    // }
 
     // console.log(postsResult.data?.me)
     // console.log(JSON.stringify(posts, null, 4))
@@ -78,21 +78,21 @@ export default memo(() => {
                     backgroundColor: '#f2f2f2',
                     paddingHorizontal: 2,
                 }}
-                ListHeaderComponent={(
+                ListHeaderComponent={user && (
                     <>
                         <NavBar
                             onSettingsPress={onSettingsPress}
                             onAddUserPress={() => {}}
                             title='Profile'
                         />
-                        <Biography
+                        {/* <Biography
                             onPress={onBiographyPress}
                             user={me?.user}
-                        />
+                        /> */}
                         <Statistics
-                            favoriteCount={me.favoriteCount}
-                            followerCount={me.followerCount}
-                            listCount={me.listCount}
+                            favoriteCount={me?.favoriteCount}
+                            followerCount={me?.followerCount}
+                            listCount={me?.listCount}
                         />
                     </>
                 )}
@@ -109,10 +109,10 @@ export default memo(() => {
                 numColumns={3}
             />
 
-            <PictureViewer
+            {/* <PictureViewer
                 ref={pictureViewerRef}
                 data={pictures ?? []}
-            />
+            /> */}
 
         </View>
     )

@@ -80,7 +80,7 @@ export default memo((props: Props) => {
 
     // if (!loaded) return null;
 
-    console.log(`+Rendering Map component: ${props?.data?.length}`);
+    // console.log(`+Rendering Map component: ${props?.data?.length}`);
 
     return (
         <>

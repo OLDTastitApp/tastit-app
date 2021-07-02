@@ -30,7 +30,7 @@ export default memo((props: Props) => {
         >
             {!!item.cover ? (
                 <Image
-                    source={{ uri: item.cover }}
+                    source={{ uri: item.cover?.url }}
                     style={styles.left}
                 />
             ) : (

@@ -15,6 +15,7 @@ import HeartFilledIcon from '@assets/icons/heart-filled.svg'
 import HeartIcon from '@assets/icons/heart.svg'
 
 // Helpers
+import { usePlace, useLikePlace, useDislikePlace } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
 // Constants
@@ -28,12 +29,16 @@ export default memo((props: Props) => {
 
     const navigation = useNavigation();
 
-    const { modalRef, place, favorited, onClosed, animatedPosition } = props;
+    const { modalRef, onClosed, animatedPosition } = props;
+
+    const [place, placeResult] = usePlace({ id: props.place?.id });
+
+    const [dislikePlace, dislikePlaceResult] = useDislikePlace();
+    const [likePlace, likePlaceResult] = useLikePlace();
 
     useEffect(
         () => {
             if (place) {
-                console.log(`Pushing !!!`)
                 // modalRef.current?.snapToIndex(1);
                 modalRef.current?.present();
             } else {
@@ -45,10 +50,16 @@ export default memo((props: Props) => {
 
     if (place == null) return null;
 
-    const LikeIcon = favorited ? HeartFilledIcon : HeartIcon;
+    const LikeIcon = place.liked ? HeartFilledIcon : HeartIcon;
 
-    const onFavoritePress = (favorited: boolean) => {
-        // ...
+    const onLikePress = async () => {
+        if (place.liked) {
+            const res = await dislikePlace({ placeId: place.id });
+            console.log(JSON.stringify(res, null, 4))
+        } else {
+            const res = await likePlace({ placeId: place.id });
+            console.log(JSON.stringify(res, null, 4));
+        }
     };
 
     const onAddToListPress = () => {
@@ -73,7 +84,7 @@ export default memo((props: Props) => {
                 contentContainerStyle={styles.container}
             >
                 <Image
-                    source={{ uri: place.cover }}
+                    source={{ uri: place.cover?.url }}
                     style={styles.image}
                 />
 
@@ -83,7 +94,7 @@ export default memo((props: Props) => {
                     </Text>
 
                     <TouchableScale
-                        onPress={() => onFavoritePress(true)}
+                        onPress={onLikePress}
                         style={styles.icon}
                     >
                         <LikeIcon

@@ -12,7 +12,8 @@ const shared = {
     SentryDSN: '',
 }
 
-const host = '192.168.0.46:3000';
+// const host = '192.168.0.46:3000';
+const host = 'localhost:3000';
 // const host = 'staging.api.tastit.refael.me';
 // const host = '192.168.0.39:3000';
 // const host = '192.168.0.46:3000';

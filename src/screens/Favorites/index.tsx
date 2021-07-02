@@ -87,7 +87,7 @@ export default memo(() => {
             
             <Header
                 onSharePress={onSharePress}
-                title='Liked restaurants'
+                title='Lieux aimés'
             />
             
             {tabs?.length > 0 && (
@@ -107,12 +107,16 @@ export default memo(() => {
                         onPress={null}
                     />
                 )}
+                contentContainerStyle={{
+                    paddingBottom: 120,
+                }}
                 // contentContainerStyle={{
                 //     // paddingHorizontal: 5,
                 //     // paddingBottom: 120,
                 //     // marginTop: 10,
                 // }}
-                keyExtractor={({ node: { id } }) => id}
+                // keyExtractor={({ node: { id } }) => id}
+                keyExtractor={({ node: { id } }, i) => `${i}`}
                 data={placeListItems?.edges}
                 refreshing={refreshing}
                 onRefresh={onRefresh}

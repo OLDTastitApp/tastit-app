@@ -3,34 +3,28 @@ import { IMAGE_FRAGMENT } from '../image'
 import gql from 'graphql-tag'
 
 // Types
-import { PlaceList, Place } from '@types'
+import { Place } from '@types'
 
 
-export type AddPlaceArgs = {
+export type LikePlaceArgs = {
     input: {
-        placeListId: string,
         placeId: string,
     },
 }
 
-export type AddPlaceResult = {
-    addPlace: {
-        placeList: PlaceList,
+export type LikePlaceResult = {
+    likePlace: {
         place: Place,
     },
 }
 
-export const ADD_PLACE = gql`
-    mutation AddPlace(
-        $input: AddPlaceInput!
+export const LIKE_PLACE = gql`
+    mutation LikePlace(
+        $input: LikePlaceInput!
     ) {
-        addPlace(
+        likePlace(
             input: $input
         ) {
-            placeList {
-                name
-                id
-            }
             place {
                 cover {
                     ...ImageFragment

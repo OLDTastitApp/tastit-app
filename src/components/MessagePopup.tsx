@@ -4,6 +4,7 @@ import React, { memo, useRef, useState, forwardRef, useImperativeHandle } from '
 // Components
 import { View, Text, Animated, Modal, StyleSheet } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { BlurView } from '@react-native-community/blur'
 import sendSource from '@assets/animations/send.json'
 import Lottie from 'lottie-react-native'
 
@@ -13,25 +14,30 @@ import { font, color } from '@constants'
 
 export default memo(forwardRef<Ref, Props>((props, ref) => {
 
+    const { message } = props;
+
     const { current: progress } = useRef(new Animated.Value(0));
     const [visible, setVisible] = useState(false);
   
     const show = () => {
-        setVisible(true);
-        Animated.sequence([
-            Animated.timing(progress, {
-                useNativeDriver: true,
-                duration: 300,
-                toValue: 1,
-            }),
-            Animated.delay(1000),
-            Animated.timing(progress, {
-                useNativeDriver: true,
-                duration: 300,
-                toValue: 0,
-            }),
-        ]).start(() => {
-            setVisible(false);
+        return new Promise<void>(resolve => {
+            setVisible(true);
+            Animated.sequence([
+                Animated.timing(progress, {
+                    useNativeDriver: true,
+                    duration: 300,
+                    toValue: 1,
+                }),
+                Animated.delay(1000),
+                Animated.timing(progress, {
+                    useNativeDriver: true,
+                    duration: 300,
+                    toValue: 0,
+                }),
+            ]).start(() => {
+                setVisible(false);
+                resolve();
+            });
         });
     };
   
@@ -69,13 +75,19 @@ export default memo(forwardRef<Ref, Props>((props, ref) => {
                     }
                 ]}
             >
-                <View style={styles.content}>
-                    {/* <AntDesign
-                        color={color.primary}
-                        name='checkcircleo'
-                        size={50}
-                    /> */}
-                    <Lottie
+                <BlurView
+                    blurType='chromeMaterialLight'
+                    style={styles.content}
+                    blurRadius={100}
+                >
+                    <AntDesign
+                        // color={color.primary}
+                        // name='checkcircleo'
+                        color={color.dark}
+                        name='check'
+                        size={30}
+                    />
+                    {/* <Lottie
                         source={sendSource}
                         style={{
                             height: 100,
@@ -84,11 +96,13 @@ export default memo(forwardRef<Ref, Props>((props, ref) => {
                         }}
                         loop={false}
                         autoPlay
-                    />
-                    {/* <Text style={styles.message}>
-                        {props.message}
-                    </Text> */}
-                </View>
+                    /> */}
+                    {!!message && (
+                        <Text style={styles.message}>
+                            {message}
+                        </Text>
+                    )}
+                </BlurView>
             </Animated.View>
         </Modal>
     )
@@ -103,17 +117,19 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#00000033',
+        // backgroundColor: '#00000033',
+        backgroundColor: '#00000011',
     },
     content: {
-        backgroundColor: 'white',
+        backgroundColor: '#ffffffee',
         alignItems: 'center',
         borderRadius: 10,
-        minWidth: 150,
+        minWidth: 130,
         padding: 20,
     },
     message: {
-        fontFamily: font.bold,
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
         color: color.dark,
         marginTop: 20,
         fontSize: 16,
@@ -121,9 +137,9 @@ const styles = StyleSheet.create({
 })
   
 export type Props = {
-    message: string,
+    message?: string,
 }
   
 export type Ref = {
-    show: () => void,
+    show: () => Promise<void>,
 }

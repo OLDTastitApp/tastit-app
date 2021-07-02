@@ -11,7 +11,8 @@ import Footer from './Footer'
 
 // Helpers
 import { useNavigation } from '@navigation/utils'
-import useLogOut from './useLogOut'
+// import useLogOut from './useLogOut'
+import { useLogOut } from '@helpers'
 
 
 export default memo(() => {
@@ -83,6 +84,9 @@ export default memo(() => {
 
             <Footer
                 onLogOutPress={logOut}
+                // onLogOutPress={() => {
+                //     alert('LOG OUT')
+                // }}
             />
         </ScrollView>
     )

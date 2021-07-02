@@ -93,7 +93,7 @@ export default memo((props: Props) => {
 
     // if (!loaded) return null;
 
-    console.log(`+Rendering Map component`);
+    // console.log(`+Rendering Map component`);
 
     return (
         <>

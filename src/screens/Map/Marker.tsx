@@ -54,7 +54,7 @@ export default memo((props: Props) => {
         latitude,
     };
 
-    console.log(`Rendering marker: ${item.name}`)
+    // console.log(`Rendering marker: ${item.name}`)
 
     const key = `${selected ? 's:' : ''}${props.id}`;
 

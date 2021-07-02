@@ -1,4 +1,5 @@
 // GraphQL
+import { IMAGE_FRAGMENT } from '../image'
 import gql from 'graphql-tag'
 
 // Types
@@ -27,6 +28,10 @@ export const PLACE_LISTS = gql`
             edges {
                 cursor
                 node {
+                    cover {
+                        ...ImageFragment
+                    }
+                    count
                     name
                     id
                 }
@@ -39,4 +44,5 @@ export const PLACE_LISTS = gql`
             }
         }
     }
+    ${IMAGE_FRAGMENT}
 `

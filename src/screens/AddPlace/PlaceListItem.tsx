@@ -5,6 +5,7 @@ import React, { memo } from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 import { View, Text, StyleSheet } from 'react-native'
 import { TouchableScale } from '@components'
+import Image from 'react-native-fast-image'
 
 // Constants
 import { color } from '@constants'
@@ -24,19 +25,32 @@ export default memo((props: Props) => {
             style={styles.container}
             onPress={onPress}
         >
-            <View
-                style={styles.thumbnail}
-            >
-                <Feather
-                    color={color.mediumGray}
-                    name='plus'
-                    size={20}
+            {item.cover ? (
+                <Image
+                    source={{ uri: item.cover.url }}
+                    style={styles.thumbnail}
                 />
-            </View>
+            ) : (
+                <View
+                    style={styles.thumbnail}
+                >
+                    <Feather
+                        color={color.mediumGray}
+                        name='plus'
+                        size={20}
+                    />
+                </View>
+            )}
 
-            <Text style={styles.name}>
-                {item.name}
-            </Text>
+            <View style={styles.content}>
+                <Text style={styles.name}>
+                    {item.name}
+                </Text>
+
+                <Text style={styles.description}>
+                    {item.count} places
+                </Text>
+            </View>
         </TouchableScale>
     )
 })
@@ -47,23 +61,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginHorizontal: 20,
-        marginVertical: 5,
+        marginVertical: 10,
     },
     thumbnail: {
         backgroundColor: '#f8f8f8',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 50,
-        width: 50,
+        height: 60,
+        width: 60,
+    },
+    content: {
+        marginLeft: 15,
+        flex: 1,
     },
     name: {
         fontFamily: 'Avenir Next',
-        fontWeight: '500',
+        fontWeight: '600',
         color: color.dark,
-        marginLeft: 10,
-        fontSize: 18,
-        flex: 1,
+        fontSize: 20,
     },
+    description: {
+        fontFamily: 'Avenir Next',
+        color: color.mediumGray,
+        fontWeight: '500',
+        marginTop: 5,
+        fontSize: 14,
+    }
 })
 
 // Types
