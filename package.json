@@ -38,6 +38,8 @@
     "react": "17.0.1",
     "react-native": "0.64.1",
     "react-native-camera": "3.43.9",
+    "react-native-date-picker": "3.3.2",
+    "react-native-email-link": "^1.11.3",
     "react-native-fast-image": "8.3.4",
     "react-native-fbsdk-next": "4.3.0",
     "react-native-fs": "2.18.0",

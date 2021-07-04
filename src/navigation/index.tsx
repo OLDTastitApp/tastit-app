@@ -2,14 +2,29 @@
 import React from 'react'
 
 // Navigation
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native'
 
 // Navigators
 import Switch from './Switch'
 
 
+const linking: LinkingOptions<{}> = {
+    prefixes: ['tastit://'],
+    config: {
+        screens: {
+            AuthStack: {
+                screens: {
+                    'VerifyEmail': 'verify/email',
+                },
+            },
+        },
+    },
+}
+
 export default () => (
-    <NavigationContainer>
+    <NavigationContainer
+        linking={linking}
+    >
         <Switch />
     </NavigationContainer>
 )

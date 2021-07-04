@@ -181,8 +181,7 @@ const styles = StyleSheet.create({
         width: 130,
     },
     edit: {
-        // backgroundColor: color.primary,
-        backgroundColor: color.dark,
+        backgroundColor: color.primary,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',

@@ -3,10 +3,10 @@ import React, { memo, useRef, useCallback, useState } from 'react'
 
 // Components
 import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native'
-import { MessagePopup } from '@components'
 import NewPlaceListModal from './NewPlaceListModal'
 import NewPlaceListItem from './NewPlaceListItem'
 import PlaceListItem from './PlaceListItem'
+import { MessagePopup } from '@components'
 import NavBar from './NavBar'
 
 // Helpers

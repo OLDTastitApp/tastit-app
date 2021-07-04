@@ -24,6 +24,8 @@ type Navigation = Omit<
     'navigate'
 > & {
     goBack?: () => void,
+    pop: (depth: number) => void,
+    setParams: (params: any) => void,
     navigate: <TRouteName extends RouteName>(
         routeName: TRouteName,
         params?: Params<TRouteName>,
@@ -38,6 +40,8 @@ export type Params<TRouteName> =
     ? SelectFriendsParams
     : TRouteName extends 'EditProfile'
     ? EditProfileParams
+    : TRouteName extends 'VerifyEmail'
+    ? VerifyEmailParams
     : TRouteName extends 'CreatePost'
     ? CreatePostParams
     : TRouteName extends 'AddPlace'
@@ -48,6 +52,7 @@ export type RouteName =
     | 'SelectEstablishment'
     | 'SelectFriends'
     | 'EditProfile'
+    | 'VerifyEmail'
     | 'Screenshot'
     | 'CreatePost'
     | 'Favorites'
@@ -70,6 +75,12 @@ type SelectFriendsParams = {
 
 type EditProfileParams = {
     me: Me,
+}
+
+type VerifyEmailParams = {
+    username?: string,
+    password?: string,
+    token?: string,
 }
 
 type CreatePostParams = {

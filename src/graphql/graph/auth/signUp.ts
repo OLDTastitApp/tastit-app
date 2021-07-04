@@ -11,18 +11,15 @@ export type SignUpArgs = {
         lastName: string,
         password: string,
         nickname: string,
+        picture?: string,
         birthdate: Date,
+        phone?: string,
         email: string,
-        phone: string,
     },
 }
 
 export type SignUpResult = {
-    signUp: {
-        refreshToken: string,
-        accessToken: string,
-        user: User,
-    },
+    signUp: boolean,
 }
 
 export const SIGN_UP = gql`
@@ -31,19 +28,6 @@ export const SIGN_UP = gql`
     ) {
         signUp(
             input: $input
-        ) {
-            refreshToken
-            accessToken
-            user {
-                firstName
-                roles {
-                    complete
-                    name
-                    id
-                }
-                email
-                id
-            }
-        }
+        )
     }
 `

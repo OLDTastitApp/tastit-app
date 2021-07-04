@@ -1,84 +1,157 @@
 // React
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 
 // Components
+import { TouchableScale, PicturePicker } from '@components'
 import { View, Text, StyleSheet } from 'react-native'
-import ProfilePicture from './ProfilePicture'
-import { TouchableScale } from '@components'
+import DateInput from './DateInput'
 import TextInput from './TextInput'
 
 // Constants
-import { color, font } from '@constants'
+import { color, font, ui } from '@constants'
 
 // Types
 import { Ref as TextInputRef, Props as TextInputProps } from './TextInput'
+import { PicturePickerProps } from '@components'
 
 
 export default ((props: Props) => {
 
-    const [firstName, setFirstName] = useState<string>();
-    const [lastName, setLastName] = useState<string>();
-    const [password, setPassword] = useState<string>();
-    const [email, setEmail] = useState<string>();
+    // const [existingNickname, setexistingNickname] = useState<string>();
+    // const [pictureDataUri, setPictureDataUri] = useState<string>();
+    // const [pictureUri, setPictureUri] = useState<string>();
+    // const [firstName, setFirstName] = useState<string>('Raphael0');
+    // const [birthdate, setBirthdate] = useState<Date>(new Date());
+    // const [nickname, setNickname] = useState<string>('raphael0');
+    // const [lastName, setLastName] = useState<string>('Hadjadj0');
+    // const [password, setPassword] = useState<string>('Azerty123');
+    // const [phone, setPhone] = useState<string>();
+    // const [email, setEmail] = useState<string>('raphael.hadjadj+0@gmail.com');
 
+    const nicknameRef = useRef<TextInputRef>();
     const passwordRef = useRef<TextInputRef>();
     const lastNameRef = useRef<TextInputRef>();
+    const phoneRef = useRef<TextInputRef>();
     const emailRef = useRef<TextInputRef>();
 
     const onNextPress: OnNextPress = nextRef => {
         nextRef.current?.focus();
     };
 
-    const disabled = !(password?.length > 8)
-        || !/\S+@\S+\.\S+/.test(email)
-        || !(firstName?.length > 2)
-        || !(lastName?.length > 2);
+    const onPictureChanged = useCallback<OnPictureChanged>(
+        image => {
+            props.onPictureDataUriChanged(image.data);
+            props.onPictureUriChanged(image.uri);
+        },
+        []
+    );
+
+    const onSubmitPress = () => {
+        props.onSubmitPress();
+        // props.onSubmitPress({
+        //     picture: pictureDataUri,
+        //     firstName,
+        //     birthdate,
+        //     nickname,
+        //     lastName,
+        //     password,
+        //     phone,
+        //     email,
+        // });
+    };
+
+    const nicknameError = props.existingNickname === props.nickname
+        ? `Ce nom d'utilisateur est déjà utilisé`
+        : undefined;
+
+    const disabled = !(props.password?.length > 8)
+        // || !(/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/gmi).test(phone)
+        || !/\S+@\S+\.\S+/.test(props.email)
+        || !(props.firstName?.length > 2)
+        || !(props.lastName?.length > 2)
+        || !(props.nickname?.length > 2)
+        || props.birthdate == null;
 
     return (
         <View style={styles.container}>
 
-            <ProfilePicture
-                // ...
+            <PicturePicker
+                onChanged={onPictureChanged}
+                uri={props.pictureUri}
             />
 
+            <View style={{ marginTop: 30 }} />
+
             <TextInput
-                onChangeText={setFirstName}
+                onChangeText={props.onFirstNameChanged}
                 onNextPress={onNextPress}
-                placeholder='Grégoire'
+                value={props.firstName}
                 nextRef={lastNameRef}
-                value={firstName}
+                placeholder='Martin'
                 label='Prénom'
             />
 
             <TextInput
-                onChangeText={setLastName}
+                onChangeText={props.onLastNameChanged}
                 onNextPress={onNextPress}
+                value={props.lastName}
+                nextRef={nicknameRef}
                 placeholder='Dupont'
-                nextRef={emailRef}
                 ref={lastNameRef}
-                value={lastName}
                 label='Nom'
             />
 
             <TextInput
+                // error={`Ce nom d'utilisateur est déjà utilisé`}
+                onChangeText={props.onNicknameChanged}
+                placeholder='martindupont'
+                onNextPress={onNextPress}
+                value={props.nickname}
+                error={nicknameError}
+                autoCapitalize='none'
+                label='Utilisateur'
+                // nextRef={phoneRef}
+                nextRef={emailRef}
+                ref={nicknameRef}
+            />
+
+            {/* <TextInput
+                onNextPress={onNextPress}
+                keyboardType='phone-pad'
+                placeholder='0612345678'
+                onChangeText={setPhone}
+                nextRef={emailRef}
+                ref={phoneRef}
+                value={phone}
+                label='Numéro'
+            /> */}
+
+            <TextInput
+                onChangeText={props.onEmailChanged}
                 placeholder='gregoire@tastit.com'
                 keyboardType='email-address'
                 onNextPress={onNextPress}
-                onChangeText={setEmail}
                 nextRef={passwordRef}
                 autoCapitalize='none'
+                value={props.email}
                 ref={emailRef}
-                value={email}
                 label='Email'
             />
 
             <TextInput
-                onChangeText={setPassword}
+                onChangeText={props.onPasswordChanged}
                 placeholder='Mot de passe'
+                value={props.password}
                 label='Mot de passe'
                 ref={passwordRef}
-                value={password}
                 secureTextEntry
+            />
+
+            <DateInput
+                onChange={props.onBirthdateChanged}
+                title='Date de naissance'
+                placeholder='01/01/2008'
+                value={props.birthdate}
             />
 
             <View style={{ flex: 1 }} />
@@ -88,9 +161,9 @@ export default ((props: Props) => {
                     styles.button,
                     disabled && styles.disabled,
                 ]}
-                // onPress={props.onSignUpPress}
+                onPress={onSubmitPress}
                 disabled={disabled}
-                activeScale={0.98}
+                activeScale={0.99}
             >
                 <Text style={styles.submit}>
                     Se connecter
@@ -121,36 +194,40 @@ export default ((props: Props) => {
 // Styles
 const styles = StyleSheet.create({
     container: {
+        paddingBottom: ui.safePaddingBottom,
         paddingHorizontal: 20,
-        // marginTop: 20,
         flex: 1,
     },
     tos: {
-        fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
         color: color.mediumGray,
         textAlign: 'center',
-        marginVertical: 10,
-        marginBottom: 20,
+        fontWeight: '600',
+        marginBottom: 10,
+        marginTop: 20,
         fontSize: 12,
     },
     link: {
-        fontFamily: font.extraBold,
+        fontFamily: 'Avenir Next',
+        fontWeight: 'bold',
+        color: color.gray,
     },
     button: {
         backgroundColor: color.primary,
         marginHorizontal: 15,
         paddingHorizontal: 5,
         paddingVertical: 10,
-        borderRadius: 100,
+        borderRadius: 10,
         marginTop: 20,
     },
     disabled: {
         backgroundColor: color.lightGray,
     },
     submit: {
-        fontFamily: font.semiBold,
+        fontFamily: 'Avenir Next',
         marginHorizontal: 20,
         textAlign: 'center',
+        fontWeight: '600',
         color: 'white',
         fontSize: 22,
     },
@@ -158,16 +235,30 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    onSubmitPress: (form: Form) => void,
     onPrivacyPolicyPress: () => void,
+    onSubmitPress: () => void,
     onTOSPress: () => void,
-}
-
-type Form = {
+    onPictureDataUriChanged: (value: string) => void,
+    onPictureUriChanged: (value: string) => void,
+    onFirstNameChanged: (value: string) => void,
+    onNicknameChanged: (value: string) => void,
+    onLastNameChanged: (value: string) => void,
+    onPasswordChanged: (value: string) => void,
+    onBirthdateChanged: (value: Date) => void,
+    onPhoneChanged: (value: string) => void,
+    onEmailChanged: (value: string) => void,
+    existingNickname?: string,
+    pictureDataUri?: string,
+    pictureUri?: string,
     firstName: string,
+    nickname: string,
     lastName: string,
     password: string,
+    birthdate: Date,
+    phone?: string,
     email: string,
 }
 
 type OnNextPress = TextInputProps['onNextPress']
+
+type OnPictureChanged = PicturePickerProps['onChanged']

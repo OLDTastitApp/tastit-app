@@ -13,7 +13,7 @@ import { TextInputProps } from 'react-native'
 
 export default memo(forwardRef<TextInput, Props>((props, ref) => {
 
-    const { label, onNextPress, nextRef, ...inputProps } = props;
+    const { label, error, onNextPress, nextRef, ...inputProps } = props;
 
     const onSubmitEditing: Props['onSubmitEditing'] = event => {
         props.onSubmitEditing?.(event);
@@ -23,7 +23,12 @@ export default memo(forwardRef<TextInput, Props>((props, ref) => {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>
+            <Text
+                style={[
+                    styles.label,
+                    error && styles.error,
+                ]}
+            >
                 {label}
             </Text>
 
@@ -36,6 +41,12 @@ export default memo(forwardRef<TextInput, Props>((props, ref) => {
                 ref={ref}
             />
 
+            {!!error && (
+                <Text style={styles.message}>
+                    {error}
+                </Text>
+            )}
+
         </View>
     )
 }))
@@ -47,23 +58,26 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     label: {
-        // fontFamily: font.regular,
         fontFamily: 'Avenir Next',
-        color: color.darkGray,
-        // color: color.mediumGray,
-        // fontWeight: 'bold',
-        fontSize: 20,
+        fontWeight: '500',
+        color: color.dark,
+        fontSize: 22,
     },
     input: {
-        // fontFamily: font.semiBold,
         fontFamily: 'Avenir Next',
-        // color: color.darkGray,
-        color: color.darkGray,
-        fontWeight: 'bold',
-        // marginVertical: 5,
-        // marginLeft: 10,
+        color: color.dark,
+        fontWeight: '500',
         fontSize: 18,
-
+    },
+    error: {
+        color: color.primary,
+    },
+    message: {
+        fontFamily: 'Avenir Next',
+        fontWeight: 'bold',
+        color: color.primary,
+        fontSize: 12,
+        marginTop: 5,
     },
 })
 
@@ -71,6 +85,7 @@ const styles = StyleSheet.create({
 export type Props = TextInputProps & {
     onNextPress?: (ref: NextRef) => void,
     nextRef?: NextRef,
+    error?: string,
     label: string,
 }
 
