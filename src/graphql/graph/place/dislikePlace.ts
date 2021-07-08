@@ -1,5 +1,5 @@
 // GraphQL
-import { IMAGE_FRAGMENT } from '../image'
+import * as fragments from '../fragments'
 import gql from 'graphql-tag'
 
 // Types
@@ -40,5 +40,5 @@ export const DISLIKE_PLACE = gql`
             }
         }
     }
-    ${IMAGE_FRAGMENT}
+    ${fragments.IMAGE}
 `

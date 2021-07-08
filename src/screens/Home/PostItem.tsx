@@ -28,9 +28,11 @@ export default memo((props: Props) => {
 
     // const liked = Math.random() > 0.5;
 
-    const { firstName, lastName, cover } = item.author;
+    // const { firstName, lastName, cover } = item.author;
+    // const { firstName, lastName } = item.creator;
+    const { creator } = item;
 
-    const username = `@${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}`;
+    const username = `@${ creator?.firstName?.toLocaleLowerCase()}${creator?.lastName?.toLocaleLowerCase()}`;
 
 
     return (
@@ -42,7 +44,7 @@ export default memo((props: Props) => {
             <View style={StyleSheet.absoluteFill}>
                 <Image
                     // source={{ uri: item.pictureUris?.[0] }}
-                    source={{ uri: picture?.value }}
+                    source={{ uri: item.picture?.url }}
                     style={{ flex: 1 }}
                 />
                 <LinearGradient
@@ -101,18 +103,20 @@ export default memo((props: Props) => {
                 <View style={[styles.header, { paddingTop: 100 }]}>
                     <Image
                         // source={{ uri: user.pictureUri }}
-                        source={{ uri: author.cover?.value }}
+                        source={{ uri: creator.picture?.url }}
                         style={styles.avatar}
                     />
 
                     <Text style={styles.name}>
-                        {firstName}
+                        { creator?.firstName}
                     </Text>
                 </View>
                 
-                <Text style={styles.position}>
-                    {item.place.name}
-                </Text>
+                {!!item.place?.name && (
+                    <Text style={styles.position}>
+                        {item.place.name}
+                    </Text>
+                )}
 
                 <View style={{
                     // marginLeft: 10,
@@ -215,5 +219,8 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
+    onCreatorPress: (item: Post) => void,
+    onSharePress: (item: Post) => void,
+    onLikePress: (item: Post) => void,
     item: Post,
 }

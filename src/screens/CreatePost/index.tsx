@@ -17,14 +17,15 @@ import { useMutation } from '@apollo/client'
 import * as graph from '@graphql/graph'
 
 // Helpers
-import useSubmit from './useSubmit'
+// import useSubmit from './useSubmit'
+import { useCreatePost } from '@helpers'
 
 // Constants
 import { ui, font, color } from '@constants'
 
 // Types
 import { MessagePopupRef } from '@components'
-import { Establishment, User } from '@types'
+import { Place, User } from '@types'
 
 
 export default memo(() => {
@@ -33,7 +34,7 @@ export default memo(() => {
     const route = useRoute<'CreatePost'>();
 
     const popupRef = useRef<MessagePopupRef>();
-    const [message, setMessage] = useState<string>();
+    const [content, setContent] = useState<string>();
     const [service, setService] = useState<string>();
 
     const [pictureBase64, setPictureBase64] = useState<string>();
@@ -44,34 +45,47 @@ export default memo(() => {
     // console.log(`pictureBase64: ${pictureBase64.substr(0, 100)}`)
 
     // @TODO: rename setPlace
-    const [place, setEstablishment] = useState<Establishment>();
-    const [friends, setFriends] = useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [place, setPlace] = useState<Place>();
 
-    const [submit, submitResult] = useSubmit({
-        picture: pictureBase64,
-        place: place?.id,
-        message,
-    });
+    // const [submit, submitResult] = useSubmit({
+    //     picture: pictureBase64,
+    //     place: place?.id,
+    //     message,
+    // });
+    const [createPost, createPostResult] = useCreatePost();
+
+    const onSubmit = async () => {
+        await createPost({
+            userIds: users?.map(({ id }) => id),
+            picture: pictureBase64,
+            placeId: place?.id,
+            content,
+        });
+        navigation.navigate('BottomTab');
+    };
 
     const onAddLocationPress = () => {
         navigation.navigate(
             'SelectEstablishment',
-            { setEstablishment }
+            { setPlace, place }
         );
     };
 
     const onTagFriendsPress = () => {
         navigation.navigate(
             'SelectFriends',
-            { setFriends }
+            { setUsers, users }
         );
     };
 
     const disabled = !(
         pictureBase64
-        && message?.length > 0
-        && place
+        && content?.length > 0
+        // && place
     );
+
+    const usersValue = users?.map(({ firstName }) => firstName).join(', ');
 
     return (
         <>
@@ -89,8 +103,8 @@ export default memo(() => {
                 <ContentInput
                     onPictureBase64Extracted={setPictureBase64}
                     pictureUri={pictureUri}
-                    onChange={setMessage}
-                    value={message}
+                    onChange={setContent}
+                    value={content}
                     filter={filter}
                 />
 
@@ -105,6 +119,7 @@ export default memo(() => {
                 <Row
                     onPress={onTagFriendsPress}
                     title='Tagger des amis'
+                    value={usersValue}
                 />
 
                 <Section title='Partager' />
@@ -112,8 +127,8 @@ export default memo(() => {
                 <Share onShareChanged={setService} />
 
                 <Footer
-                    disabled={disabled || submitResult.loading}
-                    onSubmit={submit}
+                    disabled={disabled || createPostResult.loading}
+                    onSubmit={onSubmit}
                 />
 
             </ScrollView>

@@ -5,25 +5,26 @@ import { gql } from '@apollo/client'
 import { Post } from '@types'
 
 
-export type AddPostArgs = {
+export type CreatePostArgs = {
     input: {
-        content?: string,
+        userIds?: string[],
+        placeId?: string,
+        content: string,
         picture: string,
-        place?: string,
     },
 }
 
-export type AddPostResult = {
-    addPost: {
+export type CreatePostResult = {
+    createPost: {
         post: Post,
     },
 }
 
-export const ADD_POST = gql`
-    mutation AddPost(
-        $input: AddPostInput!
+export const CREATE_POST = gql`
+    mutation CreatePost(
+        $input: CreatePostInput!
     ) {
-        addPost(
+        createPost(
             input: $input
         ) {
             post {

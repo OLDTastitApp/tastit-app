@@ -2,91 +2,118 @@
 import React, { memo, useState, useCallback, useRef } from 'react'
 
 // Components
-import { View, FlatList, Text, ScrollView, StatusBar, StyleSheet } from 'react-native'
-import { useNavigation, useRoute } from '@navigation/utils'
-import { TouchableScale, MessagePopup } from '@components'
-// import ContentInput from './ContentInput'
-// import Section from './Section'
-import NavBar from './NavBar'
-// import Footer from './Footer'
-// import Row from './Row'
-import GeolocationError from './GeolocationError'
-// import PlaceItem from '../Search/PlaceItem'
-import NearestPlace from './NearestPlace'
-import Header from './Header'
+import { View, FlatList, Text, ScrollView, StatusBar, StyleSheet, LayoutAnimation } from 'react-native'
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
+import { useNavigation, useRoute } from '@navigation/utils'
+import SelectedPlaceItem from './SelectedPlaceItem'
+import PlaceItem from '../Search/PlaceItem'
+import NavBar from './NavBar'
 
 // Apollo
 import { useMutation } from '@apollo/client'
 import * as graph from '@graphql/graph'
 
 // Helpers
-import useLocation from './useLocation'
-// import useSubmit from './useSubmit'
-import usePlaces from './usePlaces'
+import { usePlaces } from '@helpers'
 
 // Constants
 import { ui, font, color, style } from '@constants'
 
 // Types
+import { Props as PlaceItemProps } from '../search/PlaceItem'
 import { Props as NearestPlaceProps } from './NearestPlace'
 import { MessagePopupRef } from '@components'
+import { Place } from '@types'
 
 
 export default memo(() => {
 
     const navigation = useNavigation();
-    const route = useRoute<'SelectEstablishment'>();
+    const { params } = useRoute<'SelectEstablishment'>();
 
-    const { setEstablishment } = route.params;
-    
-    const [search, setSearch] = useState<string>();
-    const location = useLocation();
+    // const { setPlace, place } = route.params;
 
-    const [nearestPlaceHidden, setNearestPlaceHidden] = useState(false);
+    const [searchText, setSearchText] = useState<string>();
+    const [focused, setFocused] = useState(false);
 
-    const [nearestPlaces] = usePlaces({
-        skip: location.loading,
-        around: location.data,
-        limit: 1,
+    // const [place, setPlace] = useState(params?.place);
+
+    const { current: selectionSet } = useRef(
+        new Set<string>(params.place ? [params.place.id] : [])
+    );
+    const [selection, setSelection] = useState(
+        params.place ? [params.place] : []
+    );
+
+    const searchTextEmpty = !(searchText?.length > 0);
+
+    const [places, placesResult] = usePlaces({
+        skip: searchTextEmpty,// || index !== 0,
+        searchText,
+        first: 10,
     });
 
-    const [places] = usePlaces({
-        search, limit: 10,
-    });
+    // const onDismissPress = useCallback(() => setNearestPlaceHidden(true), []);
 
-    const onOpenSettingsPress = () => {
-        // ...
-    };
+    // const hasNearestPlace = !nearestPlaceHidden && nearestPlaces?.edges?.length > 0;
 
-    const onPlaceItemPress = useCallback<OnPlaceItemPress>(
+    const hasPlaces = places?.edges?.length > 0;
+    const noResults = searchText?.length > 0 && !hasPlaces;
+    const empty = !(searchText?.length > 0) && !hasPlaces;
+
+    const onPress = useCallback<OnPress>(
         item => {
-            setEstablishment(item);
-            navigation.goBack();
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            const selected = selectionSet.has(item.id);
+
+            selectionSet.clear();
+            setSelection(selected ? [] : [item]);
         },
         []
     );
 
-    const onDismissPress = useCallback(() => setNearestPlaceHidden(true), []);
+    // const canSubmit = !!(place || params.place);
+    const canSubmit = selection.length > 0 || !!params?.place;
 
-    const hasNearestPlace = !nearestPlaceHidden && nearestPlaces?.edges?.length > 0;
+    const onSubmitPress = () => {
+        params.setPlace(selection?.[0]);
+        navigation.goBack();
+    };
 
     return (
         <View style={style.container}>
             <NavBar
+                // onBackPress={navigation.goBack}
+                // barStyle='dark-content'
+                onSearchTextChanged={setSearchText}
                 onBackPress={navigation.goBack}
+                onSubmitPress={onSubmitPress}
+                searchText={searchText}
                 barStyle='dark-content'
-            />
-
-            <Header
-                onQueryChanged={setSearch}
-                query={search}
+                canSubmit={canSubmit}
             />
 
             <KeyboardAwareFlatList
                 ListHeaderComponent={() => (
                     <>
-                        {location.error && (
+                        <FlatList
+                            showsHorizontalScrollIndicator={false}
+                            // contentContainerStyle={{
+                            //     paddingHorizontal: 10,
+                            // }}
+                            style={{ marginBottom: selection?.length > 0 ? 20 : 0 }}
+                            renderItem={({ item }) => (
+                                <SelectedPlaceItem
+                                    // selected={selectionSet.has(item.id)}
+                                    onPress={onPress}
+                                    item={item}
+                                />
+                            )}
+                            keyExtractor={({ id }) => id}
+                            data={selection}
+                            horizontal
+                        />
+                        {/* {location.error && (
                             <GeolocationError
                                 onPress={onOpenSettingsPress}
                             />
@@ -98,15 +125,17 @@ export default memo(() => {
                                 onSelectPress={onPlaceItemPress}
                                 onDismissPress={onDismissPress}
                             />
-                        )}
+                        )} */}
                     </>
                 )}
                 renderItem={({ item }) => (
-                    null
-                    // <PlaceItem
-                    //     onPress={onPlaceItemPress}
-                    //     item={item.node}
-                    // />
+                    // null
+                    <PlaceItem
+                        // onPress={onPlaceItemPress}
+                        onPress={onPress}
+                        item={item.node}
+                    />
+                    
                 )}
                 keyExtractor={({ node }) => node.id}
                 keyboardShouldPersistTaps='handled'
@@ -114,16 +143,11 @@ export default memo(() => {
                 enableResetScrollToCoords
                 data={places?.edges}
             />
-            
-            {/* <ScrollView>
-                <Text>
-                    {JSON.stringify(location, null, 4)}
-                    {JSON.stringify(places, null, 4)}
-                </Text>
-            </ScrollView> */}
         </View>
     )
 })
 
 // Types
 type OnPlaceItemPress = NearestPlaceProps['onSelectPress']
+
+type OnPress = PlaceItemProps['onPress']

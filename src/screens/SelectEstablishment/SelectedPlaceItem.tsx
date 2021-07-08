@@ -10,7 +10,7 @@ import { TouchableScale } from '@components'
 import { color, font } from '@constants'
 
 // Types
-import { User } from '@types'
+import { Place } from '@types'
 
 
 export default memo((props: Props) => {
@@ -23,19 +23,10 @@ export default memo((props: Props) => {
 
     return (
         <View style={styles.container}>
-            {!!item.picture ? (
-                <Image
-                    source={{ uri: item.picture.url }}
-                    style={styles.placeholder}
-                />
-            ) : (
-                <View style={styles.placeholder}>
-                    <Text style={styles.initials}>
-                        {item.firstName?.[0]}
-                        {item.lastName?.[0]}
-                    </Text>
-                </View>
-            )}
+            <Image
+                source={{ uri: item.cover.url }}
+                style={styles.placeholder}
+            />
 
             <TouchableScale
                 onPress={onPress}
@@ -64,7 +55,7 @@ export default memo((props: Props) => {
                     style={styles.name}
                     numberOfLines={1}
                 >
-                    {item.firstName}
+                    {item.name}
                 </Text>
             </View>
         </View>
@@ -107,6 +98,6 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    onPress: (item: User) => void,
-    item: User,
+    onPress: (item: Place) => void,
+    item: Place,
 }

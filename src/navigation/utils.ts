@@ -2,7 +2,7 @@
 import * as RNN from '@react-navigation/native'
 
 // Types
-import { Establishment, User, Me } from '@types'
+import { Place, User, Me } from '@types'
 
 
 type Route<TRouteName> = {
@@ -66,11 +66,13 @@ export type RouteName =
     | 'Home'
 
 type SelectEstablishmentParams = {
-    setEstablishment: (value: Establishment) => void,
+    setPlace: (value: Place) => void,
+    place?: Place,
 }
 
 type SelectFriendsParams = {
-    setFriends: (value: User[]) => void,
+    setUsers: (users: User[]) => void,
+    users?: User[],
 }
 
 type EditProfileParams = {

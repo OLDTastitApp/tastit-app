@@ -4,35 +4,39 @@ import gql from 'graphql-tag'
 
 // Types
 import { Connection } from '../../types'
-import { PlaceList } from '@types'
+import { User } from '@types'
 
 
-export type PlaceListsArgs = {
+export type UsersArgs = {
+    searchText?: string,
     after?: string,
     first: number,
 }
 
-export type PlaceListsResult = {
-    placeLists: Connection<PlaceList>,
+export type UsersResult = {
+    users: Connection<User>,
 }
 
-export const PLACE_LISTS = gql`
-    query PlaceLists(
+export const USERS = gql`
+    query Users(
+        $searchText: String
         $after: String
         $first: Int!
     ) {
-        placeLists(
+        users(
+            searchText: $searchText
             after: $after
             first: $first
         ) {
             edges {
                 cursor
                 node {
-                    cover {
+                    picture(format: "60x60") {
                         ...ImageFragment
                     }
-                    count
-                    name
+                    firstName
+                    lastName
+                    nickname
                     id
                 }
             }

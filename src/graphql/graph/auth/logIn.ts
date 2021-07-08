@@ -53,7 +53,6 @@ export const LOG_IN = gql`
                     name
                     id
                 }
-                email
                 id
             }
         }

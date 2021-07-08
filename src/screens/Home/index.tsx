@@ -7,7 +7,8 @@ import PostItem from './PostItem'
 import Header from './Header'
 
 // Helpers
-import usePosts from './usePosts'
+// import usePosts from './usePosts'
+import { useUserId, usePosts } from '@helpers'
 
 // Constants
 import { font, color } from '@constants'
@@ -31,14 +32,20 @@ export default memo(() => {
     //     return null;
     // }
 
+    const userId = useUserId();
+    const [posts, postsResult] = usePosts({
+        // creatorId
+        first: 10,
+    })
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
 
             <StatusBar barStyle='light-content' />
 
             <FlatList
-                // data={posts.edges}
-                data={posts}
+                data={posts.edges}
+                // data={posts}
                 contentContainerStyle={{
                     backgroundColor: 'red',
                     paddingBottom: 30,
@@ -48,29 +55,28 @@ export default memo(() => {
                 // ListHeaderComponent={(
                 //     <Header title='New posts' />
                 // )}
-                // keyExtractor={({ node }) => node.id}
-                keyExtractor={({ id }) => id}
+                keyExtractor={({ node }) => node.id}
+                // keyExtractor={({ id }) => id}
                 renderItem={({ item }) => (
                     <PostItem
-                        // item={item.node}
-                        item={item}
+                        item={item.node}
+                        // item={item}
                     />
                 )}
             />
 
-            {/* <ScrollView>
+            {/* <ScrollView contentContainerStyle={{
+                paddingTop: 100,
+            }}>
                 <Text>
-                    {JSON.stringify(posts, null, 4)}
+                    {JSON.stringify({
+                        // posts: postsResult.error,
+                        posts,
+                        userId,
+                    }, null, 4)}
                 </Text>
             </ScrollView> */}
 
-            {/* <Text style={{
-                fontFamily: font.black,
-                color: color.primary,
-                fontSize: 20,
-            }}>
-                Home
-            </Text> */}
         </View>
     )
 })

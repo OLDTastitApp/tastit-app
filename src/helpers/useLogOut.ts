@@ -37,6 +37,7 @@ export default () => {
                 '@REFRESH_TOKEN',
                 '@ACCESS_TOKEN',
                 '@AUTH_METHOD',
+                '@USER_ID',
                 '@ROLE',
             ]);
     

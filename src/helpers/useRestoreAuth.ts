@@ -33,6 +33,7 @@ export default () => {
                         '@REFRESH_TOKEN',
                         '@ACCESS_TOKEN',
                         '@AUTH_METHOD',
+                        '@USER_ID',
                         '@ROLE',
                     ];
 
@@ -40,6 +41,7 @@ export default () => {
                         [, refreshToken],
                         [, accessToken],
                         [, method],
+                        [, userId],
                         [, role],
                     ] = await AsyncStorage.multiGet(keys);
 
@@ -60,8 +62,9 @@ export default () => {
                     >({ query: graph.AUTHENTICATED });
 
                     const data = update(previous, {
-                        authenticated: { $set: true },
                         role: { $set: role as RoleName },
+                        authenticated: { $set: true },
+                        userId: { $set: userId },
                     });
                     
                     client.cache.writeQuery({

@@ -1,6 +1,6 @@
 // Types
-import { Establishment } from './establishment'
 import { Image } from './image'
+import { Place } from './place'
 import { User } from './user'
 
 
@@ -14,9 +14,15 @@ export type Post = {
     //     name: string,
     // },
     // user: User,
-    content?: string,
+
+    createdAt: Date,
+    updatedAt: Date,
+    liked?: boolean,
+    content: string,
+    users?: User[],
     picture: Image,
-    place?: Establishment,
+    creator: User,
+    place?: Place,
     author: User,
     id: string,
 }

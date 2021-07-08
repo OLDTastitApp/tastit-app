@@ -27,7 +27,7 @@ export default memo((props: Props) => {
                 ]}
                 numberOfLines={1}
             >
-                {value ?? title}
+                {value || title}
             </Text>
 
             <Feather

@@ -3,13 +3,13 @@ import React, { memo, useState, useCallback, useRef } from 'react'
 
 // Components
 // import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
-import { useNavigation, useRoute } from '@navigation/utils'
-import { FlatList, View, LayoutAnimation } from 'react-native'
+import { FlatList, ScrollView, Text, View, LayoutAnimation } from 'react-native'
 import SelectedUserItem from './SelectedUserItem'
 import { UserItem } from '@components'
 import NavBar from './NavBar'
 
 // Helpers
+import { useNavigation, useRoute } from '@navigation/utils'
 import { useFriends } from '@helpers'
 
 // Utils
@@ -26,12 +26,14 @@ import { User } from '@types'
 export default memo(() => {
 
     const navigation = useNavigation();
+    const { params } = useRoute<'SelectFriends'>();
+
     const [searchText, setSearchText] = useState<string>();
 
-    const { current: selectionSet } = useRef(new Set<string>());
-    const [selection, setSelection] = useState<User[]>([]);
+    const { current: selectionSet } = useRef(new Set<string>(params?.users?.map(({ id }) => id)));
+    const [selection, setSelection] = useState<User[]>(params.users ?? []);
 
-    const [friends] = useFriends({ searchText, first: 10 });
+    const [friends, friendsResult] = useFriends({ searchText, first: 10 });
 
     const onPress = useCallback<OnPress>(
         item => {
@@ -62,28 +64,30 @@ export default memo(() => {
         []
     );
 
-    const onSubmitPress = useCallback(
-        () => {
-            // selection
-        },
-        []
-    );
+    const onSubmitPress = () => {
+        params.setUsers(selection);
+        navigation.goBack();
+    };
+
+    const canSubmit = selection.length > 0 || params?.users?.length > 0;
 
     return (
         <View style={style.container}>
             <NavBar
                 onSearchTextChanged={setSearchText}
-                canSubmit={selection.length > 0}
                 onBackPress={navigation.goBack}
                 onSubmitPress={onSubmitPress}
                 searchText={searchText}
                 barStyle='dark-content'
+                canSubmit={canSubmit}
             />
 
-            {/* <Text>
-                SELECT FRIENDS !!!!!
-                {friends.length}
-            </Text> */}
+            {/* <ScrollView>
+                <Text>
+                    {JSON.stringify(friendsResult.data, null, 4)}
+                    {friends?.edges?.length}
+                </Text>
+            </ScrollView> */}
 
             <FlatList
                 ListHeaderComponent={() => (
@@ -112,17 +116,18 @@ export default memo(() => {
                 )}
                 renderItem={({ item }) => (
                     <UserItem
-                        selected={selectionSet.has(item.id)}
+                        selected={selectionSet.has(item.node.id)}
                         onPress={onPress}
-                        item={item}
+                        item={item.node}
                     />
                 )}
+                keyExtractor={({ node: { id } }) => id}
                 keyboardShouldPersistTaps='handled'
                 keyboardDismissMode='interactive'
-                keyExtractor={({ id }) => id}
                 // enableResetScrollToCoords
                 extraData={selection}
-                data={friends}
+                // data={friends}
+                data={friends?.edges}
             />
         </View>
     )

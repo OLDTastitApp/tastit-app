@@ -11,6 +11,7 @@ import { Store } from './types'
 const store: Store = {
     authenticated: false,
     appName: app.name,
+    userId: '',
     role: '',
 }
 
@@ -23,6 +24,7 @@ export const initializeStore = async (
             query {
                 authenticated
                 appName
+                userId
                 role
             }
         `,

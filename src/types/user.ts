@@ -12,12 +12,20 @@ export type Role = {
 }
 
 export type User = {
-    biography?: string,
-    username?: string,
+    // biography?: string,
+    // username?: string,
+    // firstName: string,
+    // lastName: string,
+    // // cover: Image,
+    // cover: string,
+    // id: string,
+    
+    nickname?: string,
     firstName: string,
     lastName: string,
+    picture?: Image,
+    phone?: string,
+    email?: string,
     roles?: Role[],
-    // cover: Image,
-    cover: string,
     id: string,
 }

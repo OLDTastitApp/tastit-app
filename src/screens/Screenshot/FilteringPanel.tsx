@@ -75,7 +75,6 @@ export default memo((props: Props) => {
             onLayout={onLayout}
         >
             <BlurView
-                
                 blurType='chromeMaterialDark'
                 // blurType='extraDark'
                 // blurType='dark'

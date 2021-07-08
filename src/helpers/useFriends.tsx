@@ -23,40 +23,40 @@ export default (args: Args) => {
 
     const { searchText, first, after, skip } = args;
 
-    const { current: allUsers } = useRef<User[]>(getUsers(100));
-    const [data, setData] = useState<User[]>([]);
+    // const { current: allUsers } = useRef<User[]>(getUsers(100));
+    // const [data, setData] = useState<User[]>([]);
 
-    const friends = useMemo(
-        () => {
-            return allUsers.filter(({ firstName, lastName, username }) => (
-                `${firstName ?? ''}${lastName ?? ''}${username ?? ''}`.includes(searchText)
-            ));
-        },
-        [searchText]
-    );
+    // const friends = useMemo(
+    //     () => {
+    //         return allUsers.filter(({ firstName, lastName }) => (
+    //             `${firstName ?? ''}${lastName ?? ''}`.includes(searchText)
+    //         ));
+    //     },
+    //     [searchText]
+    // );
 
-    return [friends];
+    // return [friends];
 
     // const []
 
-    // const result = useQuery<
-    //     graph.PlacesResult,
-    //     graph.PlacesArgs
-    // >(
-    //     graph.PLACES,
-    //     {
-    //         variables: {
-    //             searchText,
-    //             after,
-    //             first,
-    //         },
-    //         skip,
-    //     }
-    // );
+    const result = useQuery<
+        graph.UsersResult,
+        graph.UsersArgs
+    >(
+        graph.USERS,
+        {
+            variables: {
+                searchText,
+                after,
+                first,
+            },
+            skip,
+        }
+    );
 
-    // const places = result.data?.places;
+    const users = result.data?.users;
 
-    // return [places, result] as [typeof places, typeof result];
+    return [users, result] as [typeof users, typeof result];
 }
 
 

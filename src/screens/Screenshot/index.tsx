@@ -26,7 +26,7 @@ export default memo(() => {
 
     const navigation = useNavigation();
 
-    const [filter, setFilter] = useState<string>();
+    const [filter, setFilter] = useState<string>('Normal');
     const [pictureUri, setPictureUri] = useState<string>();
     const [capture, setCapture] = useState<Parameters<OnCaptured>[0]>();
     // const imageUri = 'https://picturepan2.github.io/instagram.css/assets/img/instagram.jpg';

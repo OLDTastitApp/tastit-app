@@ -166,7 +166,7 @@ export default ((props: Props) => {
                 activeScale={0.99}
             >
                 <Text style={styles.submit}>
-                    Se connecter
+                    S'inscrire
                 </Text>
             </TouchableScale>
 

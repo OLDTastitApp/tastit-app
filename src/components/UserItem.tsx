@@ -30,9 +30,9 @@ export default memo((props: Props) => {
             activeScale={0.99}
             onPress={onPress}
         >
-            {!!item.cover ? (
+            {!!item.picture ? (
                 <Image
-                    source={{ uri: item.cover }}
+                    source={{ uri: item.picture.url }}
                     style={styles.left}
                 />
             ) : (

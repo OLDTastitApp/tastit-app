@@ -36,6 +36,7 @@ export default () => {
             ['@REFRESH_TOKEN', refreshToken],
             ['@ACCESS_TOKEN', accessToken],
             ['@AUTH_METHOD', args.method],
+            ['@USER_ID', user.id],
             ['@ROLE', role],
         ]);
 
@@ -45,6 +46,7 @@ export default () => {
 
         const data = update(previous, {
             authenticated: { $set: true },
+            userId: { $set: user.id },
             role: { $set: role },
         });
         

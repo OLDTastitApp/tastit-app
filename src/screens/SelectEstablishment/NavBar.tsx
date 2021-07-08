@@ -2,8 +2,10 @@
 import React, { memo } from 'react'
 
 // Components
+import { View, TextInput, Text, StatusBar, StyleSheet } from 'react-native'
+import ArrowLeftIcon from '@assets/images/arrow-left.svg'
 import Feather from 'react-native-vector-icons/Feather'
-import { View, StatusBar, StyleSheet, Text } from 'react-native'
+import SearchIcon from '@assets/images/search.svg'
 import { TouchableScale } from '@components'
 
 // Constants
@@ -15,7 +17,7 @@ import { StatusBarProps } from 'react-native'
 
 export default memo((props: Props) => {
 
-    const { barStyle = 'dark-content' } = props;
+    const { barStyle = 'dark-content', canSubmit } = props;
 
     return (
         <>
@@ -27,9 +29,10 @@ export default memo((props: Props) => {
                     onPress={props.onBackPress}
                     style={styles.left}
                 >
-                    <Feather
-                        name='arrow-left'
-                        size={30}
+                    <ArrowLeftIcon
+                        fill={color.dark}
+                        height={20}
+                        width={20}
                     />
                 </TouchableScale>
 
@@ -38,14 +41,48 @@ export default memo((props: Props) => {
                     style={styles.title}
                     numberOfLines={1}
                 >
-                    {/* Où êtes vous ? */}
-                    Localisation
+                    Rechercher
                 </Text>
 
-                <View style={styles.right} />
+                <TouchableScale
+                    onPress={props.onSubmitPress}
+                    disabled={!props.canSubmit}
+                    style={styles.right}
+                >
+                    <Text
+                        style={[
+                            styles.submit,
+                            !canSubmit && styles.disabled,
+                        ]}
+                    >
+                        Terminer
+                    </Text>
+                </TouchableScale>
             </View>
+            
 
-            {/* <View style={styles.separator} /> */}
+            <View
+                style={[
+                    styles.shadow,
+                    styles.bar,
+                ]}
+            >
+                <SearchIcon
+                    fill={color.dark}
+                    height={20}
+                    width={20}
+                />
+                <TextInput
+                    onChangeText={props.onSearchTextChanged}
+                    placeholderTextColor={color.mediumGray}
+                    placeholder='Rechercher ...'
+                    value={props.searchText}
+                    // onFocus={props.onFocus}
+                    // onBlur={props.onBlur}
+                    style={styles.input}
+                    autoCorrect={false}
+                />
+            </View>
         </>
     )
 })
@@ -54,34 +91,71 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         paddingTop: ui.safePaddingTop,
-        marginHorizontal: 10,
+        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
     },
     title: {
-        fontFamily: font.bold,
+        fontFamily: 'Avenir Next',
         textAlign: 'center',
-        fontSize: 20,
+        fontWeight: '500',
+        fontSize: 22,
         flex: 1,
     },
     left: {
         justifyContent: 'center',
         height: 50,
-        width: 50,
+        width: 100,
     },
     right: {
-        height: '100%',
-        width: 50,
+        alignItems: 'flex-end',
+        width: 100,
     },
-    separator: {
-        backgroundColor: `${color.lightGray}55`,
-        marginHorizontal: 20,
-        height: 1,
+    submit: {
+        fontFamily: 'Avenir Next',
+        color: color.primary,
+        fontWeight: '600',
+        fontSize: 16,
+    },
+    disabled: {
+        color: color.mediumGray,
+    },
+    bar: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 15,
+        marginBottom: 20,
+        borderRadius: 14,
+        paddingLeft: 15,
+        // marginTop: 15,
+    },
+    shadow: {
+        shadowColor: '#000',
+        shadowOpacity: 0.20,
+        shadowRadius: 4.65,
+        elevation: 8,
+        shadowOffset: {
+            height: 4,
+            width: 0,
+        },
+    },
+    input: {
+        fontFamily: font.regular,
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        color: color.dark,
+        fontSize: 16,
+        flex: 1,
     },
 })
 
 // Types
 type Props = {
+    onSearchTextChanged: (value: string) => void,
     barStyle?: StatusBarProps['barStyle'],
+    onSubmitPress: () => void,
     onBackPress: () => void,
+    canSubmit: boolean,
+    searchText: string,
 }

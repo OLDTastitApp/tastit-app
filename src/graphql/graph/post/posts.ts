@@ -1,4 +1,5 @@
 // GraphQL
+import * as fragments from '../fragments'
 import gql from 'graphql-tag'
 
 // Types
@@ -7,6 +8,7 @@ import { Post } from '@types'
 
 
 export type PostsArgs = {
+    creatorId?: string,
     after?: string,
     first: number,
 }
@@ -17,41 +19,19 @@ export type PostsResult = {
 
 export const POSTS = gql`
     query Posts(
+        $creatorId: String
         $after: String
         $first: Int!
     ) {
         posts(
+            creatorId: $creatorId
             after: $after
             first: $first
         ) {
             edges {
                 cursor
                 node {
-                    author {
-                        ... on IndividualUser {
-                            biography
-                            username
-                        }
-                        cover(format: "default") {
-                            reference
-                            value
-                            type
-                            id
-                        }
-                        firstName
-                        lastName
-                        id
-                    }
-                    place {
-                        name
-                        id
-                    }
-                    picture(format: "default") {
-                        value
-                        type
-                    }
-                    content
-                    id
+                    ...PostFragment
                 }
             }
             pageInfo {
@@ -62,4 +42,5 @@ export const POSTS = gql`
             }
         }
     }
+    ${fragments.POST}
 `
