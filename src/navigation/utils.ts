@@ -46,6 +46,8 @@ export type Params<TRouteName> =
     ? CreatePostParams
     : TRouteName extends 'AddPlace'
     ? AddPlaceParams
+    : TRouteName extends 'Profile'
+    ? ProfileParams
     : never
 
 export type RouteName =
@@ -93,4 +95,8 @@ type CreatePostParams = {
 
 type AddPlaceParams = {
     placeId: string,
+}
+
+type ProfileParams = {
+    userId?: string,
 }

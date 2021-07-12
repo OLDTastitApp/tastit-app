@@ -1,5 +1,5 @@
 // React
-import React, { memo } from 'react'
+import React, { memo, useState, useCallback } from 'react'
 
 // Components
 import { View, Text, FlatList, StatusBar, ScrollView } from 'react-native'
@@ -8,7 +8,8 @@ import Header from './Header'
 
 // Helpers
 // import usePosts from './usePosts'
-import { useUserId, usePosts } from '@helpers'
+import { useUserId, usePosts, useLikePost, useDislikePost } from '@helpers'
+import { useNavigation } from '@navigation/utils'
 
 // Constants
 import { font, color } from '@constants'
@@ -16,6 +17,9 @@ import { font, color } from '@constants'
 // Data
 import { posts } from './data'
 import { Post } from '@types'
+
+// Types
+import { Props as PostItemProps } from './PostItem'
 
 
 export default memo(() => {
@@ -32,11 +36,54 @@ export default memo(() => {
     //     return null;
     // }
 
+    const navigation = useNavigation();
+
     const userId = useUserId();
-    const [posts, postsResult] = usePosts({
-        // creatorId
-        first: 10,
-    })
+    // console.log(`userId: ${userId}`)
+    const [posts, postsResult] = usePosts({ first: 10 });
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = async () => {
+        try {
+            setRefreshing(true);
+            await postsResult.refetch();
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    const [dislikePost, dislikePostResult] = useDislikePost();
+    const [likePost, likePostResult] = useLikePost();
+
+    const onCreatorPress = useCallback<OnCreatorPress>(
+        item => {
+            navigation.navigate('Profile', { userId: item.creator.id });
+        },
+        []
+    );
+
+    const onSharePress = useCallback<OnSharePress>(
+        item => {},
+        []
+    );
+
+    const onLikePress = useCallback<OnLikePress>(
+        async item => {
+            try {
+                const { id: postId } = item;
+                console.log(`onLikePress: ${postId}`)
+                if (item.liked) {
+                    await dislikePost({ postId });
+                } else {
+                    await likePost({ postId });
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        },
+        []
+    );
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
@@ -44,13 +91,15 @@ export default memo(() => {
             <StatusBar barStyle='light-content' />
 
             <FlatList
-                data={posts.edges}
                 // data={posts}
-                contentContainerStyle={{
-                    backgroundColor: 'red',
-                    paddingBottom: 30,
-                    // flexGrow: 1,
-                }}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                data={posts?.edges}
+                // contentContainerStyle={{
+                //     backgroundColor: 'red',
+                //     paddingBottom: 30,
+                //     // flexGrow: 1,
+                // }}
                 pagingEnabled
                 // ListHeaderComponent={(
                 //     <Header title='New posts' />
@@ -59,6 +108,10 @@ export default memo(() => {
                 // keyExtractor={({ id }) => id}
                 renderItem={({ item }) => (
                     <PostItem
+                        canLike={item.node.creator.id !== userId}
+                        onCreatorPress={onCreatorPress}
+                        onSharePress={onSharePress}
+                        onLikePress={onLikePress}
                         item={item.node}
                         // item={item}
                     />
@@ -70,9 +123,9 @@ export default memo(() => {
             }}>
                 <Text>
                     {JSON.stringify({
-                        // posts: postsResult.error,
-                        posts,
-                        userId,
+                        posts: postsResult.error,
+                        // posts,
+                        // userId,
                     }, null, 4)}
                 </Text>
             </ScrollView> */}
@@ -80,3 +133,8 @@ export default memo(() => {
         </View>
     )
 })
+
+// Types
+type OnCreatorPress = PostItemProps['onCreatorPress']
+type OnSharePress = PostItemProps['onSharePress']
+type OnLikePress = PostItemProps['onLikePress']

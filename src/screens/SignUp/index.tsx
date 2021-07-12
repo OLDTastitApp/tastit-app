@@ -26,13 +26,13 @@ export default memo(function SignUp() {
     const [existingNickname, setExistingNickname] = useState<string>();
     const [pictureDataUri, setPictureDataUri] = useState<string>();
     const [pictureUri, setPictureUri] = useState<string>();
-    const [firstName, setFirstName] = useState<string>('Raphael0');
+    const [firstName, setFirstName] = useState<string>('Raphael1');
     const [birthdate, setBirthdate] = useState<Date>(new Date());
-    const [nickname, setNickname] = useState<string>('raphael0');
-    const [lastName, setLastName] = useState<string>('Hadjadj0');
+    const [nickname, setNickname] = useState<string>('raphael1');
+    const [lastName, setLastName] = useState<string>('Hadjadj1');
     const [password, setPassword] = useState<string>('Azerty123');
     const [phone, setPhone] = useState<string>();
-    const [email, setEmail] = useState<string>('raphael.hadjadj+0@gmail.com');
+    const [email, setEmail] = useState<string>('raphael.hadjadj+1@gmail.com');
 
     const [signUp, signUpResult] = useSignUp();
 

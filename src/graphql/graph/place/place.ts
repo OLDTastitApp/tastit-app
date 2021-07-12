@@ -24,6 +24,22 @@ export const PLACE = gql`
             cover {
                 ...ImageFragment
             }
+            posts(
+                first: 5
+            ) {
+                edges {
+                    cursor
+                    node {
+                        ...PostFragment
+                    }
+                }
+                pageInfo {
+                    hasPreviousPage
+                    hasNextPage
+                    startCursor
+                    endCursor
+                }
+            }
             longitude
             latitude
             address
@@ -35,4 +51,5 @@ export const PLACE = gql`
         }
     }
     ${fragments.IMAGE}
+    ${fragments.POST}
 `

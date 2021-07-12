@@ -20,6 +20,10 @@ export type User = {
     // cover: string,
     // id: string,
     
+    followingCount: number,
+    followerCount: number,
+    following?: boolean,
+    postCount: number,
     nickname?: string,
     firstName: string,
     lastName: string,

@@ -1,3 +1,5 @@
 export * from './updateProfile'
+export * from './unfollow'
+export * from './follow'
 export * from './users'
 export * from './user'

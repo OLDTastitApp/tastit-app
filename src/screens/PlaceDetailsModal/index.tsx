@@ -2,13 +2,14 @@
 import React, { RefObject, memo, useEffect } from 'react'
 
 // Components
-import { View, Text, Image, ScrollView, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions } from 'react-native'
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
+import PostItem from './PostItem'
 
 // Icons
 import HeartFilledIcon from '@assets/icons/heart-filled.svg'
@@ -47,6 +48,16 @@ export default memo((props: Props) => {
         },
         [place]
     );
+
+    // if (placeResult.error) {
+    //     return (
+    //         <ScrollView contentContainerStyle={{ paddingTop: 100, backgroundColor: 'white' }}>
+    //             <Text>
+    //                 {JSON.stringify(placeResult.error, null, 4)}
+    //             </Text>
+    //         </ScrollView>
+    //     )
+    // }
 
     if (place == null) return null;
 
@@ -124,7 +135,7 @@ export default memo((props: Props) => {
                     />
                 </View>
 
-                <Timetable />
+                <Timetable style={{ marginHorizontal: 20 }} />
 
                 <Text style={styles.tags}>
                     {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')}
@@ -166,6 +177,20 @@ export default memo((props: Props) => {
                     </TouchableScale>
                 </ScrollView>
 
+                <FlatList
+                    renderItem={({ item }) => (
+                        <PostItem
+                            item={item.node}
+                        />
+                    )}
+                    contentContainerStyle={{
+                        paddingHorizontal: 10,
+                        marginTop: 20,
+                    }}
+                    keyExtractor={({ node: { id } }) => id}
+                    data={place?.posts?.edges}
+                    horizontal
+                />
                 {/* <Text>
                     {JSON.stringify(place, null, 4)}
                 </Text> */}
@@ -175,16 +200,17 @@ export default memo((props: Props) => {
 })
 
 // Constants
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const snapPoints = ['90%']
 
 // Styles
 const styles = StyleSheet.create({
     container: {
-        paddingBottom: ui.safePaddingBottom + 20,
-        paddingHorizontal: 20,
+        // paddingBottom: ui.safePaddingBottom + 20,
+        // paddingHorizontal: 20,
         paddingTop: 20,
+        paddingBottom: height + 300,
     },
     handle: {
         backgroundColor: color.lightGray,
@@ -196,6 +222,7 @@ const styles = StyleSheet.create({
         height: 6,
     },
     image: {
+        marginHorizontal: 20,
         borderRadius: 20,
         height: 300,
     },
@@ -205,6 +232,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'Avenir Next',
+        marginHorizontal: 20,
         fontWeight: 'bold',
         color: color.dark,
         fontSize: 24,
@@ -215,12 +243,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     rating: {
+        marginHorizontal: 20,
         flexDirection: 'row',
         marginBottom: 10,
         marginTop: 15,
     },
     tags: {
         fontFamily: 'Avenir Next',
+        marginHorizontal: 20,
         fontWeight: '400',
         color: color.dark,
         marginTop: 10,
@@ -232,6 +262,7 @@ const styles = StyleSheet.create({
     },
     actionContent: {
         paddingHorizontal: 10,
+        marginHorizontal: 20,
         marginVertical: 10,
         marginTop: 20,
     },

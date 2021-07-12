@@ -35,7 +35,7 @@ export const ME = gql`
             }
             favoriteCount
             followerCount
-            listCount
+            postCount
             id
         }
     }

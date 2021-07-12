@@ -13,8 +13,6 @@ import { ui, font, color } from '@constants'
 
 export default memo((props: Props) => {
 
-    const { myself } = props;
-
     return (
         <>
             <StatusBar barStyle='dark-content' />
@@ -22,16 +20,13 @@ export default memo((props: Props) => {
             <View style={styles.container}>
 
                 <TouchableScale
-                    // onPress={props.onAddUserPress}
-                    style={styles.button}
-                    disabled={myself}
+                    onPress={props.onAddUserPress}
                 >
-                    {/* <Feather
-                        // color={color.darkGray}
-                        color={myself ? 'transparent' : ''}
+                    <Feather
+                        color={color.darkGray}
                         name='user-plus'
                         size={30}
-                    /> */}
+                    />
                 </TouchableScale>
 
                 <Text style={styles.title}>
@@ -40,11 +35,9 @@ export default memo((props: Props) => {
 
                 <TouchableScale
                     onPress={props.onSettingsPress}
-                    style={styles.button}
-                    disabled={myself}
                 >
                     <Ionicons
-                        color={myself ? 'transparent' : color.darkGray}
+                        color={color.darkGray}
                         name='options'
                         size={30}
                     />
@@ -65,12 +58,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 10,
     },
-    button: {
-        justifyContent: 'center',
-        // backgroundColor: 'red',
-        alignItems: 'center',
-        width: 50,
-    },
     title: {
         // fontFamily: font.semiBold,
         fontFamily: font.regular,
@@ -88,7 +75,6 @@ const styles = StyleSheet.create({
 type Props = {
     // onBackPress: () => void,
     onSettingsPress: () => void,
-    // onAddUserPress: () => void,
-    myself?: boolean,
+    onAddUserPress: () => void,
     title: string,
 }

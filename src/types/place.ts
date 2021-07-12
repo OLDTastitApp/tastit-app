@@ -1,3 +1,8 @@
+// Types
+import { Connection } from './connection'
+import { User } from './user'
+
+
 export type District = {
     name: string,
     id?: string,
@@ -21,7 +26,25 @@ export type Gastronomy = {
     id: string,
 }
 
+export type PageInfo = {
+    hasPreviousPage: boolean,
+    hasNextPage: boolean,
+}
+
+export type Post = {
+    createdAt: Date,
+    updatedAt: Date,
+    liked?: boolean,
+    content: string,
+    users?: User[],
+    picture: Image,
+    creator: User,
+    place?: Place,
+    id: string,
+}
+
 export type Place = {
+    posts: Connection<Post>,
     favorited?: boolean,
     longitude: number,
     latitude: number,

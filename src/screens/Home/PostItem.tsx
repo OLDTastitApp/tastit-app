@@ -5,7 +5,13 @@ import React, { memo } from 'react'
 import { View, TouchableOpacity, Image, Text, StyleSheet, Dimensions } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
+import { TouchableScale } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
+
+// Icons
+import HeartFilledIcon from '@assets/icons/heart-filled.svg'
+import HeartIcon from '@assets/icons/heart.svg'
+import ShareIcon from '@assets/icons/share.svg'
 
 // Utils
 import moment from 'moment'
@@ -21,8 +27,8 @@ const { width, height } = Dimensions.get('window')
 
 export default memo((props: Props) => {
 
-    const { item } = props;
-    const { author, place, picture, content} = item;
+    const { item, canLike } = props;
+    const { place, picture, content} = item;
 
     // const createdAt = moment(item.createdAt).fromNow();
 
@@ -32,15 +38,27 @@ export default memo((props: Props) => {
     // const { firstName, lastName } = item.creator;
     const { creator } = item;
 
-    const username = `@${ creator?.firstName?.toLocaleLowerCase()}${creator?.lastName?.toLocaleLowerCase()}`;
+    // const username = `@${ creator?.firstName?.toLocaleLowerCase()}${creator?.lastName?.toLocaleLowerCase()}`;
 
+    const onLikePress = () => {
+        props.onLikePress(item);
+    };
+
+    const onSahrePress = () => {
+        props.onSharePress(item);
+    };
+
+    const onCreatorPress = () => {
+        props.onCreatorPress(item);
+    };
+
+    const liked = item.liked || !canLike;
+    const LikeIcon = liked ? HeartFilledIcon : HeartIcon;
+
+    console.log(`liked: ${item.liked}`)
 
     return (
-        <View style={{
-            backgroundColor: 'red',
-            justifyContent: 'space-between',
-            height,
-        }}>
+        <View style={styles.container}>
             <View style={StyleSheet.absoluteFill}>
                 <Image
                     // source={{ uri: item.pictureUris?.[0] }}
@@ -53,46 +71,11 @@ export default memo((props: Props) => {
                     style={styles.gradient}
                     start={{ x: 1, y: 0 }}
                 />
-
-                <View style={{
-                    position: 'absolute',
-                    right: 0,
-                    top: 30,
-                }}>
-                    <TouchableOpacity
-                        style={styles.like}
-                    >
-                        <FontAwesome
-                            // name={`heart${liked ? '' : '-o'}`}
-                            name={`heart`}
-                            // color={color.primary}
-                            color='white'
-                            size={40}
-                        />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity
-                        style={styles.like}
-                    >
-                        <FontAwesome
-                            name={`share`}
-                            color='white'
-                            size={40}
-                        />
-                    </TouchableOpacity>
-                </View>
             </View>
 
             {/* <View /> */}
 
-            <View style={{
-                // backgroundColor: 'red',
-                // height: 50,
-                // paddingBottom: 0,
-                // marginHorizontal: 10,
-                flex: 1,
-                justifyContent: 'flex-end',
-            }}>
+            <View style={styles.bottom}>
                 <LinearGradient
                     colors={['#000f', '#0000']}
                     style={styles.gradient}
@@ -100,9 +83,12 @@ export default memo((props: Props) => {
                     end={{ x: 0, y: 0.6 }}
                 />
 
-                <View style={[styles.header, { paddingTop: 100 }]}>
+                <TouchableScale
+                    onPress={onCreatorPress}
+                    style={styles.header}
+                    activeScale={0.99}
+                >
                     <Image
-                        // source={{ uri: user.pictureUri }}
                         source={{ uri: creator.picture?.url }}
                         style={styles.avatar}
                     />
@@ -110,7 +96,7 @@ export default memo((props: Props) => {
                     <Text style={styles.name}>
                         { creator?.firstName}
                     </Text>
-                </View>
+                </TouchableScale>
                 
                 {!!item.place?.name && (
                     <Text style={styles.position}>
@@ -118,24 +104,45 @@ export default memo((props: Props) => {
                     </Text>
                 )}
 
-                <View style={{
-                    // marginLeft: 10,
-                    // width: '90%',
-                    marginTop: 10,
-                    marginBottom: 50,
-                    marginHorizontal: 20,
-                }}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: '#fffc',
-                        fontWeight: '600',
-                        fontFamily: 'Avenir Next',
-                    }} numberOfLines={3}>
-                        {item.content}
-                    </Text>
-                </View>
+                <Text
+                    style={styles.content}
+                    numberOfLines={3}
+                >
+                    {item.content}
+                </Text>
 
                 <View style={{ marginBottom: 70 }} />
+            </View>
+
+            <View style={{
+                position: 'absolute',
+                right: 10,
+                top: 60,
+            }}>
+                <TouchableScale
+                    onPress={onLikePress}
+                    disabled={!canLike}
+                    style={styles.like}
+                    activeScale={0.99}
+                >
+                    <LikeIcon
+                        fill={!liked ? 'white' : color.primary}
+                        height={32}
+                        width={32}
+                    />
+                </TouchableScale>
+                
+                <TouchableScale
+                    onPress={onSahrePress}
+                    style={styles.like}
+                    activeScale={0.99}
+                >
+                    <ShareIcon
+                        fill='white'
+                        height={32}
+                        width={32}
+                    />
+                </TouchableScale>
             </View>
 
         </View>
@@ -145,18 +152,20 @@ export default memo((props: Props) => {
 // Styles
 const styles = StyleSheet.create({
     container: {
-        // ...StyleSheet.absoluteFillObject,
+        justifyContent: 'space-between',
         backgroundColor: 'white',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginVertical: 2,
-        borderRadius: 10,
+        height,
     },
     header: {
+        alignSelf: 'flex-start',
+        paddingHorizontal: 20,
         flexDirection: 'row',
-        // marginHorizontal: é
         alignItems: 'center',
-        marginHorizontal: 20,
+    },
+    bottom: {
+        justifyContent: 'flex-end',
+        // backgroundColor: 'green',
+        flex: 1,
     },
     avatar: {
         borderRadius: 40,
@@ -170,6 +179,15 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 16,
     },
+    content: {
+        fontFamily: 'Avenir Next',
+        marginHorizontal: 20,
+        fontWeight: '600',
+        marginBottom: 50,
+        color: '#fffc',
+        marginTop: 10,
+        fontSize: 14,
+    },
     position: {
         fontFamily: 'Avenir Next',
         marginHorizontal: 20,
@@ -177,22 +195,6 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: 10,
         fontSize: 16,
-    },
-    date: {
-        fontFamily: font.regular,
-        color: color.lightGray,
-        fontSize: 12,
-    },
-    description: {
-        fontFamily: font.regular,
-        // marginHorizontal: 10,
-        marginVertical: 10,
-        color: color.light,
-        fontSize: 14,
-    },
-    picture: {
-        borderRadius: 10,
-        height: 350,
     },
     gradient: {
         position: 'absolute',
@@ -202,25 +204,16 @@ const styles = StyleSheet.create({
     like: {
         justifyContent: 'center',
         alignItems: 'center',
-        // position: 'absolute',
         height: 60,
         width: 60,
-        // right: 5,
-        // top: 30,
-    },
-    footer: {
-        // justifyContent: 'flex-end',
-        justifyContent: 'center',
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        marginTop: 10,
     },
 })
 
 // Types
-type Props = {
+export type Props = {
     onCreatorPress: (item: Post) => void,
     onSharePress: (item: Post) => void,
     onLikePress: (item: Post) => void,
+    canLike?: boolean,
     item: Post,
 }

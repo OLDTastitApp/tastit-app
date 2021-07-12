@@ -6,6 +6,9 @@ import { View, Text, StyleSheet, LayoutAnimation } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import TouchableScale from './TouchableScale'
 
+// Types
+import { ViewStyle, StyleProp } from 'react-native'
+
 
 export default memo((props: Props) => {
 
@@ -19,7 +22,7 @@ export default memo((props: Props) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={props.style}>
             <TouchableScale
                 onPress={onExpandPress}
                 style={styles.header}
@@ -76,9 +79,6 @@ const timetable = [
 
 // Styles
 const styles = StyleSheet.create({
-    container: {
-        // ...
-    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -105,5 +105,5 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    // ...
+    style?: StyleProp<ViewStyle>,
 }

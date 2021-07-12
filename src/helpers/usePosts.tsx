@@ -20,7 +20,6 @@ export default (args: Args) => {
     >(
         graph.POSTS,
         {
-            fetchPolicy: 'cache-and-network',
             variables: {
                 creatorId,
                 after,

@@ -10,11 +10,15 @@ import Biography from './Biography'
 import NavBar from './NavBar'
 
 // Helpers
-import { useUser, useUserId, usePosts, useFollow, useUnfollow } from '@helpers'
-import { useNavigation, useRoute } from '@navigation/utils'
+import { useNavigation } from '@navigation/utils'
+import useMyPosts from './useMyPosts'
+import useMe from './useMe'
 
 // Constants
 import { ui, font, color, style } from '@constants'
+
+// Data
+import { user, pictures } from './data'
 
 // Types
 import { Ref as PictureViewerRef } from './PictureViewer'
@@ -27,19 +31,9 @@ export default memo(() => {
     const [visible, setVisible] = useState(false);
 
     const navigation = useNavigation();
-    const { params } = useRoute<'Profile'>();
 
-    // const [posts, fetchMorePosts, postsResult] = useMyPosts({ first: 10 });
-    // const [me, meResult] = useMe();
-
-    const meId = useUserId();
-    const userId = params?.userId ?? meId;
-    const myself = userId === meId;
-
-    const [user, userResult] = useUser({ id: userId });
-
-    const [unfollow, unfollowResult] = useUnfollow();
-    const [follow, followResult] = useFollow();
+    const [posts, fetchMorePosts, postsResult] = useMyPosts({ first: 10 });
+    const [me, meResult] = useMe();
 
     const onSettingsPress = () => {
         navigation.navigate('Settings');
@@ -50,19 +44,14 @@ export default memo(() => {
         []
     );
 
-    const [posts, postsResult] = usePosts({
-        creatorId: userId,
-        first: 10,
-    });
-
     const onBiographyPress = () => {
-        // navigation.navigate('EditProfile', { me });
+        navigation.navigate('EditProfile', { me });
     };
 
-    // const pictures = useMemo(
-    //     () => posts?.edges?.map(({ node }) => node),
-    //     [posts]
-    // );
+    const pictures = useMemo(
+        () => posts?.edges?.map(({ node }) => node),
+        [posts]
+    );
 
     // if (!me?.user) return null;
 
@@ -93,19 +82,17 @@ export default memo(() => {
                     <>
                         <NavBar
                             onSettingsPress={onSettingsPress}
-                            // onAddUserPress={() => {}}
-                            myself={myself}
+                            onAddUserPress={() => {}}
                             title='Profile'
                         />
-                        <Biography
+                        {/* <Biography
                             onPress={onBiographyPress}
-                            myself={myself}
-                            user={user}
-                        />
+                            user={me?.user}
+                        /> */}
                         <Statistics
-                            favoriteCount={user?.followingCount}
-                            followerCount={user?.followerCount}
-                            listCount={user?.postCount}
+                            favoriteCount={me?.favoriteCount}
+                            followerCount={me?.followerCount}
+                            listCount={me?.listCount}
                         />
                     </>
                 )}

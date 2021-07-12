@@ -4,7 +4,6 @@ import React, { memo } from 'react'
 // Components
 import { View, Image, Text, StyleSheet } from 'react-native'
 import { TouchableScale, PicturePicker } from '@components'
-import Feather from 'react-native-vector-icons/Feather'
 
 // Constants
 import { font, color } from '@constants'
@@ -15,14 +14,13 @@ import { User } from '@types'
 
 export default memo((props: Props) => {
 
-    const { user, onPress, myself } = props;
+    const { user, onPress } = props;
 
     return (
         <View style={styles.wrapper}>
 
             <TouchableScale
                 style={styles.container}
-                disabled={!myself}
                 onPress={onPress}
             >
                 
@@ -32,7 +30,7 @@ export default memo((props: Props) => {
                 /> */}
                 <PicturePicker
                     // uri={user.pictureUri}
-                    uri={user.picture?.url}
+                    uri={user.cover?.value}
                     disabled
                 />
 
@@ -40,7 +38,7 @@ export default memo((props: Props) => {
                     style={styles.name}
                     numberOfLines={1}
                 >
-                    {user.firstName} {user.lastName}
+                    {user.firstName}
                 </Text>
                 
                 <Text
@@ -48,43 +46,12 @@ export default memo((props: Props) => {
                     numberOfLines={1}
                 >
                     {/* @paultest */}
-                    @{user.nickname}
+                    @{user.firstName.toLocaleLowerCase()}{user.lastName.toLocaleLowerCase()}
                 </Text>
 
-                {!myself && (
-                    <TouchableScale
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginBottom: 10,
-                            marginTop: 10,
-                            // algin
-                            paddingHorizontal: 20,
-                            paddingVertical: 5,
-                            borderRadius: 100,
-                            borderWidth: 1,
-                        }}
-                    >
-                        {user.following && (
-                            <Feather
-                                style={{
-                                    marginRight: 5,
-                                }}
-                                name='check'
-                            />
-                        )}
-
-                        <Text style={{
-                            fontFamily: 'Avenir Next',
-                            fontWeight: 'bold',
-                            color: color.dark,
-                            fontSize: 14,
-                        }}>
-                            {user.following ? `Abonné` : `S'abonner`}
-                        </Text>
-                    </TouchableScale>
-                )}
+                <Text style={styles.description}>
+                    « {user.biography} »
+                </Text>
             </TouchableScale>
         </View>
     )
@@ -131,6 +98,5 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     onPress: () => void,
-    myself?: boolean,
     user: User,
 }

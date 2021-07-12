@@ -18,26 +18,12 @@ export const USER = gql`
         picture(format: "60x60") {
             ...ImageFragment
         }
+        followingCount
+        followerCount
+        postCount
         firstName
         lastName
         nickname
-        id
-    }
-    ${IMAGE}
-`
-
-export const PLACE = gql`
-    fragment PlaceFragment on Place {
-        cover {
-            ...ImageFragment
-        }
-        longitude
-        latitude
-        address
-        rating
-        rating
-        liked
-        name
         id
     }
     ${IMAGE}
@@ -61,4 +47,27 @@ export const POST = gql`
     }
     ${IMAGE}
     ${USER}
+`
+
+export const PLACE = gql`
+    fragment PlaceFragment on Place {
+        cover {
+            ...ImageFragment
+        }
+        posts(
+            first: 5
+        ) {
+            ...PostFragment
+        }
+        longitude
+        latitude
+        address
+        rating
+        rating
+        liked
+        name
+        id
+    }
+    ${IMAGE}
+    ${POST}
 `
