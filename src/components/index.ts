@@ -2,6 +2,7 @@ export { default as MessagePopup, Props as MessagePopupProps, Ref as MessagePopu
 export { default as TouchableScale, Props as TouchableScaleProps } from './TouchableScale'
 export { default as PicturePicker, Props as PicturePickerProps } from './PicturePicker'
 export { default as TabBarItem, Props as TabBarItemProps } from './TabBarItem'
+export { default as LegalLinks, Props as LegalLinksProps } from './LegalLinks'
 export { default as FancyTabs, Props as FancyTabsProps } from './FancyTabs'
 export { default as Timetable, Props as TimetableProps } from './Timetable'
 export { default as UserItem, Props as UserItemProps } from './UserItem'

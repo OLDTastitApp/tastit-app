@@ -3,7 +3,7 @@ import React, { memo, useCallback, useState } from 'react'
 
 // Components
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Alert } from 'react-native'
+import { Text, Alert } from 'react-native'
 import NavBar from './NavBar'
 import Form from './Form'
 
@@ -85,6 +85,18 @@ export default memo(function SignUp() {
                 onBackPress={navigation.goBack}
                 title={`Inscription`}
             />
+
+            {/* <Text style={{
+                marginHorizontal: 20,
+                fontFamily: 'Avenir Next',
+                // marginTop: 10,
+                fontSize: 28,
+                color: color.dark,
+                fontWeight: 'bold',
+                marginBottom: 20,
+            }}>
+                Connexion
+            </Text> */}
 
             <Form
                 onPrivacyPolicyPress={onPrivacyPolicyPress}

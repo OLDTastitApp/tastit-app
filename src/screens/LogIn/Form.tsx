@@ -3,7 +3,7 @@ import React, { useState, useRef, memo } from 'react'
 
 // Components
 import { View, Text, StyleSheet, Keyboard } from 'react-native'
-import { TouchableScale } from '@components'
+import { TouchableScale, LegalLinks } from '@components'
 import TextInput from './TextInput'
 
 // Constants
@@ -34,15 +34,9 @@ export default memo((props: Props) => {
         || !/\S+@\S+\.\S+/.test(email);
 
     return (
-        <View
-            style={styles.container}
-        >
-            <Text style={styles.or}>
-                ou
-            </Text>
-            
+        <View style={styles.container}>   
             <TextInput
-                placeholder='gregoire@tastit.com'
+                placeholder='Adresse email'
                 keyboardType='email-address'
                 onNextPress={onNextPress}
                 onChangeText={setEmail}
@@ -75,23 +69,21 @@ export default memo((props: Props) => {
                 </Text>
             </TouchableScale>
 
-            <Text style={styles.tos}>
-                En continuant, vous acceptez les {''}
-                <Text
-                    onPress={props.onTOSPress}
-                    style={styles.link}
-                >
-                    Conditions d'utilisation
+            <View style={{
+                flexDirection: 'row',
+                // backgroundColor: 'red',
+                alignItems: 'center',
+                marginHorizontal: 10,
+                marginVertical: 30,
+            }}>
+                <View style={styles.line} />
+                <Text style={styles.or}>
+                    ou
                 </Text>
-                {''} et {''}
-                <Text
-                    onPress={props.onPrivacyPolicyPress}
-                    style={styles.link}
-                >
-                    Politique de confidentialité
-                </Text>
-                {''} de Tastit
-            </Text>
+                <View style={styles.line} />
+            </View>
+
+        
         </View>
     )
 })
@@ -102,29 +94,45 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 20,
     },
+    line: {
+        backgroundColor: color.lightGray,
+        height: 1,
+        flex: 1,
+    },
     or: {
-        fontFamily: font.regular,
-        color: color.darkGray,
+        fontFamily: 'Avenir Next',
+        color: color.lightGray,
         marginHorizontal: 20,
         textAlign: 'center',
+        fontWeight: '600',
         fontSize: 18,
     },
     tos: {
-        fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
         color: color.mediumGray,
         textAlign: 'center',
-        marginVertical: 10,
+        fontWeight: '600',
+        marginBottom: 10,
+        marginTop: 20,
         fontSize: 12,
     },
     link: {
-        fontFamily: font.extraBold,
+        fontFamily: 'Avenir Next',
+        fontWeight: 'bold',
+        color: color.gray,
     },
     button: {
+        // backgroundColor: color.primary,
+        // marginHorizontal: 15,
+        // paddingHorizontal: 5,
+        // paddingVertical: 10,
+        // borderRadius: 100,
+        // marginTop: 20,
         backgroundColor: color.primary,
         marginHorizontal: 15,
         paddingHorizontal: 5,
         paddingVertical: 10,
-        borderRadius: 100,
+        borderRadius: 10,
         marginTop: 20,
     },
     disabled: {

@@ -23,7 +23,8 @@ export default memo((props: Props) => {
             >
                 <Feather
                     name='arrow-left'
-                    size={20}
+                    color='white'
+                    size={30}
                 />
             </TouchableScale>
         </View>
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     },
     back: {
         // backgroundColor: '#ffffffbb',
-        backgroundColor: '#ffffff',
+        // backgroundColor: '#ffffff',
         justifyContent: 'center',
         alignSelf: 'flex-start',
         alignItems: 'center',

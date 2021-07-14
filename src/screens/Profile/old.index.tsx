@@ -89,19 +89,22 @@ export default memo(() => {
                 // }}
                 ListHeaderComponent={user && (
                     <>
-                        <Header
-                            // 
+                        <NavBar
+                            onSettingsPress={onSettingsPress}
+                            // onAddUserPress={() => {}}
+                            myself={myself}
+                            title='Profile'
                         />
                         <Biography
                             onPress={onBiographyPress}
                             myself={myself}
                             user={user}
                         />
-                        {/* <Statistics
+                        <Statistics
                             favoriteCount={user?.followingCount}
                             followerCount={user?.followerCount}
                             listCount={user?.postCount}
-                        /> */}
+                        />
                     </>
                 )}
                 renderItem={({ item, index }) => (
@@ -116,6 +119,8 @@ export default memo(() => {
                 data={posts?.edges}
                 numColumns={3}
             />
+
+            <Header />
 
             {/* <FlatList
                 keyExtractor={(item, i) => `${item}_${i}`}

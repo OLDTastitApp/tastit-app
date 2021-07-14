@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 
 // Components
 import { View, Text } from 'react-native'
-import { TouchableScale, FacebookSignIn, GoogleSignIn, AppleSignIn } from '@components'
+import { LegalLinks, FacebookSignIn, GoogleSignIn, AppleSignIn } from '@components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@navigation/utils'
 import NavBar from './NavBar'
@@ -55,7 +55,30 @@ export default memo(() => {
                 title={`Connexion`}
             />
 
+            <Text style={{
+                marginHorizontal: 20,
+                fontFamily: 'Avenir Next',
+                marginTop: 10,
+                fontSize: 28,
+                color: color.dark,
+                fontWeight: 'bold',
+            }}>
+                Connexion
+            </Text>
+
             {/* <View style={{ flexGrow: 1 }} /> */}
+
+            
+
+            {/* <View style={{ flexGrow: 1 }} /> */}
+
+            <Form
+                onPrivacyPolicyPress={onPrivacyPolicyPress}
+                onSubmitPress={onCredentialsPress}
+                disabled={logInResult.loading}
+                onForgotPress={onForgotPress}
+                onTOSPress={onTOSPress}
+            />
 
             <View style={{ alignItems: 'center' }}>
                 <AppleSignIn
@@ -72,14 +95,10 @@ export default memo(() => {
                 />
             </View>
 
-            {/* <View style={{ flexGrow: 1 }} /> */}
-
-            <Form
-                onPrivacyPolicyPress={onPrivacyPolicyPress}
-                onSubmitPress={onCredentialsPress}
-                disabled={logInResult.loading}
-                onForgotPress={onForgotPress}
-                onTOSPress={onTOSPress}
+            <LegalLinks
+                style={{ marginHorizontal: 30 }}
+                onPrivacyPolicyPress={() => {}}
+                onTOSPress={() => {}}
             />
 
             {/* <View style={{ flexGrow: 1 }} /> */}

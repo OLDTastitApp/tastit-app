@@ -90,14 +90,17 @@ const styles = StyleSheet.create({
         width: 80,
     },
     name: {
-        fontFamily: font.regular,
+        // fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
         textAlign: 'center',
         color: color.light,
         marginTop: 5,
         fontSize: 14,
     },
     nameSelected: {
-        fontFamily: font.bold,
+        // fontFamily: font.bold,
+        fontWeight: 'bold',
     },
 })
 

@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     take: {
-        fontFamily: font.semiBold,
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
         marginHorizontal: 5,
         color: color.light,
         fontSize: 18,
@@ -150,10 +151,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingHorizontal: 15,
         paddingVertical: 5,
-        borderRadius: 100,
+        borderRadius: 10,
     },
     title: {
-        fontFamily: font.bold,
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
         color: color.dark,
         fontSize: 16,
     },

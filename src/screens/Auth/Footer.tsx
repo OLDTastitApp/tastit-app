@@ -4,6 +4,7 @@ import React, { memo } from 'react'
 // Components
 import LinearGradient from 'react-native-linear-gradient'
 import { View, Text, StyleSheet } from 'react-native'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MainIcon from '@assets/images/main.svg'
 import { TouchableScale } from '@components'
 
@@ -53,6 +54,11 @@ export default memo((props: Props) => {
                     style={[
                         styles.button,
                         styles.transparent,
+                        {
+                            borderWidth: 1,
+                            marginBottom: 20,
+                            borderColor: color.primary,
+                        }
                     ]}
                     onPress={props.onLogInPress}
                     activeScale={0.98}
@@ -61,6 +67,45 @@ export default memo((props: Props) => {
                         Se connecter
                     </Text>
                 </TouchableScale>
+
+                <View style={{
+                    // font
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    // marginTop: 20,
+                    marginBottom: 10,
+                }}>
+                    <Text
+                        style={{
+                            fontWeight: '600',
+                            color: color.dark,
+                            fontFamily: 'Avenir Next',
+                            fontSize: 14,
+                        }}
+                        onPress={props.onLogInPress}
+                    >
+                        Continuer avec les réseaux sociaux
+                    </Text>
+                    {/* <FontAwesome
+                        style={{ marginHorizontal: 5 }}
+                        color={color.mediumGray}
+                        name='apple'
+                        size={20}
+                    />
+                    <FontAwesome
+                        style={{ marginHorizontal: 5 }}
+                        color={color.mediumGray}
+                        name='google'
+                        size={18}
+                    />
+                    <FontAwesome
+                        style={{ marginHorizontal: 5 }}
+                        color={color.mediumGray}
+                        name='facebook'
+                        size={18}
+                    /> */}
+                </View>
             </View>
         </View>
     )
@@ -94,7 +139,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         paddingHorizontal: 5,
         paddingVertical: 10,
-        borderRadius: 100,
+        borderRadius: 10,
         marginVertical: 5,
     },
     transparent: {
@@ -115,7 +160,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginHorizontal: 20,
         textAlign: 'center',
-        color: color.dark,
+        // color: color.dark,
+        color: color.primary,
         fontSize: 16,
     },
 })

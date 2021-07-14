@@ -28,9 +28,9 @@ export default memo((props: Props) => {
                     />
                 </TouchableScale>
 
-                <Text style={styles.title}>
+                {/* <Text style={styles.title}>
                     {props.title}
-                </Text>
+                </Text> */}
 
                 <View style={styles.right} />
 
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 10,
-        marginBottom: 10,
+        // marginBottom: 10,
     },
     title: {
         fontFamily: font.semiBold,

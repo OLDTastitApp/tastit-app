@@ -90,11 +90,16 @@ export default memo((props: Props) => {
                     />
                 ) : (
                     <View style={styles.placeholder}>
-                        <FontAwesome5
+                        {/* <FontAwesome5
                             name='user-circle'
                             color='white'
                             size={60}
-                        />
+                        /> */}
+                        <Text style={{
+                            fontSize: 60,
+                        }}>
+                            👽
+                        </Text>
                     </View>
                 )}
 
@@ -171,7 +176,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     placeholder: {
-        backgroundColor: color.lightGray,
+        // backgroundColor: color.lightGray,
+        backgroundColor: '#f2f2f2',
         // backgroundColor: color.primary,
         justifyContent: 'center',
         alignItems: 'center',

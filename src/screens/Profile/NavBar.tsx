@@ -44,7 +44,8 @@ export default memo((props: Props) => {
                     disabled={myself}
                 >
                     <Ionicons
-                        color={myself ? 'transparent' : color.darkGray}
+                        // color={myself ? 'transparent' : color.darkGray}
+                        color={color.darkGray}
                         name='options'
                         size={30}
                     />

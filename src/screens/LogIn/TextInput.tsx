@@ -23,18 +23,27 @@ export default memo(forwardRef<TextInput, Props>((props, ref) => {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.label}>
+            {/* <Text style={styles.label}>
                 {label}
-            </Text>
+            </Text> */}
 
             <TextInput
-                placeholderTextColor={color.lightGray}
+                // placeholderTextColor={color.lightGray}
+                placeholderTextColor={color.mediumGray}
                 onSubmitEditing={onSubmitEditing}
                 style={styles.input}
                 autoCorrect={false}
                 {...inputProps}
                 ref={ref}
             />
+
+            <View style={{
+                // backgroundColor: color.mediumGray,
+                backgroundColor: color.lightGray,
+                // backgroundColor: '#eee',
+                marginTop: 10,
+                height: 1,
+            }} />
 
         </View>
     )
@@ -44,7 +53,7 @@ export default memo(forwardRef<TextInput, Props>((props, ref) => {
 const styles = StyleSheet.create({
     container: {
         marginVertical: 5,
-        marginBottom: 10,
+        marginBottom: 20,
     },
     label: {
         fontFamily: font.regular,
@@ -52,12 +61,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     input: {
-        fontFamily: font.semiBold,
-        color: color.darkGray,
+        fontFamily: 'Avenir Next',
+        color: color.dark,
+        fontWeight: '500',
         // marginVertical: 5,
         // marginLeft: 10,
-        fontSize: 20,
-
+        fontSize: 18,
     },
 })
 

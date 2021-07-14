@@ -12,6 +12,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import HeartFilledIcon from '@assets/icons/heart-filled.svg'
 import HeartIcon from '@assets/icons/heart.svg'
 import ShareIcon from '@assets/icons/share.svg'
+import SendIcon from '@assets/icons/send.svg'
 
 // Utils
 import moment from 'moment'
@@ -65,12 +66,12 @@ export default memo((props: Props) => {
                     source={{ uri: item.picture?.url }}
                     style={{ flex: 1 }}
                 />
-                <LinearGradient
-                    colors={['#000', 'transparent']}
-                    end={{ x: 0.8, y: 0.2 }}
+                {/* <LinearGradient
+                    colors={['#000f', 'transparent']}
+                    end={{ x: 0.3, y: 0.2 }}
                     style={styles.gradient}
                     start={{ x: 1, y: 0 }}
-                />
+                /> */}
             </View>
 
             {/* <View /> */}
@@ -137,7 +138,7 @@ export default memo((props: Props) => {
                     style={styles.like}
                     activeScale={0.99}
                 >
-                    <ShareIcon
+                    <SendIcon
                         fill='white'
                         height={32}
                         width={32}
