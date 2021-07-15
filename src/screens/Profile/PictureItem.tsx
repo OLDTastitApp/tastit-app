@@ -40,11 +40,11 @@ export default memo((props: Props) => {
         >
             <Image
                 // source={{ uri: props.item }}
-                source={{ uri: item.picture.value }}
+                source={{ uri: item.picture.url }}
                 style={[
                     styles.image,
                     {
-                        height: size,
+                        height: 1.5 * size,
                         width: size,
                     },
                 ]}

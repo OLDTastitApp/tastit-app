@@ -1,6 +1,8 @@
 export { default as MessagePopup, Props as MessagePopupProps, Ref as MessagePopupRef } from './MessagePopup'
 export { default as TouchableScale, Props as TouchableScaleProps } from './TouchableScale'
 export { default as PicturePicker, Props as PicturePickerProps } from './PicturePicker'
+export { default as ProfileButton, Props as ProfileButtonProps } from './ProfileButton'
+export { default as FollowButton, Props as FollowButtonProps } from './FollowButton'
 export { default as TabBarItem, Props as TabBarItemProps } from './TabBarItem'
 export { default as LegalLinks, Props as LegalLinksProps } from './LegalLinks'
 export { default as FancyTabs, Props as FancyTabsProps } from './FancyTabs'

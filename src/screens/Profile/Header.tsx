@@ -4,144 +4,248 @@ import React, { memo } from 'react'
 // Components
 import { View, Animated, Text, Image, StatusBar, StyleSheet } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
+import SendIcon from '@assets/icons/send.svg'
 import { TouchableScale } from '@components'
 
-import SendIcon from '@assets/icons/send.svg'
+// Helpers
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-// Constants
-import { ui } from '@constants'
+// Types
+import { User } from '@types'
 
 
 export default memo((props: Props) => {
 
+    const { listCount, scrollY, myself, user } = props;
+
+    const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`;
+
+    const edges = useSafeAreaInsets();
+    const fullHeight = edges.top + 90;
+
+    const scaleHeader = scrollY.interpolate({
+        outputRange: [1 + 200 / fullHeight, 1],
+        extrapolateRight: 'clamp',
+        inputRange: [-100, 0],
+    });
+
+    const translatePictureY = scrollY.interpolate({
+        outputRange: [0, -50 / 2, -75],
+        inputRange: [0, 50, 100],
+        extrapolate: 'clamp',
+    });
+
+    const scalePicture = scrollY.interpolate({
+        outputRange: [1, 0.625],
+        extrapolate: 'clamp',
+        inputRange: [0, 30],
+    });
+
+    const translatePictureWrapperY = scrollY.interpolate({
+        extrapolateRight: 'clamp',
+        outputRange: [100, 0],
+        inputRange: [-100, 0],
+    });
+
+    const coverOpacity = scrollY.interpolate({
+        outputRange: [0.9, 0, 0.9],
+        inputRange: [-230, 0, 150],
+        extrapolate: 'clamp',
+    });
+
+    const translateHeaderY = scrollY.interpolate({
+        outputRange: [0, -50],
+        extrapolate: 'clamp',
+        inputRange: [0, 50],
+    });
+
+    const contentOpacity = scrollY.interpolate({
+        inputRange: [0, 80, 150],
+        outputRange: [0, 0, 1],
+        extrapolate: 'clamp',
+    });
+
     return (
-        <View>
+        <Animated.View style={styles.container}>
+
             <StatusBar barStyle='light-content' />
 
-            <View>
+            <Animated.View
+                style={{
+                    transform: [
+                        { scale: scaleHeader },
+                        { translateY: translateHeaderY },
+                    ],
+                }}
+            >
                 <Image
+                    style={[{ height: fullHeight }]}
                     source={{ uri: coverUrl }}
-                    style={styles.cover}
+                    // style={styles.cover}
                 />
 
-                <Image
-                    style={[styles.cover, StyleSheet.absoluteFill, { opacity: 0.9 }]}
+                <Animated.Image
+                    style={[
+                        { opacity: coverOpacity },
+                        StyleSheet.absoluteFill,
+                        { height: fullHeight },
+                    ]}
                     source={{ uri: coverUrl }}
                     blurRadius={80}
                 />
+            </Animated.View>
 
-                <Image
+            <Animated.View
+                style={[
+                    styles.wrapper,
+                    {
+                        transform: [
+                            { translateY: translatePictureWrapperY },
+                        ],
+                    },
+                ]}
+            >
+                <Animated.Image
                     source={{ uri: userUrl }}
-                    style={styles.picture}
+                    style={[
+                        styles.picture,
+                        {
+                            transform: [
+                                { translateY: translatePictureY },
+                                { scale: scalePicture },
+                            ],
+                        },
+                    ]}
                 />
-            </View>
+            </Animated.View>
 
-            <View style={{
-                top: ui.safePaddingTop - 10,
-                position: 'absolute',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                // backgroundColor: 'red',
-                alignItems: 'center',
-                width: '100%',
-            }}>
-                <TouchableScale
-                    style={[styles.back, {
-                        width: 50,
-                        height: 50,
-                        // backgroundColor: 'blue',
-                        marginHorizontal: 10,
-                    }]}
+            <View
+                style={[
+                    styles.bar,
+                    {
+                        top: edges.top - 10,
+                    },
+                ]}
+            >
+                {!myself ? (
+                    <TouchableScale
+                        onPress={props.onBackPress}
+                        style={styles.button}
+                    >
+                        <Feather
+                            name='arrow-left'
+                            color='white'
+                            size={30}
+                        />
+                    </TouchableScale>
+                ) : (
+                    <View style={styles.button} />
+                )}
+
+                <Animated.View
+                    style={[
+                        styles.content,
+                        {
+                            opacity: contentOpacity,
+                        },
+                    ]}
                 >
-                    <Feather
-                        name='arrow-left'
-                        color='white'
-                        size={30}
-                    />
-                </TouchableScale>
-
-                <View style={{
-                    // backgroundColor: 'red',
-                    marginHorizontal: 20,
-                    alignItems: 'center',
-                    flex: 1,
-                }}>
-                    <Text style={{
-                        fontFamily: 'Avenir Next',
-                        fontWeight: 'bold',
-                        color: 'white',
-                        fontSize: 16,
-                    }}
+                    <Text style={styles.name}
                         numberOfLines={1}
                     >
-                        Raphael Hadjadj
+                        {fullName}
                     </Text>
 
-                    <Text style={{
-                        fontFamily: 'Avenir Next',
-                        fontWeight: '500',
-                        opacity: 0.8,
-                        color: 'white',
-                        fontSize: 12,
-                    }}
+                    <Text style={styles.count}
                         numberOfLines={1}
                     >
-                        47 listes
+                        {listCount} listes
                     </Text>
-                </View>
+                </Animated.View>
 
-                <TouchableScale
-                    style={{
-                        width: 50,
-                        // backgroundColor: 'blue',
-                        marginHorizontal: 10,
-                        // marginRight: 30,
-                    }}
-                >
-                    <SendIcon
-                        fill='white'
-                        height={26}
-                        width={26}
-                    />
-                </TouchableScale>
+                {!myself ? (
+                    <TouchableScale
+                        onPress={props.onSharePress}
+                        style={styles.button}
+                    >
+                        <SendIcon
+                            fill='white'
+                            height={26}
+                            width={26}
+                        />
+                    </TouchableScale>
+                ) : (
+                    <View style={styles.button} />
+                )}
             </View>
-        </View>
+        </Animated.View>
     )
 })
 
 // Styles
 const styles = StyleSheet.create({
     container: {
-
+        position: 'absolute',
+        width: '100%',
     },
-    cover: {
-        // width:
-        height: 130,
-        // height: 90,
+    bar: {
+        justifyContent: 'space-between',
+        position: 'absolute',
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+    },
+    content: {
+        marginHorizontal: 20,
+        alignItems: 'center',
+        flex: 1,
+    },
+    name: {
+        fontFamily: 'Avenir Next',
+        fontWeight: 'bold',
+        color: 'white',
+        fontSize: 16,
+    },
+    count: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
+        color: 'white',
+        opacity: 0.8,
+        fontSize: 12,
+    },
+    wrapper: {
+        position: 'absolute',
+        overflow: 'hidden',
+        paddingTop: 10,
+        bottom: -40,
     },
     picture: {
-        position: 'absolute',
+        borderColor: 'white',
         borderRadius: 80,
         marginLeft: 20,
+        borderWidth: 3,
         height: 80,
         width: 80,
-        bottom: -50,
-        borderWidth: 3,
-        borderColor: 'white',
     },
-    back: {
+    button: {
         justifyContent: 'center',
         alignSelf: 'flex-start',
         alignItems: 'center',
-        marginHorizontal: 20,
+        marginHorizontal: 10,
         borderRadius: 50,
-        padding: 10,
+        height: 50,
+        width: 50,
     },
 })
 
 // Types
 type Props = {
-    translateY: Animated.Value,
+    onSharePress: () => void,
+    onBackPress: () => void,
+    scrollY: Animated.Value,
+    listCount: number,
+    myself?: boolean,
+    user: User,
 }
 
 //#region URL

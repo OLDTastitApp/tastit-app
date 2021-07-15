@@ -3,8 +3,10 @@ import React, { memo } from 'react'
 
 // Components
 import { View, Image, Text, StyleSheet } from 'react-native'
-import { TouchableScale, PicturePicker } from '@components'
-import Feather from 'react-native-vector-icons/Feather'
+import { FollowButton, ProfileButton } from '@components'
+
+// Helpers
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 // Constants
 import { font, color } from '@constants'
@@ -15,57 +17,31 @@ import { User } from '@types'
 
 export default memo((props: Props) => {
 
-    const { user, onPress, myself } = props;
+    const { user, myself } = props;
+
+    const onFollowPress = () => {
+        props.onFollowPress(!user.following);
+    };
+
+    const edges = useSafeAreaInsets();
+    const marginTop = edges.top + 90;
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container, { marginTop }]}>
 
-                <View style={{
-                    justifyContent: 'flex-end',
-                    // backgroundColor: '#f00e',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    height: 50,
-
-                    // alignItems: ''
-                }}>
-                    <TouchableScale
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            // marginBottom: 10,
-                            // marginTop: 10,
-                            // algin
-                            paddingHorizontal: 15,
-                            paddingVertical: 5,
-                            borderRadius: 100,
-                            borderWidth: 1,
-                            borderColor: color.primary,
-                        }}
-                    >
-                        {!user.following && (
-                            <Feather
-                                style={{
-                                    marginRight: 5,
-                                }}
-                                name='check'
-                                color={color.primary}
-                                size={14}
-                            />
-                        )}
-
-                        <Text style={{
-                            fontFamily: 'Avenir Next',
-                            fontWeight: 'bold',
-                            // color: color.dark,
-                            color: color.primary,
-                            fontSize: 14,
-                        }}>
-                            {!user.following ? `Abonné` : `S'abonner`}
-                        </Text>
-                    </TouchableScale>
+                <View style={styles.header}>
+                    {myself ? (
+                        <ProfileButton
+                            onSettingsPress={props.onSettingsPress}
+                            onEditPress={props.onEditPress}
+                        />
+                    ) : (
+                        <FollowButton
+                            following={!user.following}
+                            onPress={onFollowPress}
+                        />
+                    )}
                 </View>
 
                 <Text style={styles.name}
@@ -127,11 +103,12 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
-        // marginTop: 60,
     },
     header: {
-        backgroundColor: 'red',
-        // width: ''
+        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 50,
     },
     name: {
         fontFamily: 'Avenir Next',
@@ -191,7 +168,9 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
-    onPress: () => void,
+    onFollowPress: (following: boolean) => void,
+    onSettingsPress: () => void,
+    onEditPress: () => void,
     myself?: boolean,
     user: User,
 }

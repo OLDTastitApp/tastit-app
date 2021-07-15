@@ -2,30 +2,24 @@
 import React, { memo, useCallback, useState, useRef, useMemo } from 'react'
 
 // Components
-import { View, Text, FlatList, StatusBar } from 'react-native'
-import PictureViewer from './PictureViewer'
+import { View, Animated, Text, FlatList, StatusBar } from 'react-native'
 import PictureItem from './PictureItem'
-import Statistics from './Statistics'
 import Biography from './Biography'
-import NavBar from './NavBar'
 import Header from './Header'
 
 // Helpers
-import { useUser, useUserId, usePosts, useFollow, useUnfollow } from '@helpers'
+import { useUser, useUserId, usePosts, useFollow, useUnfollow, useScrollY } from '@helpers'
 import { useNavigation, useRoute } from '@navigation/utils'
 
 // Constants
 import { ui, font, color, style } from '@constants'
 
 // Types
-import { Ref as PictureViewerRef } from './PictureViewer'
 import { Props as PictureItemProps } from './PictureItem'
+import { Post } from '@types'
 
 
 export default memo(() => {
-
-    const pictureViewerRef = useRef<PictureViewerRef>(null);
-    const [visible, setVisible] = useState(false);
 
     const navigation = useNavigation();
     const { params } = useRoute<'Profile'>();
@@ -42,12 +36,8 @@ export default memo(() => {
     const [unfollow, unfollowResult] = useUnfollow();
     const [follow, followResult] = useFollow();
 
-    const onSettingsPress = () => {
-        navigation.navigate('Settings');
-    };
-
-    const onPicturePress = useCallback<OnPicturePress>(
-        item => pictureViewerRef.current.show(item),
+    const onPostPress = useCallback(
+        (post: Post) => {},
         []
     );
 
@@ -59,6 +49,32 @@ export default memo(() => {
     const onBiographyPress = () => {
         // navigation.navigate('EditProfile', { me });
     };
+
+    const { onScroll, scrollY } = useScrollY();
+
+    const onSharePress = useCallback(
+        () => {
+            // ...
+        },
+        []
+    );
+
+    const onSettingsPress = useCallback(
+        () => navigation.navigate('Settings'),
+        []
+    );
+
+    const onEditPress = useCallback(
+        () => {},
+        []
+    );
+
+    const onFollowPress = useCallback(
+        () => {
+            // ...
+        },
+        []
+    );
 
     // const pictures = useMemo(
     //     () => posts?.edges?.map(({ node }) => node),
@@ -79,34 +95,23 @@ export default memo(() => {
     // console.log(postsResult.error)
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={style.container}>
 
-            <FlatList
+            <Animated.FlatList
+                onScroll={onScroll}
                 keyExtractor={(item, i) => `${item}_${i}`}
-                // contentContainerStyle={{
-                //     paddingBottom: ui.safePaddingBottom + 80,
-                //     paddingHorizontal: 2,
-                // }}
                 ListHeaderComponent={user && (
-                    <>
-                        <Header
-                            // 
-                        />
-                        <Biography
-                            onPress={onBiographyPress}
-                            myself={myself}
-                            user={user}
-                        />
-                        {/* <Statistics
-                            favoriteCount={user?.followingCount}
-                            followerCount={user?.followerCount}
-                            listCount={user?.postCount}
-                        /> */}
-                    </>
+                    <Biography
+                        onSettingsPress={onSettingsPress}
+                        onFollowPress={onFollowPress}
+                        onEditPress={onEditPress}
+                        myself={myself}
+                        user={user}
+                    />
                 )}
                 renderItem={({ item, index }) => (
                     <PictureItem
-                        onPress={onPicturePress}
+                        onPress={onPostPress}
                         item={item.node}
                         index={index}
                     />
@@ -117,54 +122,15 @@ export default memo(() => {
                 numColumns={3}
             />
 
-            {/* <FlatList
-                keyExtractor={(item, i) => `${item}_${i}`}
-                contentContainerStyle={{
-                    paddingBottom: ui.safePaddingBottom + 80,
-                    backgroundColor: '#f2f2f2',
-                    paddingHorizontal: 2,
-                }}
-                ListHeaderComponent={user && (
-                    <>
-                        <NavBar
-                            onSettingsPress={onSettingsPress}
-                            // onAddUserPress={() => {}}
-                            myself={myself}
-                            title='Profile'
-                        />
-                        <Biography
-                            onPress={onBiographyPress}
-                            myself={myself}
-                            user={user}
-                        />
-                        <Statistics
-                            favoriteCount={user?.followingCount}
-                            followerCount={user?.followerCount}
-                            listCount={user?.postCount}
-                        />
-                    </>
-                )}
-                renderItem={({ item, index }) => (
-                    <PictureItem
-                        onPress={onPicturePress}
-                        item={item.node}
-                        index={index}
-                    />
-                )}
-                // data={pictures}
-                // data={[]}
-                data={posts?.edges}
-                numColumns={3}
-            /> */}
-
-            {/* <PictureViewer
-                ref={pictureViewerRef}
-                data={pictures ?? []}
-            /> */}
+            <Header
+                onBackPress={navigation.goBack}
+                onSharePress={onSharePress}
+                scrollY={scrollY}
+                myself={myself}
+                listCount={12}
+                user={user}
+            />
 
         </View>
     )
 })
-
-// Types
-type OnPicturePress = PictureItemProps['onPress']
