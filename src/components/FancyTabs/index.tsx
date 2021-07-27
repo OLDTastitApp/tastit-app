@@ -49,6 +49,10 @@ export default class FancyTabs extends PureComponent<Props, State> {
         this.resetSizes();
     }
 
+    componentDidUpdate() {
+        this.resetSizes();
+    }
+
     async resetSizes() {
 
         let sizes = [];

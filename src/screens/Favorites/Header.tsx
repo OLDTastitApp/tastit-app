@@ -33,7 +33,7 @@ export default memo((props: Props) => {
                 </Text>
 
                 <TouchableScale
-                    onPress={props.onSharePress}
+                    // onPress={props.onSharePress}
                 >
                     {/* <MaterialCommunityIcons
                         color={color.darkGray}
@@ -42,7 +42,8 @@ export default memo((props: Props) => {
                     /> */}
                     <Entypo
                         name='dots-three-horizontal'
-                        color={color.dark}
+                        // color={color.dark}
+                        color='transparent'
                         size={20}
                     />
                 </TouchableScale>

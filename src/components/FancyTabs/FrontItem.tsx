@@ -18,7 +18,7 @@ const FrontItem = ({ item, color, size }: Props) => (
     >
         <Text style={[
             styles.name,
-            { width: size.width },
+            { width: size?.width ?? 0 },
         ]}>
             {item.name}
         </Text>

@@ -7,6 +7,7 @@ import FavoriteItem from './FavoriteItem'
 import SectionList from './SectionList'
 import ShareModal from '../ShareModal'
 import { FancyTabs } from '@components'
+import ListHeader from './ListHeader'
 import Header from './Header'
 
 // Helpers
@@ -82,6 +83,29 @@ export default memo(() => {
         }
     };
 
+    // const tabs2 = useMemo(() => {
+    //     return [
+    //         { id: '0', name: 'AAAAAA' },
+    //         { id: '1', name: 'BBBBBB' },
+    //         { id: '2', name: 'CCCCCC' },
+    //         { id: '3', name: 'DDDDDD' },
+    //     ];
+    // }, []);
+
+    // const [tabs3, setTabs3] = useState([
+    //     { id: '0', name: 'AAAAAA' },
+    //     { id: '2', name: 'CCCCCC' },
+    // ]);
+
+    // React.useEffect(
+    //     () => {
+    //         setTimeout(() => {
+    //             setTabs3(tabs3 => [...tabs3, { id: '1', name: 'BBBBBB' },]);
+    //         }, 5000);
+    //     },
+    //     []
+    // );
+
     return (
         <View style={{ backgroundColor: '#f8f8f8', flex: 1 }}>
             
@@ -96,6 +120,8 @@ export default memo(() => {
                         color={color.primary}
                         onChange={onChange}
                         data={tabs}
+                        // data={tabs2}
+                        // data={tabs3}
                     />
                 </View>
             )}
@@ -120,6 +146,15 @@ export default memo(() => {
                 data={placeListItems?.edges}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
+
+                ListHeaderComponent={() => (
+                    <ListHeader
+                        count={placeListItems?.edges?.length}
+                        onCountPress={() => {}}
+                        onRemovePress={() => {}}
+                        name={tabs?.[index]?.name}
+                    />
+                )}
             />
 
             {/* <ScrollView>
