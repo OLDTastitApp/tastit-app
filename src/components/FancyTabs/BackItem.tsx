@@ -67,8 +67,10 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     name: {
-        fontFamily: font.regular,
+        // fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
         textAlign: 'center',
+        fontWeight: '500',
         // color: 'white',
         fontSize: 16,
 

@@ -27,7 +27,12 @@ export default (props: Props) => {
             style={styles.container}
             onPress={onPress}
         >
-            <Text style={styles.label}>
+            <Text
+                style={[
+                    styles.label,
+                    props.color && { color: props.color },
+                ]}
+            >
                 {props.label}
             </Text>
 
@@ -49,8 +54,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     label: {
-        fontFamily: font.regular,
-        color: color.darkGray,
+        fontFamily: 'Avenir Next',
+        color: color.dark,
+        fontWeight: '500',
         marginRight: 20,
         fontSize: 16,
         flex: 1,
@@ -60,6 +66,7 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     onPress?: (uri: string) => void,
+    color?: string,
     label: string,
     uri: string,
 }

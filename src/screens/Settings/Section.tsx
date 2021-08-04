@@ -10,9 +10,9 @@ import { font, color } from '@constants'
 
 export default (props: Props) => (
     <View style={styles.container}>
-        <Text style={styles.title}>
+        {/* <Text style={styles.title}>
             {props.title}
-        </Text>
+        </Text> */}
         <View style={styles.separator} />
     </View>
 )
@@ -21,7 +21,7 @@ export default (props: Props) => (
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
-        marginTop: 20,
+        // marginTop: 20,
     },
     title: {
         fontFamily: font.semiBold,

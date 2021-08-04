@@ -36,12 +36,14 @@ export default memo(FrontItem);
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
+        marginHorizontal: 5,
         paddingVertical: 5,
     },
     name: {
-        fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
         textAlign: 'center',
+        fontWeight: '500',
         color: 'white',
         fontSize: 16,
     },

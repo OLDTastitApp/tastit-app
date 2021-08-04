@@ -24,7 +24,7 @@ export default memo((props: Props) => {
                     <Feather
                         color={color.dark}
                         name='arrow-left'
-                        size={30}
+                        size={20}
                     />
                 </TouchableScale>
 
@@ -50,10 +50,11 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     title: {
-        fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
         textAlign: 'center',
+        fontWeight: '500',
         color: color.dark,
-        fontSize: 24,
+        fontSize: 20,
         flex: 1,
     },
     right: {

@@ -2,6 +2,7 @@
 import React, { memo, useState } from 'react'
 
 // Components
+import Feather from 'react-native-vector-icons/Feather'
 import { View, Text, StyleSheet } from 'react-native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { TouchableScale, Modal } from '@components'
@@ -58,6 +59,23 @@ export default memo((props: Props) => {
                         onPress={props.onRemovePress}
                         style={styles.item}
                     >
+                        <View style={{
+                            width: 50,
+                            height: 50,
+                            backgroundColor: `${color.dark}11`,
+                            // backgroundColor: `${color.primary}`,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 40,
+                        }}>
+                            <Feather
+                                color={color.dark}
+                                // color={color.light}
+                                name='trash'
+                                size={20}
+                            />
+                        </View>
+
                         <Text style={styles.name}>
                             Supprimer
                         </Text>
@@ -118,7 +136,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     item: {
-        // alignItems: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
         marginLeft: 20,
     },
     name: {
@@ -128,6 +147,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
         fontSize: 22,
+        marginLeft: 20,
     },
 })
 

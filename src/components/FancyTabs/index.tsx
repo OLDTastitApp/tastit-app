@@ -49,9 +49,9 @@ export default class FancyTabs extends PureComponent<Props, State> {
         this.resetSizes();
     }
 
-    componentDidUpdate() {
-        this.resetSizes();
-    }
+    // componentDidUpdate() {
+    //     this.resetSizes();
+    // }
 
     async resetSizes() {
 
@@ -73,6 +73,8 @@ export default class FancyTabs extends PureComponent<Props, State> {
         if (sizes.length > 0) {
             this.cursorWidth.setValue(sizes[0].width + 40);
         }
+
+        console.log(`sizes: ${JSON.stringify(sizes, null, 4)}`)
 
         this.setState({ sizes, loaded: true });
     }

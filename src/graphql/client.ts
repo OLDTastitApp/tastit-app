@@ -28,7 +28,7 @@ import { initializeStore } from './store'
 // import decode from 'jwt-decode'
 
 // Env
-import env from '@env'
+import * as env from '@env'
 
 
 // Cache

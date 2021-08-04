@@ -34,8 +34,10 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     label: {
-        fontFamily: font.regular,
-        color: color.darkGray,
+        // fontFamily: font.regular,
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
+        color: color.dark,
         fontSize: 16,
         flex: 1,
     },
