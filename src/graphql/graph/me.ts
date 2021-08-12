@@ -1,42 +1,24 @@
 // GraphQL
-import { gql } from '@apollo/client'
+import * as fragments from './fragments'
+import gql from 'graphql-tag'
 
 // Types
 import { User } from '@types'
 
 
 export type MeResult = {
-    me: {
-        favoriteCount?: number,
-        followerCount?: number,
-        listCount?: number,
-        user: User,
-        id: string,
-    },
+    me: User,
 }
 
 export const ME = gql`
     query Me {
         me {
-            user {
-                ... on IndividualUser {
-                    biography
-                    username
-                }
-                cover(format: "default") {
-                    reference
-                    value
-                    type
-                    id
-                }
-                firstName
-                lastName
-                id
-            }
-            favoriteCount
+            ...UserFragment
+            placeListCount
+            followingCount
             followerCount
-            postCount
-            id
+            following
         }
     }
+    ${fragments.USER}
 `

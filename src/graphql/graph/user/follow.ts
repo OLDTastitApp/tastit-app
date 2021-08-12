@@ -28,9 +28,14 @@ export const FOLLOW = gql`
         ) {
             user {
                 ...UserFragment
+                followingCount
+                followerCount
             }
             target {
                 ...UserFragment
+                followingCount
+                followerCount
+                following
             }
         }
     }

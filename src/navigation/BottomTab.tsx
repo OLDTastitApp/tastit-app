@@ -12,8 +12,9 @@ import Favorites from '@screens/Favorites'
 // import Profile from '@screens/Profile'
 // import Screenshot from './Screenshot'
 import Map from '@screens/Map'
-import Home from '@screens/Home'
+// import Home from '@screens/Home'
 import Profile from './Profile'
+import HomeStack from './Home'
 
 // Constants
 import { color } from '@constants'
@@ -51,7 +52,7 @@ export default () => (
         // initialRouteName='Favorites'
         // initialRouteName='Profile'
         // initialRouteName='Screenshot'
-        initialRouteName='Home'
+        initialRouteName='HomeStack'
     >
         <Tab.Screen
             options={() => ({
@@ -62,8 +63,8 @@ export default () => (
                     />
                 ),
             })}
-            component={Home}
-            name='Home'
+            component={HomeStack}
+            name='HomeStack'
         />
         <Tab.Screen
             options={() => ({

@@ -18,9 +18,7 @@ export const USER = gql`
         picture(format: "60x60") {
             ...ImageFragment
         }
-        followingCount
-        followerCount
-        postCount
+        biography
         firstName
         lastName
         nickname

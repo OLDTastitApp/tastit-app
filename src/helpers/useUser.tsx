@@ -4,12 +4,13 @@ import * as graph from '@graphql/graph'
 
 
 type Args = {
+    skip?: boolean,
     id: string,
 }
 
 export default (args: Args) => {
 
-    const { id } = args;
+    const { id, skip } = args;
 
     const result = useQuery<
         graph.UserResult,
@@ -17,7 +18,7 @@ export default (args: Args) => {
     >(
         graph.USER,
         {
-            skip: id == null,
+            skip: id == null || skip,
             variables: {
                 id,
             },

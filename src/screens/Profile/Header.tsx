@@ -20,6 +20,8 @@ export default memo((props: Props) => {
 
     const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`;
 
+    const userUrl = user?.picture?.url;
+
     const edges = useSafeAreaInsets();
     const fullHeight = edges.top + 90;
 
@@ -105,18 +107,40 @@ export default memo((props: Props) => {
                     },
                 ]}
             >
-                <Animated.Image
-                    source={{ uri: userUrl }}
-                    style={[
-                        styles.picture,
-                        {
-                            transform: [
-                                { translateY: translatePictureY },
-                                { scale: scalePicture },
-                            ],
-                        },
-                    ]}
-                />
+                {!!userUrl ? (
+                    <Animated.Image
+                        source={{ uri: userUrl }}
+                        style={[
+                            styles.picture,
+                            {
+                                transform: [
+                                    { translateY: translatePictureY },
+                                    { scale: scalePicture },
+                                ],
+                            },
+                        ]}
+                    />
+                ) : (
+                    <Animated.View
+                        style={[
+                            styles.picture,
+                            {
+                                // backgroundColor: 'red',
+                                backgroundColor: '#f2f2f2',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                transform: [
+                                    { translateY: translatePictureY },
+                                    { scale: scalePicture },
+                                ],
+                            },
+                        ]}
+                    >
+                        <Text style={{ fontSize: 40 }}>
+                            👽
+                        </Text>
+                    </Animated.View>
+                )}
             </Animated.View>
 
             <View
@@ -250,5 +274,4 @@ type Props = {
 
 //#region URL
 const coverUrl = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-const userUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
 //#endregion

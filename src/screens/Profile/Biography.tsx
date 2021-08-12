@@ -38,7 +38,7 @@ export default memo((props: Props) => {
                         />
                     ) : (
                         <FollowButton
-                            following={!user.following}
+                            following={user.following}
                             onPress={onFollowPress}
                         />
                     )}
@@ -55,19 +55,23 @@ export default memo((props: Props) => {
                     @{user.nickname}
                 </Text>
 
-                <View style={styles.separator} />
+                {!!user?.biography && (
+                    <>
+                        <View style={styles.separator} />
 
-                <Text
-                    style={styles.description}
-                    numberOfLines={3}
-                >
-                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-                </Text>
+                        <Text
+                            style={styles.description}
+                            numberOfLines={3}
+                        >
+                            {user.biography}
+                        </Text>
+                    </>
+                )}
 
                 <View style={styles.footer}>
                     <View style={styles.item}>
                         <Text style={styles.count}>
-                            74
+                            {user?.followerCount}
                         </Text>
                         <Text style={styles.title}>
                             Followers
@@ -76,7 +80,7 @@ export default memo((props: Props) => {
 
                     <View style={styles.item}>
                         <Text style={styles.count}>
-                            389
+                            {user?.followingCount}
                         </Text>
                         <Text style={styles.title}>
                             Following
@@ -85,7 +89,7 @@ export default memo((props: Props) => {
 
                     <View style={styles.item}>
                         <Text style={styles.count}>
-                            18
+                            {user?.placeListCount}
                         </Text>
                         <Text style={styles.title}>
                             Listes

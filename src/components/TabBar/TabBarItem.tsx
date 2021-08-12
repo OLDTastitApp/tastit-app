@@ -78,7 +78,7 @@ const iconMap: {
         Icon: any,
     },
 } = {
-    'Home': {
+    'HomeStack': {
         Icon: HomeIcon,
     },
     'Map': {

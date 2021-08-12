@@ -1,4 +1,5 @@
 // GraphQL
+import * as fragments from '../fragments'
 import { gql } from '@apollo/client'
 
 // Types
@@ -7,19 +8,19 @@ import { User } from '@types'
 
 export type UpdateProfileArgs = {
     input: {
-        patch: {
+        // patch: {
             biography?: string,
             firstName?: string,
             lastName?: string,
-            cover?: string,
-        },
-        id?: string,
+            picture?: string,
+        // },
+        // id?: string,
     },
 }
 
 export type UpdateProfileResult = {
     updateProfile: {
-        user: User,
+        me: User,
     },
 }
 
@@ -30,21 +31,10 @@ export const UPDATE_PROFILE = gql`
         updateProfile(
             input: $input
         ) {
-            user {
-                ... on IndividualUser {
-                    biography
-                    username
-                }
-                cover(format: "default") {
-                    reference
-                    value
-                    type
-                    id
-                }
-                firstName
-                lastName
-                id
+            me {
+                ...UserFragment
             }
         }
     }
+    ${fragments.USER}
 `

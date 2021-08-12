@@ -57,12 +57,12 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         paddingTop: ui.safePaddingTop + 10,
-        // backgroundColor: 'white',
-        backgroundColor: '#f8f8f8',
+        backgroundColor: 'white',
+        // backgroundColor: '#f8f8f8',
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 10,
+        // paddingBottom: 10,
     },
     left: {
         backgroundColor: color.primary,
@@ -85,6 +85,6 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
-    onSharePress: () => void,
+    // onSharePress: () => void,
     title: string,
 }

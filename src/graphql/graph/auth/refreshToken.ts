@@ -15,12 +15,14 @@ export type RefreshTokenResult = {
     },
 }
 
-export const REFRESH_TOKEN = gql`
+export const REFRESH_TOKEN_QUERY = `
     mutation RefreshToken(
-        $input: RefreshTokenInput!
+        $token: String!
     ) {
         refreshToken(
-            input: $input
+            input: {
+                token: $token
+            }
         ) {
             refreshToken
             accessToken

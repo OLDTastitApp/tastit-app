@@ -23,12 +23,12 @@ export default memo((props: Props) => {
         <>
             <TouchableScale
                 // onPress={props.onCountPress}
-                style={styles.container}
+                style={[styles.container, styles.shadow]}
                 onPress={onPress}
             >
 
                 <Text style={styles.title}>
-                    {props.count} éléments
+                    {props.count} {props.count > 1 ? 'éléments' : 'élément'}
                 </Text>
 
                 {/* <TouchableScale
@@ -36,8 +36,11 @@ export default memo((props: Props) => {
                 > */}
                     <Entypo
                         name='dots-three-horizontal'
-                        color={color.mediumGray}
-                        size={14}
+                        // color={color.mediumGray}
+                        // color={color.lightGray}
+                        color={color.dark}
+                        // color={'white'}
+                        size={12}
                     />
                 {/* </TouchableScale> */}
 
@@ -92,17 +95,38 @@ const styles = StyleSheet.create({
     container: {
         // backgroundColor: '#f8f8f8',
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        // backgroundColor: color.mediumGray,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        paddingHorizontal: 10,
+        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 20,
+        marginBottom: 20,
+        paddingVertical: 3,
+        borderRadius: 50,
+        marginTop: 10,
+    },
+    shadow: {
+        shadowOffset: {
+            height: 2,
+            width: 0,
+        },
+        shadowColor: '#000',
+        // shadowOpacity: 0.25,
+        shadowOpacity: 0.15,
+        shadowRadius: 5.84,
+        elevation: 5,
     },
     title: {
         // fontFamily: font.bold,
         fontFamily: 'Avenir Next',
-        color: color.mediumGray,
+        // color: color.mediumGray,
+        // color: color.gray,
+        // color: 'white',
+        color: color.dark,
         fontWeight: '600',
-        fontSize: 14,
+        fontSize: 12,
         // flex: 1,
         marginRight: 10,
     },

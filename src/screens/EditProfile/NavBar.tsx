@@ -10,32 +10,34 @@ import { TouchableScale } from '@components'
 import { ui, font, color } from '@constants'
 
 
-export default memo((props: Props) => (
-    <>
-        <StatusBar barStyle='dark-content' />
+export default memo((props: Props) => {
 
-        <View style={styles.container}>
+    return (
+        <>
+            <StatusBar barStyle='dark-content' />
 
-            <TouchableScale
-                onPress={props.onBackPress}
-                disabled={props.disabled}
-            >
-                <Feather
-                    color={color.dark}
-                    name='arrow-left'
-                    size={30}
-                />
-            </TouchableScale>
+            <View style={styles.container}>
 
-            <Text style={styles.title}>
-                {props.title}
-            </Text>
+                <TouchableScale
+                    onPress={props.onBackPress}
+                >
+                    <Feather
+                        color={color.dark}
+                        name='arrow-left'
+                        size={30}
+                    />
+                </TouchableScale>
 
-            <View style={styles.right} />
+                {/* <Text style={styles.title}>
+                    {props.title}
+                </Text> */}
 
-        </View>
-    </>
-))
+                <View style={styles.right} />
+
+            </View>
+        </>
+    )
+})
 
 // Styles
 const styles = StyleSheet.create({
@@ -46,13 +48,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 10,
-        marginBottom: 20,
+        // marginBottom: 10,
     },
     title: {
-        fontFamily: font.regular,
+        fontFamily: font.semiBold,
         textAlign: 'center',
         color: color.dark,
-        fontSize: 24,
+        fontSize: 20,
         flex: 1,
     },
     right: {
@@ -63,6 +65,5 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     onBackPress: () => void,
-    disabled?: boolean,
-    title: string,
+    // title: string,
 }

@@ -22,6 +22,10 @@ export const USER = gql`
             id: $id
         ) {
             ...UserFragment
+            placeListCount
+            followingCount
+            followerCount
+            following
         }
     }
     ${fragments.USER}

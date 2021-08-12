@@ -1,4 +1,5 @@
 export * from './dislikePlace'
 export * from './likePlace'
+export * from './favorites'
 export * from './places'
 export * from './place'

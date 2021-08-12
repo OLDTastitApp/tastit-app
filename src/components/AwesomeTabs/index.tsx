@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, memo } from 'react'
 
 // Components
-import { View, FlatList, Text, StyleSheet } from 'react-native'
+import { View, FlatList, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import Animated, {
     useAnimatedScrollHandler,
     useAnimatedStyle,
@@ -206,7 +206,7 @@ const AwesomeTabs = <TItem,>(props: Props<TItem>) => {
     );
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, props.style]}>
             <View>
 
                 <AnimatedFlatList
@@ -281,6 +281,7 @@ const AwesomeTabs = <TItem,>(props: Props<TItem>) => {
                                 {data.map((item, index) => (
                                     // this.renderFrontItem({ item, index })
                                     <FrontItem
+                                        color={color.primary}
                                         size={sizes[index]}
                                         item={item as any}
                                         key={index}
@@ -305,9 +306,10 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const styles = StyleSheet.create({
     container: {
         // backgroundColor: 'purple',
-        marginBottom: 20,
-        marginTop: 30,
+        // marginBottom: 20,
+        // marginTop: 30,
         // flex: 1,
+        marginVertical: 10,
     },
     padding: {
         paddingHorizontal: 20,
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
     },
     cursor: {
         // backgroundColor: '#171717',
-        backgroundColor: color.dark,
+        backgroundColor: color.primary,
         // backgroundColor: 'red',
         overflow: 'hidden',
         borderRadius: 200,
@@ -335,6 +337,7 @@ export type Props<TItem> = {
     scrollX?: Animated.SharedValue<number>
     renderFrontItem?: RenderItem<TItem>,
     renderBackItem?: RenderItem<TItem>,
+    style?: StyleProp<ViewStyle>,
     onChange?: OnChange<TItem>,
     frontColor?: string,
     backColor?: string,

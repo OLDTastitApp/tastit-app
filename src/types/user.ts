@@ -12,17 +12,17 @@ export type Role = {
 }
 
 export type User = {
-    // biography?: string,
     // username?: string,
     // firstName: string,
     // lastName: string,
     // // cover: Image,
     // cover: string,
     // id: string,
-    
+    placeListCount: number,
     followingCount: number,
     followerCount: number,
     following?: boolean,
+    biography?: string,
     postCount: number,
     nickname?: string,
     firstName: string,

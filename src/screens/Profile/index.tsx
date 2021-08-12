@@ -8,7 +8,7 @@ import Biography from './Biography'
 import Header from './Header'
 
 // Helpers
-import { useUser, useUserId, usePosts, useFollow, useUnfollow, useScrollY } from '@helpers'
+import { useMe, useUser, useUserId, usePosts, useFollow, useUnfollow, useScrollY } from '@helpers'
 import { useNavigation, useRoute } from '@navigation/utils'
 
 // Constants
@@ -31,7 +31,8 @@ export default memo(() => {
     const userId = params?.userId ?? meId;
     const myself = userId === meId;
 
-    const [user, userResult] = useUser({ id: userId });
+    const [user, userResult] = useUser({ id: userId, skip: myself });
+    const [me, meResult] = useMe({ skip: !myself });
 
     const [unfollow, unfollowResult] = useUnfollow();
     const [follow, followResult] = useFollow();
@@ -65,13 +66,17 @@ export default memo(() => {
     );
 
     const onEditPress = useCallback(
-        () => {},
+        () => navigation.navigate('EditProfile'),
         []
     );
 
     const onFollowPress = useCallback(
-        () => {
-            // ...
+        (following: boolean) => {
+            if (following) {
+                follow({ userId });
+            } else {
+                unfollow({ userId });
+            }
         },
         []
     );
@@ -85,14 +90,17 @@ export default memo(() => {
 
     // if (meResult.loading) return null;
 
-    if (userResult.error) {
-        console.log(userResult.error);
+    if (userResult.error || meResult.error) {
+        console.log(userResult.error || meResult.error);
         return null;
     }
 
     // console.log(postsResult.data?.me)
-    // console.log(JSON.stringify(posts, null, 4))
     // console.log(postsResult.error)
+    
+    const data = myself ? me : user;
+    
+    console.log(JSON.stringify(data, null, 4))
 
     return (
         <View style={style.container}>
@@ -100,13 +108,13 @@ export default memo(() => {
             <Animated.FlatList
                 onScroll={onScroll}
                 keyExtractor={(item, i) => `${item}_${i}`}
-                ListHeaderComponent={user && (
+                ListHeaderComponent={data && (
                     <Biography
                         onSettingsPress={onSettingsPress}
                         onFollowPress={onFollowPress}
                         onEditPress={onEditPress}
                         myself={myself}
-                        user={user}
+                        user={data}
                     />
                 )}
                 renderItem={({ item, index }) => (
@@ -123,12 +131,12 @@ export default memo(() => {
             />
 
             <Header
+                listCount={data?.placeListCount}
                 onBackPress={navigation.goBack}
                 onSharePress={onSharePress}
                 scrollY={scrollY}
                 myself={myself}
-                listCount={12}
-                user={user}
+                user={data}
             />
 
         </View>

@@ -1,41 +1,30 @@
 // React
 import React, { memo, useState, useMemo } from 'react'
-import Animated, {
-    useAnimatedScrollHandler,
-    useAnimatedStyle,
-    useSharedValue,
-    interpolate,
-    interpolateColors,
-} from 'react-native-reanimated'
-import { FlatList, Text, StyleSheet, Dimensions } from 'react-native'
+
+// Components
+import { FlatList, StyleSheet } from 'react-native'
 import AwesomeTabs from '@components/AwesomeTabs'
+import Animated from 'react-native-reanimated'
+import FavoriteList from './FavoriteList'
+import PlaceList from './PlaceList'
+import Header from './Header'
 
 // Components
 import { View } from 'react-native'
 
+// Helpers
+import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import { usePlaceLists, usePlaceListItems } from '@helpers'
+import { useWindowDimensions } from 'react-native'
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 export default memo(() => {
 
     const [index, setIndex] = useState(0);
 
-    const [tabs, setTabs] = useState([
-        { id: '0', name: 'Fast-foods' },
-        { id: '1', name: 'Traiteurs' },
-        { id: '2', name: 'Chicken' },
-        { id: '3', name: 'Kebab' },
-        { id: '4', name: 'Italiens' },
-    ]);
+    const { width } = useWindowDimensions();
 
-    // React.useEffect(
-    //     () => {
-    //         setTimeout(() => {
-    //             setTabs(tabs => [...tabs, { id: `${tabs.length + 1}`, name: 'BBBBBB' },]);
-    //         }, 5000);
-    //     },
-    //     []
-    // );
+    const [placeLists, placeListsResult] = usePlaceLists({ first: 100 });
 
     const scrollX = useSharedValue(0);
 
@@ -45,88 +34,62 @@ export default memo(() => {
         },
     }, []);
 
-    const kkk = useAnimatedStyle(
+    const tabs = useMemo(
         () => {
-            const w = interpolate(
-                scrollX.value,
-                [0, width, 2 * width],
-                [100, 200, 300],
-            );
-            // const backgroundColor = interpolateColors(translateX.value, {
-            //     inputRange: [0, width, 2 * width],
-            //     outputColorRange: ['#ff0000', '#ffff00', '#000000'],
-            // });
-            // console.log(`value: ${w}`)
-            return {
-                // backgroundColor,
-                width: w,
-            };
+            const lists = placeLists?.edges?.map(
+                ({ node }) => node
+            ) ?? [];
+            return [MY_FAVORITES, ...lists];
         },
-        []
+        [placeLists]
     );
 
+    console.log(`placeLists: ${placeLists?.edges?.length}`)
+
     return (
-        <View style={{ flex: 1, paddingTop: 40 }}>
+        <View style={styles.container}>
+
+            <Header title='Lieux aimés' />
 
             <AwesomeTabs
-                // renderFrontItem={({ item }) => (
-                //     null
-                // )}
                 pageWidth={width}
                 scrollX={scrollX}
                 data={tabs}
             />
-
-            {/* <Animated.View style={[kkk, {
-                // height: 100,
-                width: 100,
-                backgroundColor: 'blue',
-                // alignItems: 'flex-start',
-                alignSelf: 'flex-start',
-            }]}>
-                <Text>
-                    AAAA
-                </Text>
-            </Animated.View> */}
             
             <AnimatedFlatList
+                renderItem={({ item, index }) => (
+                    index !== 0 ? (
+                        <PlaceList
+                            id={(item as any).id}
+                        />
+                    ) : (
+                        <FavoriteList />
+                    )
+                )}
                 showsHorizontalScrollIndicator={false}
+                keyExtractor={({ id }) => id}
                 scrollEventThrottle={16}
                 decelerationRate='fast'
-                // snapToInterval={width}
                 onScroll={onScroll}
                 pagingEnabled
-                horizontal
-                style={{
-                    flex: 1,
-                }}
-                keyExtractor={({ id }) => id}
                 data={tabs}
-                renderItem={({ }) => (
-                    <View style={[styles.page, { backgroundColor: '#' + Math.random().toString(16).substr(-6) }]} />
-                )}
-            >
-                {/* <View style={[styles.page, { backgroundColor: 'green' }]} />
-                <View style={[styles.page, { backgroundColor: 'blue' }]} /> */}
-            </AnimatedFlatList>
-
-            {/* <Text>
-                AAAAA
-            </Text> */}
+                horizontal
+            />
 
         </View>
     )
 })
 
-const { width, height } = Dimensions.get('window')
+// Constants
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
+const MY_FAVORITES = { id: '0', name: 'Mes likes' }
+
+// Styles
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         flex: 1,
-    },
-    page: {
-        height: '100%',
-        width,
     },
 })
