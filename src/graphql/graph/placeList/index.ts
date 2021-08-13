@@ -1,4 +1,6 @@
+export * from './deletePlaceList'
 export * from './createPlaceList'
 export * from './placeListItems'
+export * from './removePlace'
 export * from './placeLists'
 export * from './addPlace'

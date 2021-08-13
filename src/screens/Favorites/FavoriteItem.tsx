@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         paddingBottom: 10,
         marginBottom: 20,
-        borderRadius: 20,
+        // borderRadius: 20,
+        borderRadius: 10,
         flex: 1,
 
         shadowColor: "#000",
@@ -115,8 +116,10 @@ const styles = StyleSheet.create({
         elevation: 14,
     },
     cover: {
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        // borderTopRightRadius: 20,
+        // borderTopLeftRadius: 20,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
         overflow: 'hidden',
     },
     image: {

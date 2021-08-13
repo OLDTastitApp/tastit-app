@@ -2,23 +2,22 @@
 import React, { memo, useState, useMemo, useRef, useCallback } from 'react'
 
 // Components
-import { FlatList, StyleSheet } from 'react-native'
+import { View, FlatList, StyleSheet } from 'react-native'
 import AwesomeTabs from '@components/AwesomeTabs'
 import Animated from 'react-native-reanimated'
 import FavoriteList from './FavoriteList'
+import OptionsModal from './OptionsModal'
 import PlaceList from './PlaceList'
 import Header from './Header'
 
-// Components
-import { View } from 'react-native'
-
 // Helpers
-import { usePlaceLists, useLikePlace, useDislikePlace, usePlaceListItems } from '@helpers'
+import { usePlaceLists, useLikePlace, useDislikePlace, useRemovePlace } from '@helpers'
 import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { useWindowDimensions } from 'react-native'
 
 // Types
 import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
+import { Ref as OptionsModalRef } from './OptionsModal'
 import { Place } from '@types'
 
 
@@ -28,10 +27,14 @@ export default memo(() => {
 
     const { width } = useWindowDimensions();
 
+    const optionsModalRef = useRef<OptionsModalRef>(null);
+
     const listRef = useRef<FlatList>(null);
     const tabsRef = useRef<FlatList>(null);
 
     const [placeLists, placeListsResult] = usePlaceLists({ first: 100 });
+
+    const [removePlace, removePlaceResult] = useRemovePlace();
 
     const [dislikePlace, dislikePlaceResult] = useDislikePlace();
     const [likePlace, likePlaceResult] = useLikePlace();
@@ -72,10 +75,11 @@ export default memo(() => {
         [placeLists]
     );
 
-    console.log(`placeLists: ${placeLists?.edges?.length}`)
+    // console.log(`placeLists: ${placeLists?.edges?.length}`)
 
     const onChange = useCallback(
         (index: number) => {
+            tabsRef.current?.scrollToIndex({ viewPosition: 0.5, animated: true, index });
             listRef.current?.scrollToIndex({ viewPosition: 0.5, animated: true, index });
         },
         []
@@ -87,6 +91,21 @@ export default memo(() => {
             const index = Math.max(0, Math.floor(contentOffset.x / layoutMeasurement.width));
             console.log(`onMomentumScrollEnd: ${index}, ${contentOffset.x}`)
             tabsRef.current?.scrollToIndex({ viewPosition: 0.5, animated: true, index });
+        },
+        []
+    );
+
+    const onRemovePress = useCallback(
+        (place: Place, placeListId: string) => {
+            console.log(`removing: ${place.id} from ${placeListId}`);
+            removePlace({ placeId: place.id, placeListId });
+        },
+        []
+    );
+
+    const onOptionsPress = useCallback(
+        (place: Place, placeListId: string) => {
+            optionsModalRef.current?.show(place, placeListId);
         },
         []
     );
@@ -108,6 +127,7 @@ export default memo(() => {
                 renderItem={({ item, index }) => (
                     index !== 0 ? (
                         <PlaceList
+                            onOptionsPress={onOptionsPress}
                             onLikePress={onLikePress}
                             onPress={onPlacePress}
                             id={(item as any).id}
@@ -129,6 +149,11 @@ export default memo(() => {
                 ref={listRef}
                 data={tabs}
                 horizontal
+            />
+
+            <OptionsModal
+                onRemovePress={onRemovePress}
+                ref={optionsModalRef}
             />
 
         </View>

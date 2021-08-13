@@ -25,19 +25,19 @@ export default memo((props: Props) => {
 
     const [favorites, favoritesResult] = useFavorites({ first: 100 });
 
-    const [dislikePlace, dislikePlaceResult] = useDislikePlace();
-    const [likePlace, likePlaceResult] = useLikePlace();
+    // const [dislikePlace, dislikePlaceResult] = useDislikePlace();
+    // const [likePlace, likePlaceResult] = useLikePlace();
 
-    const onLikePress = useCallback(
-        async (item: Place) => {
-            if (item.liked) {
-                await dislikePlace({ placeId: item.id });
-            } else {
-                await likePlace({ placeId: item.id });
-            }
-        },
-        []
-    );
+    // const onLikePress = useCallback(
+    //     async (item: Place) => {
+    //         if (item.liked) {
+    //             await dislikePlace({ placeId: item.id });
+    //         } else {
+    //             await likePlace({ placeId: item.id });
+    //         }
+    //     },
+    //     []
+    // );
 
     const [refreshing, setRefreshing] = useState(false);
 
@@ -59,7 +59,7 @@ export default memo((props: Props) => {
             <FlatList
                 renderItem={({ item }) => (
                     <FavoriteItem
-                        onLikePress={onLikePress}
+                        onLikePress={props.onLikePress}
                         onPress={props.onPress}
                         item={item.node}
                         favorite
@@ -113,7 +113,7 @@ export default memo((props: Props) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        // height: '100%',
+        height: '100%',
     },
     content: {
         paddingBottom: 120,
