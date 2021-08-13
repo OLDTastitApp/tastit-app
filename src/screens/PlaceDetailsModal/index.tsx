@@ -66,10 +66,10 @@ export default memo((props: Props) => {
     const onLikePress = async () => {
         if (place.liked) {
             const res = await dislikePlace({ placeId: place.id });
-            console.log(JSON.stringify(res, null, 4))
+            // console.log(JSON.stringify(res, null, 4))
         } else {
             const res = await likePlace({ placeId: place.id });
-            console.log(JSON.stringify(res, null, 4));
+            // console.log(JSON.stringify(res, null, 4));
         }
     };
 

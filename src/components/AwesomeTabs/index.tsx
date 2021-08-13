@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useRef, memo } from 'react'
+import React, { useState, useEffect, useRef, memo, forwardRef, RefObject } from 'react'
 
 // Components
 import { View, FlatList, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native'
@@ -215,6 +215,10 @@ const AwesomeTabs = <TItem,>(props: Props<TItem>) => {
                         //     {(item as any)?.name}
                         // </Text>
                         <BackItem
+                            // onPress={() => {
+                            //     console.log(`onPress: ${index}, ${item}`)
+                            // }}
+                            onPress={props.onChange}
                             item={item as any}
                             index={index}
                         />
@@ -223,6 +227,7 @@ const AwesomeTabs = <TItem,>(props: Props<TItem>) => {
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={({ id }) => id}
                     scrollEventThrottle={16}
+                    ref={props.scrollRef}
                     onScroll={onScroll}
                     data={props.data}
                     horizontal
@@ -246,6 +251,9 @@ const AwesomeTabs = <TItem,>(props: Props<TItem>) => {
                         style={[
                             styles.wrapper,
                             wrapperStyle,
+                            // {
+                            //     backgroundColor: 'blue'
+                            // }
                             // {
                             //     transform: [
                             //         // { translateX: wrapperX },
@@ -315,7 +323,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     wrapper: {
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
+        marginHorizontal: 20,
         position: 'absolute',
     },
     cursor: {
@@ -337,8 +346,10 @@ export type Props<TItem> = {
     scrollX?: Animated.SharedValue<number>
     renderFrontItem?: RenderItem<TItem>,
     renderBackItem?: RenderItem<TItem>,
+    onChange: (index: number) => void,
+    scrollRef?: RefObject<FlatList>,
     style?: StyleProp<ViewStyle>,
-    onChange?: OnChange<TItem>,
+    // onChange?: OnChange<TItem>,
     frontColor?: string,
     backColor?: string,
     pageWidth?: number,

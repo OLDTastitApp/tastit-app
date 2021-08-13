@@ -21,7 +21,8 @@ export default class BackItem extends PureComponent<Props> {
 
     handlePress = () => {
         const { item, index, onPress } = this.props;
-        onPress({ item, index });
+        // onPress({ item, index });
+        onPress?.(index);
     }
 
     render() {
@@ -86,7 +87,8 @@ type Props = {
         index: number,
     }) => void,
     // @REFACTOR
-    onPress?: (item: any) => void,
+    // onPress?: (item: any) => void,
+    onPress: (index: number) => void,
     color?: string,
     index?: number,
     item: {

@@ -26,15 +26,15 @@ export default memo((props: Props) => {
         props.onPress?.(item);
     };
 
-    const onFavoritePress = (favorited: boolean) => {
-        // ...
+    const onLikePress = () => {
+        props.onLikePress(item);
     };
 
     const onMorePress = () => {
-        // ...
+        props.onMorePress(item);
     };
 
-    const LikeIcon = item.favorited ? HeartFilledIcon : HeartIcon;
+    const LikeIcon = item.liked ? HeartFilledIcon : HeartIcon;
     
     return (
         <TouchableScale
@@ -58,7 +58,7 @@ export default memo((props: Props) => {
                 </Text>
 
                 <TouchableScale
-                    onPress={() => onFavoritePress(true)}
+                    onPress={onLikePress}
                     style={styles.icon}
                 >
                     <LikeIcon
@@ -67,17 +67,20 @@ export default memo((props: Props) => {
                         width={20}
                     />
                 </TouchableScale>
-                <TouchableScale
-                    onPress={onMorePress}
-                    style={styles.icon}
-                >
-                    <FontAwesome
-                        // fill={color.primary}
-                        color={color.primary}
-                        name='dots-horizontal'
-                        size={24}
-                    />
-                </TouchableScale>
+
+                {!props.favorite && (
+                    <TouchableScale
+                        onPress={onMorePress}
+                        style={styles.icon}
+                    >
+                        <FontAwesome
+                            // fill={color.primary}
+                            color={color.primary}
+                            name='dots-horizontal'
+                            size={24}
+                        />
+                    </TouchableScale>
+                )}
             </View>
 
             <Text
@@ -149,7 +152,9 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
+    onMorePress?: (item: Place) => void,
+    onLikePress: (item: Place) => void,
     onPress: (item: Place) => void,
-    liked?: boolean,
+    favorite?: boolean,
     item: Place,
 }
