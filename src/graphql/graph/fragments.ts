@@ -4,18 +4,15 @@ import { gql } from '@apollo/client'
 
 export const IMAGE = gql`
     fragment ImageFragment on Image {
-        format
         height
         width
         url
-        key
-        id
     }
 `
 
 export const USER = gql`
     fragment UserFragment on User {
-        picture(format: "60x60") {
+        picture(format: "large") {
             ...ImageFragment
         }
         biography

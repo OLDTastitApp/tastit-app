@@ -227,12 +227,13 @@ const styles = StyleSheet.create({
         height: 300,
     },
     header: {
+        paddingHorizontal: 10,
         flexDirection: 'row',
         marginTop: 20,
     },
     name: {
         fontFamily: 'Avenir Next',
-        marginHorizontal: 20,
+        marginHorizontal: 10,
         fontWeight: 'bold',
         color: color.dark,
         fontSize: 24,

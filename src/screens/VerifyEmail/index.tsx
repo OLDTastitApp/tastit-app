@@ -30,7 +30,6 @@ export default memo(function VerifyEmail() {
 
     useEffect(
         () => {
-            console.log(`VERIFY EMAIL MOUNTED !!!`)
             if (params.token) {
                 (async () => {
                     try {

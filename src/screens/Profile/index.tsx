@@ -100,7 +100,7 @@ export default memo(() => {
     
     const data = myself ? me : user;
     
-    console.log(JSON.stringify(data, null, 4))
+    console.log(JSON.stringify(userResult.error, null, 4));
 
     return (
         <View style={style.container}>
