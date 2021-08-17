@@ -9,13 +9,17 @@ import SectionHeader from './SectionHeader'
 import Background from './Background'
 import NoResults from './NoResults'
 import PlaceItem from './PlaceItem'
+import UserItem from './UserItem'
+import PostItem from './PostItem'
 import Header from './Header'
 
 // Helpers
-import { usePlaces } from '@helpers'
+import { usePlaces, useUsers, usePosts } from '@helpers'
 
 // Types
 import { Props as PlaceItemProps } from './PlaceItem'
+import { Props as PostItemProps } from './PostItem'
+import { Props as UserItemProps } from './UserItem'
 
 
 export default memo((props: Props) => {
@@ -45,8 +49,24 @@ export default memo((props: Props) => {
     const onBlur = () => setFocused(false);
 
     const [places, placesResult] = usePlaces({
-        skip: searchTextEmpty,// || index !== 0,
+        skip: searchTextEmpty || ![0, 2].includes(index),
+        ...(index === 0 ? {
+            name: searchText,
+        } : {
+            area: searchText,
+        }),
+        first: 10,
+    });
+
+    const [users, usersResult] = useUsers({
+        skip: searchTextEmpty || index !== 1,
         searchText,
+        first: 10,
+    });
+
+    const [posts, postsResult] = usePosts({
+        skip: searchTextEmpty || index !== 3,
+        tag: searchText,
         first: 10,
     });
 
@@ -58,11 +78,61 @@ export default memo((props: Props) => {
         [props.onPlacePress]
     );
 
+    const onUserPress = useCallback<OnUserPress>(
+        () => {
+            // ...
+        },
+        [props.onUserPress]
+    );
+
+    const onPostPress = useCallback<OnPostPress>(
+        () => {
+            // ...
+        },
+        [props.onPostPress]
+    );
+
+    const data = [places, users, places, posts][index];
+
     // console.log(`searchText: ${searchText}`)
     // console.log(`places: ${places?.edges?.length}`)
-    const hasPlaces = places?.edges?.length > 0;
-    const noResults = searchText?.length > 0 && !hasPlaces;
-    const empty = !(searchText?.length > 0) && !hasPlaces;
+    const hasItems = data?.edges?.length > 0;
+    const noResults = searchText?.length > 0 && !hasItems;
+    const empty = !(searchText?.length > 0) && !hasItems;
+
+    // console.log(`users: ${users?.edges?.length}`);
+    // console.log(`places.error: ${placesResult.error}`);
+
+    const renderItem = ({ item }) => {
+        
+        return ({
+            place: () => (
+                <PlaceItem
+                    onPress={onPlacePress}
+                    item={item.node}
+                />
+            ),
+            user: () => (
+                <UserItem
+                    onPress={onUserPress}
+                    item={item.node}
+                />
+            ),
+            post: () => (
+                <PostItem
+                    searchText={searchText}
+                    onPress={onPostPress}
+                    item={item.node}
+                />
+            )
+        })[typeMap[index]]();
+    };
+
+    if (postsResult.error) {
+        console.log(JSON.stringify(postsResult.error, null, 4))
+    } else {
+        console.log(JSON.stringify(posts, null, 4))
+    }
 
     return (
         <View
@@ -85,16 +155,18 @@ export default memo((props: Props) => {
                 <>
                     <SectionHeader
                         onChanged={setIndex}
+                        sections={sections}
                         index={index}
                     />
 
                     <FlatList
-                        renderItem={({ item }) => (
-                            <PlaceItem
-                                onPress={onPlacePress}
-                                item={item.node}
-                            />
-                        )}
+                        // renderItem={({ item }) => (
+                        //     <PlaceItem
+                        //         onPress={onPlacePress}
+                        //         item={item.node}
+                        //     />
+                        // )}
+                        renderItem={renderItem}
                         ListEmptyComponent={() => (
                             empty ? (
                                 <EmptyPlaceholder />
@@ -102,11 +174,12 @@ export default memo((props: Props) => {
                                 <NoResults />
                             ) : null
                         )}
-                        contentContainerStyle={{ paddingVertical: 20, paddingBottom: 300 }}
+                        // contentContainerStyle={{ paddingVertical: 20, paddingBottom: 300 }}
+                        contentContainerStyle={{ paddingBottom: 300 }}
                         keyExtractor={({ node: { id } }) => id}
                         keyboardShouldPersistTaps='handled'
                         // keyboardDismissMode='on-drag'
-                        data={places?.edges}
+                        data={data?.edges as any}
                     />
 
                     {/* <ScrollView keyboardShouldPersistTaps='handled'>
@@ -119,6 +192,21 @@ export default memo((props: Props) => {
         </View>
     )
 })
+
+// Constants
+const typeMap = {
+    0: 'place',
+    1: 'user',
+    2: 'place',
+    3: 'post',
+}
+
+const sections = [
+    { id: 'top', name: 'Top' },
+    { id: 'accounts', name: 'Comptes' },
+    { id: 'places', name: 'Lieux' },
+    { id: 'hashtags', name: 'Hashtags' },
+]
 
 // Styles
 const styles = StyleSheet.create({
@@ -133,7 +221,11 @@ export type Props = {
     detailsAnimatedPosition: Animated.SharedValue<number>,
     searchAnimatedIndex: Animated.SharedValue<number>,
     onPlacePress: OnPlacePress,
+    onPostPress: OnPostPress,
+    onUserPress: OnUserPress,
     onBackPress: () => void,
 }
 
 type OnPlacePress = PlaceItemProps['onPress']
+type OnPostPress = PostItemProps['onPress']
+type OnUserPress = UserItemProps['onPress']

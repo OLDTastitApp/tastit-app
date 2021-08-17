@@ -15,7 +15,7 @@ import { FancyTabsProps } from '@components'
 export default memo((props: Props) => {
 
     const onChange = useCallback<FancyTabsProps['onChange']>(
-        ({ item, index }) => props.onChanged(index),
+        index => props.onChanged(index),
         [props.onChanged]
     );
 
@@ -28,22 +28,14 @@ export default memo((props: Props) => {
 
             <View style={styles.tabs}>
                 <FancyTabs
+                    data={props.sections}
                     color={color.primary}
                     onChange={onChange}
-                    data={sections}
                 />
             </View>
         </View>
     )
 })
-
-// Constants
-const sections = [
-    { id: 'top', name: 'Top' },
-    { id: 'accounts', name: 'Comptes' },
-    { id: 'places', name: 'Lieux' },
-    { id: 'hashtags', name: 'Hashtags' },
-]
 
 // Styles
 const styles = StyleSheet.create({
@@ -65,6 +57,7 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
+    sections: { id: string, name: string }[],
     onChanged: (index: number) => void,
     index: number,
 }

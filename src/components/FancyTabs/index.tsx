@@ -74,8 +74,6 @@ export default class FancyTabs extends PureComponent<Props, State> {
             this.cursorWidth.setValue(sizes[0].width + 40);
         }
 
-        console.log(`sizes: ${JSON.stringify(sizes, null, 4)}`)
-
         this.setState({ sizes, loaded: true });
     }
 
@@ -113,7 +111,8 @@ export default class FancyTabs extends PureComponent<Props, State> {
         ]).start();
     }
 
-    handlePress = ({ item, index }) => {
+    // handlePress = ({ item, index }) => {
+    handlePress = (index: number) => {
         // this.flatListRef.current?.getNode().scrollToIndex({
         //     viewPosition: 0.5, /*viewOffset: 20*/ animated: true, index,
         // });
@@ -121,7 +120,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
             viewPosition: 0.5, /*viewOffset: 20*/ animated: true, index,
         });
         this.moveCursor(index);
-        this.props.onChange({ item, index });
+        this.props.onChange(index);
     }
 
     renderBackItem = ({ item, index }) => (
@@ -253,10 +252,11 @@ type State = {
 }
 
 export type Props = {
-    onChange: (event: {
-        index: number,
-        item: Item,
-    }) => void,
+    onChange: (index: number) => void,
+    // onChange: (event: {
+    //     index: number,
+    //     item: Item,
+    // }) => void,
     color?: string,
     data: Item[],
 }

@@ -36,8 +36,8 @@ export default memo(FrontItem);
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        paddingHorizontal: 20,
-        // marginHorizontal: 5,
+        // paddingHorizontal: 20,
+        marginHorizontal: 5,
         paddingVertical: 5,
     },
     name: {

@@ -13,6 +13,8 @@ export type PlacesArgs = {
     radius?: number,
     after?: string,
     first: number,
+    name?: string,
+    area?: string,
 }
 
 export type PlacesResult = {
@@ -23,8 +25,10 @@ export const PLACES = gql`
     query Places(
         $searchText: String
         $around: [Float!]
-        $radius: Int
         $after: String
+        $area: String
+        $name: String
+        $radius: Int
         $first: Int!
     ) {
         places(
@@ -33,6 +37,8 @@ export const PLACES = gql`
             radius: $radius
             after: $after
             first: $first
+            name: $name
+            area: $area
         ) {
             edges {
                 cursor

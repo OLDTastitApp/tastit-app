@@ -1,10 +1,13 @@
 // React
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useMemo } from 'react'
 
 // Components
 import { View, Text, StyleSheet, LayoutAnimation } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import TouchableScale from './TouchableScale'
+
+// Utils
+import moment from 'moment'
 
 // Types
 import { ViewStyle, StyleProp } from 'react-native'
@@ -12,21 +15,81 @@ import { ViewStyle, StyleProp } from 'react-native'
 
 export default memo((props: Props) => {
 
+    const { timetable } = props;
+
     const [expanded, setExpanded] = useState(false);
 
     const onExpandPress = () => {
         LayoutAnimation.configureNext(
-            LayoutAnimation.Presets.easeInEaseOut
+            LayoutAnimation.Presets.spring
         );
-        setExpanded(true);
+        setExpanded(expanded => !expanded);
     };
+
+    // return null;
+    if (timetable.length === 0) return null;
+
+    const { data, currentHours } = useMemo(
+        () => {
+            const data = [
+                { name: 'Dimanche', intervals: [] },
+                { name: 'Lundi', intervals: [] },
+                { name: 'Mardi', intervals: [] },
+                { name: 'Mercredi', intervals: [] },
+                { name: 'Jeudi', intervals: [] },
+                { name: 'Vendredi', intervals: [] },
+                { name: 'Samedi', intervals: [] },
+            ];
+        
+            const format = (value: number) => {
+                const h = Math.floor(value / 60);
+                const mm = `${value % 60}`.padStart(2, '0');
+                return `${h}:${mm}`;
+            }
+        
+            for (let i = 0; i < 7; i++) {
+                const endOfDay = (i + 1) * 24 * 60;
+                const startOfDay = i * 24 * 60;
+        
+                for (const [start, end] of timetable) {
+                    if (start >= startOfDay && end < endOfDay) {
+                        data[i].intervals.push(
+                            `${format(start - startOfDay)} - ${format(end - startOfDay)}`
+                        );
+                    }
+                }
+
+                if (data[i].intervals.length === 0) {
+                    data[i].intervals.push('Fermé');
+                }
+            }
+
+            const startOfDay = new Date().getDay() * 24 * 60;
+            const currentInterval = timetable
+                .find(([start, end]) => {
+                    const elapsedMinutes =  (
+                        new Date().getTime()
+                        - moment().startOf('day').toDate().getTime()
+                    ) / 60000;
+                    const current = startOfDay + elapsedMinutes;
+                    return current >= start && current < end;
+                });
+
+            const currentHours = currentInterval
+                ? `${format(currentInterval[0] - startOfDay)} - ${format(currentInterval[1] - startOfDay)}`
+                : 'Fermé';
+
+            return { data, currentHours };
+        },
+        [timetable]
+    );
 
     return (
         <View style={props.style}>
             <TouchableScale
                 onPress={onExpandPress}
                 style={styles.header}
-                activeScale={0.98}
+                activeScale={0.99}
             >
                 <Feather
                     color='#C0C2C7'
@@ -35,7 +98,7 @@ export default memo((props: Props) => {
                 />
 
                 <Text style={styles.text}>
-                    9:00 - 23:30
+                    {currentHours}
                 </Text>
 
                 <Feather
@@ -47,17 +110,36 @@ export default memo((props: Props) => {
 
             {expanded && (
                 <View style={styles.timetable}>
-                    {timetable.map(({ name, value }, index) => (
+                    {data.map(({ name, intervals }, i) => (
                         <View
                             style={styles.row}
-                            key={index}
+                            key={i}
                         >
                             <Text style={[styles.text, styles.day]}>
                                 {name}
                             </Text>
-                            <Text style={styles.text}>
-                                {value}
-                            </Text>
+                            <View>
+                                {intervals.map((interval, j) => (
+                                    <Text
+                                        style={[
+                                            styles.text,
+                                            j > 0 && { marginTop: 2 }
+                                        ]}
+                                        key={j}
+                                    >
+                                        {interval}
+                                    </Text>
+                                ))}
+                                {/* <Text style={styles.text}>
+                                    {value}
+                                </Text>
+                                <View style={{
+                                    width: 100,
+                                    height: 30,
+                                    backgroundColor: 'red',
+                                    marginTop: 0,
+                                }} /> */}
+                            </View>
                         </View>
                     ))}
                 </View>
@@ -80,6 +162,7 @@ const timetable = [
 // Styles
 const styles = StyleSheet.create({
     header: {
+        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -96,7 +179,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginVertical: 2,
+        marginVertical: 4,
     },
     day: {
         width: 80,
@@ -105,5 +188,6 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
+    timetable: [number, number][],
     style?: StyleProp<ViewStyle>,
 }

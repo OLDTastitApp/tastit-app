@@ -49,7 +49,8 @@ export default memo(() => {
 
     const [places, placesResult] = usePlaces({
         skip: searchTextEmpty,// || index !== 0,
-        searchText,
+        name: searchText,
+        // searchText,
         first: 10,
     });
 

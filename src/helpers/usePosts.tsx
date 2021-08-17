@@ -8,11 +8,12 @@ type Args = {
     skip?: boolean,
     after?: string,
     first: number,
+    tag?: string,
 }
 
 export default (args: Args) => {
 
-    const { creatorId, first, after, skip } = args;
+    const { creatorId, first, tag, after, skip } = args;
 
     const result = useQuery<
         graph.PostsResult,
@@ -24,6 +25,7 @@ export default (args: Args) => {
                 creatorId,
                 after,
                 first,
+                tag,
             },
             skip,
         }

@@ -38,6 +38,7 @@ export const POST = gql`
         }
         content
         liked
+        tags
         id
     }
     ${IMAGE}

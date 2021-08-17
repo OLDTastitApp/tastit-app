@@ -12,8 +12,8 @@ import Animated, {
     multiply,
     add,
 } from 'react-native-reanimated'
-import FrontItem from '../FancyTabs/FrontItem'
-import BackItem from '../FancyTabs/BackItem'
+import FrontItem from './FrontItem'
+import BackItem from './BackItem'
 
 // Helpers
 import { useWindowDimensions } from 'react-native'

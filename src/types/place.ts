@@ -36,6 +36,7 @@ export type Post = {
     updatedAt: Date,
     liked?: boolean,
     content: string,
+    tags?: string[],
     users?: User[],
     picture: Image,
     creator: User,
@@ -44,8 +45,13 @@ export type Post = {
 }
 
 export type Place = {
+    timetable?: [number, number][],
     posts: Connection<Post>,
-    favorited?: boolean,
+    attributes?: string[],
+    phoneNumber?: string,
+    category?: string,
+    website?: string,
+    // favorited?: boolean,
     longitude: number,
     latitude: number,
     pricing?: number,

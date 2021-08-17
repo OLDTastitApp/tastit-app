@@ -1,5 +1,5 @@
 // React
-import React, { RefObject, memo, useEffect } from 'react'
+import React, { RefObject, memo, useEffect, useMemo } from 'react'
 
 // Components
 import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions } from 'react-native'
@@ -49,6 +49,21 @@ export default memo((props: Props) => {
         [place]
     );
 
+    const { attributes } = useMemo(
+        () => {
+            if (!place) return {};
+
+            const attributes = place.attributes?.map(
+                tag => tag.replace(/\.$/, '')
+            ).join('  -  ');
+
+            // const timetable = 
+
+            return { attributes };
+        },
+        [place?.attributes]
+    );
+
     // if (placeResult.error) {
     //     return (
     //         <ScrollView contentContainerStyle={{ paddingTop: 100, backgroundColor: 'white' }}>
@@ -59,7 +74,10 @@ export default memo((props: Props) => {
     //     )
     // }
 
-    if (place == null) return null;
+    if (place == null) {
+        // console.log(JSON.stringify(placeResult.error, null, 4));
+        return null;
+    }
 
     const LikeIcon = place.liked ? HeartFilledIcon : HeartIcon;
 
@@ -127,6 +145,10 @@ export default memo((props: Props) => {
                     </TouchableScale>
                 </View>
 
+                <Text style={styles.address}>
+                    {place.address}
+                </Text>
+
                 <View style={styles.rating}>
                     <Rating
                         onRatePress={() => {}}
@@ -135,14 +157,23 @@ export default memo((props: Props) => {
                     />
                 </View>
 
-                <Timetable style={{ marginHorizontal: 20 }} />
+                <Timetable
+                    // style={{ marginHorizontal: 20 }}
+                    timetable={place.timetable}
+                />
+
+                <Text style={styles.category}>
+                    {place.category}
+                </Text>
 
                 <Text style={styles.tags}>
-                    {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')}
+                    {/* {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')} */}
+                    {attributes}
                 </Text>
 
                 <ScrollView
                     contentContainerStyle={styles.actionContent}
+                    showsHorizontalScrollIndicator={false}
                     style={styles.actionContainer}
                     horizontal
                 >
@@ -161,20 +192,41 @@ export default memo((props: Props) => {
                         </Text>
                     </TouchableScale>
 
-                    <TouchableScale
-                        style={styles.action}
-                        onPress={() => {}}
-                    >
-                        <Feather
-                            color={color.dark}
-                            name='phone'
-                            size={16}
-                        />
+                    {!!place.phoneNumber && (
+                        <TouchableScale
+                            style={styles.action}
+                            onPress={() => {}}
+                        >
+                            <Feather
+                                color={color.dark}
+                                name='phone'
+                                size={16}
+                            />
 
-                        <Text style={styles.actionText}>
-                            Appeler
-                        </Text>
-                    </TouchableScale>
+                            <Text style={styles.actionText}>
+                                Appeler
+                            </Text>
+                        </TouchableScale>
+                    )}
+
+                    {!!place.website && (
+                        <TouchableScale
+                            style={styles.action}
+                            onPress={() => {}}
+                        >
+                            <Feather
+                                color={color.dark}
+                                // name='external-link'
+                                // name='link'
+                                name='globe'
+                                size={16}
+                            />
+
+                            <Text style={styles.actionText}>
+                                Site web
+                            </Text>
+                        </TouchableScale>
+                    )}
                 </ScrollView>
 
                 <FlatList
@@ -243,11 +295,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 10,
     },
+    address: {
+        fontFamily: 'Avenir Next',
+        color: color.mediumGray,
+        marginHorizontal: 20,
+        fontWeight: '500',
+        fontSize: 14,
+        marginTop: 5,
+    },
     rating: {
         marginHorizontal: 20,
         flexDirection: 'row',
         marginBottom: 10,
         marginTop: 15,
+    },
+    category: {
+        fontFamily: 'Avenir Next',
+        marginHorizontal: 20,
+        color: color.dark,
+        fontWeight: '500',
+        marginTop: 20,
+        fontSize: 18,
     },
     tags: {
         fontFamily: 'Avenir Next',
@@ -258,12 +326,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     actionContainer: {
-        left: -20,
+        // left: -20,
         width,
     },
     actionContent: {
         paddingHorizontal: 10,
-        marginHorizontal: 20,
         marginVertical: 10,
         marginTop: 20,
     },

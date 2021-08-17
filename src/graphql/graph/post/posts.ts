@@ -11,6 +11,7 @@ export type PostsArgs = {
     creatorId?: string,
     after?: string,
     first: number,
+    tag?: string,
 }
 
 export type PostsResult = {
@@ -22,11 +23,13 @@ export const POSTS = gql`
         $creatorId: String
         $after: String
         $first: Int!
+        $tag: String
     ) {
         posts(
             creatorId: $creatorId
             after: $after
             first: $first
+            tag: $tag
         ) {
             edges {
                 cursor

@@ -40,8 +40,13 @@ export const PLACE = gql`
                     endCursor
                 }
             }
+            phoneNumber
+            attributes
+            timetable
             longitude
             latitude
+            category
+            website
             address
             rating
             rating
