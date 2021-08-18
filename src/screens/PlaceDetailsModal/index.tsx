@@ -49,19 +49,19 @@ export default memo((props: Props) => {
         [place]
     );
 
-    const { attributes } = useMemo(
+    const { tags } = useMemo(
         () => {
             if (!place) return {};
 
-            const attributes = place.attributes?.map(
-                tag => tag.replace(/\.$/, '')
+            const tags = place.tags?.map(
+                ({ name }) => name
             ).join('  -  ');
 
             // const timetable = 
 
-            return { attributes };
+            return { tags };
         },
-        [place?.attributes]
+        [place?.tags]
     );
 
     // if (placeResult.error) {
@@ -75,7 +75,7 @@ export default memo((props: Props) => {
     // }
 
     if (place == null) {
-        // console.log(JSON.stringify(placeResult.error, null, 4));
+        console.log(JSON.stringify(placeResult.error, null, 4));
         return null;
     }
 
@@ -163,12 +163,12 @@ export default memo((props: Props) => {
                 />
 
                 <Text style={styles.category}>
-                    {place.category}
+                    {place.categories?.[0].name}
                 </Text>
 
                 <Text style={styles.tags}>
                     {/* {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')} */}
-                    {attributes}
+                    {tags}
                 </Text>
 
                 <ScrollView

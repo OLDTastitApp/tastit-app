@@ -194,10 +194,10 @@ export default memo(() => {
 
             <Map
                 // initialRegion={initialRegion}
+                location={location || defaultLocation}
                 onMarkerPress={onMarkerPress}
                 onChanged={onRegionChanged}
                 renderMarker={renderMarker}
-                location={location || defaultLocation}
                 focusedPlace={place}
                 data={places?.edges}
             />

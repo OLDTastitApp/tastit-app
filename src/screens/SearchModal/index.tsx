@@ -47,7 +47,7 @@ export default memo((props: Props) => {
 
     const onPresentModalPress = useCallback(
         () => {
-            modalRef.current?.present();
+            modalRef.current?.snapToIndex(1);
         },
         []
     );
@@ -60,6 +60,8 @@ export default memo((props: Props) => {
         },
         []
     );
+
+    console.log(`districts: ${JSON.stringify(districts, null, 4)}`)
 
     return (
         <>
@@ -75,6 +77,7 @@ export default memo((props: Props) => {
                 index={0}
             >
                 <SectionHeader
+                    onPress={onPresentModalPress}
                     onChanged={onIndexChanged}
                     index={index}
                 />

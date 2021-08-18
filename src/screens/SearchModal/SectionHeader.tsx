@@ -2,7 +2,7 @@
 import React, { memo } from 'react'
 
 // Components
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import GastronomyIcon from '@assets/images/gastronomy.svg'
 import DieteticsIcon from '@assets/images/dietetics.svg'
 import DistrictIcon from '@assets/images/district.svg'
@@ -14,10 +14,14 @@ import { color, font } from '@constants'
 
 export default memo((props: Props) => {
 
-    const { index, onChanged } = props;
+    const { index, onPress, onChanged } = props;
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity
+            style={styles.container}
+            onPress={onPress}
+            activeOpacity={1}
+        >
             <View style={styles.handle} />
 
             <Text style={styles.title}>
@@ -57,7 +61,7 @@ export default memo((props: Props) => {
                     )
                 })}
             </View>
-        </View>
+        </TouchableOpacity>
     )
 })
 
@@ -137,5 +141,6 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     onChanged: (index: number) => void,
+    onPress: () => void,
     index: number,
 }

@@ -44,15 +44,18 @@ export type Post = {
     id: string,
 }
 
+export type Tag = {
+    name: string,
+    id: string,
+}
+
 export type Place = {
     timetable?: [number, number][],
     posts: Connection<Post>,
-    attributes?: string[],
     phoneNumber?: string,
-    category?: string,
-    website?: string,
-    // favorited?: boolean,
+    categories?: Tag[],
     longitude: number,
+    website?: string,
     latitude: number,
     pricing?: number,
     address: string,
@@ -60,6 +63,7 @@ export type Place = {
     liked: boolean,
     cover?: Image,
     name: string,
+    tags: Tag[],
     id: string,
 }
 

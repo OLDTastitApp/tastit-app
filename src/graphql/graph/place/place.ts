@@ -40,12 +40,18 @@ export const PLACE = gql`
                     endCursor
                 }
             }
+            categories {
+                name
+                id
+            }
+            tags {
+                name
+                id
+            }
             phoneNumber
-            attributes
             timetable
             longitude
             latitude
-            category
             website
             address
             rating
