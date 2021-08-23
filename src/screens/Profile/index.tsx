@@ -6,6 +6,7 @@ import { View, Animated, Text, FlatList, StatusBar } from 'react-native'
 import PictureItem from './PictureItem'
 import Biography from './Biography'
 import Header from './Header'
+import TabBar from './TabBar'
 
 // Helpers
 import { useMe, useUser, useUserId, usePosts, useFollow, useUnfollow, useScrollY } from '@helpers'
@@ -109,13 +110,16 @@ export default memo(() => {
                 onScroll={onScroll}
                 keyExtractor={(item, i) => `${item}_${i}`}
                 ListHeaderComponent={data && (
-                    <Biography
-                        onSettingsPress={onSettingsPress}
-                        onFollowPress={onFollowPress}
-                        onEditPress={onEditPress}
-                        myself={myself}
-                        user={data}
-                    />
+                    <>
+                        <Biography
+                            onSettingsPress={onSettingsPress}
+                            onFollowPress={onFollowPress}
+                            onEditPress={onEditPress}
+                            myself={myself}
+                            user={data}
+                        />
+                        <TabBar />
+                    </>
                 )}
                 renderItem={({ item, index }) => (
                     <PictureItem

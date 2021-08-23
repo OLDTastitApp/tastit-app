@@ -10,6 +10,8 @@ export default memo((props: Props) => {
 
     const { visible } = props;
 
+    return null;
+
     return (
         <Modal
             onClose={props.onCancel}
