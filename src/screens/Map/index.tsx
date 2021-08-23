@@ -13,82 +13,56 @@ import Marker from './Marker'
 import Map from './Map'
 
 // Helpers
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useWindowDimensions } from 'react-native'
-// import { useNavigation } from '@navigation/utils'
-import useFilters from './useFilters'
-import useRegion from './useRegion'
-// import usePlaces from './usePlaces'
 import { usePlaces } from '@helpers'
 
 // Constants
-import { font, color, style } from '@constants'
+import { style } from '@constants'
 
 // Types
+import { Place, User, Post, Pricing } from '@types'
 import { Props as SearchProps } from '../Search'
-import { District, Establishment, Place } from '@types'
 import { Props as MarkerProps } from './Marker'
 import { Props as MapProps } from './Map'
-// import { Establishment,  } from './data'
-
-// Data
-import { districts, response } from './data'
 
 // https://github.com/react-native-geolocation/react-native-geolocation#watchposition
 
-
-const initialRegion = {
-    longitudeDelta: 0.02,
-    latitudeDelta: 0.02,
-    longitude: 2.3488,
-    latitude: 48.8534,
-};
 
 const defaultLocation = [2.3488, 48.8534];
 
 export default memo(() => {
 
-    // const focused = useIsFocused();
     const navigation = useNavigation();
+    const { height } = useWindowDimensions();
 
-    // const searchRef = useRef<SearchRef>(null);
     const searchModalRef = useRef<BottomSheetModal>(null);
     const placeDetailsModalRef = useRef<BottomSheetModal>(null);
-
-    const { height } = useWindowDimensions();
 
     const searchAnimatedIndex = useSharedValue(0);
     const detailsAnimatedPosition = useSharedValue(height);
 
-    const [districtSelection, setDistrictSelection] = useState<District[]>([]);
     const [place, setPlace] = useState<Place>();
-
     const [location, setLocation] = useState(defaultLocation);
     const [mapLocation, setMapLocation] = useState(defaultLocation);
-    // const [region, setRegion] = useRegion({
-    //     defaultLongitude: 2.3488,
-    //     defaultLatitude: 48.8534,
-    // });
 
-    // const filters = useFilters();
+    // Filters
+    const [pricing, setPricing] = useState<Pricing>();
+    const [districts, setDistricts] = useState<string[]>([]);
+    const [dietetics, setDietetics] = useState<string[]>([]);
+    const [gastronomies, setGastronomies] = useState<string[]>([]);
 
-    const onFiltersChanged = useCallback(() => {
-        console.log(`Filters changed !`);
-    }, []);
+    const [filters, setFilters] = useState<Filters | {}>({});
 
     const onBackPress = () => {
         if (place) {
             setPlace(null);
-            // places.clear();
         } else {
             searchModalRef.current.snapToIndex(0);
             setLocation(defaultLocation);
             setTimeout(() => navigation.goBack(), 250);
-            // places.clear();
         }
     };
-
-    const onClosePress = () => setPlace(null);
     
     const onMarkerPress = useCallback<OnMarkerPress>(
         place => setPlace(place),
@@ -104,37 +78,24 @@ export default memo(() => {
         region => {
             const { longitude, latitude } = region;
             setMapLocation([longitude, latitude]);
-            // setRegion(value => ({ ...value, longitude, latitude }));
-            // console.log('location changed: ', JSON.stringify(region))
         },
         []
     );
 
-    const onSearchPress = useCallback(
-        // () => searchRef.current?.show(),
-        () => {},
-        []
-    );
+    const onSearchHerePress = async () => {
+        // setLocation(mapLocation);
+        searchModalRef.current.snapToIndex(0);
 
-    const onSearchHerePress = useCallback(
-        // (location: number[]) => {
-        async () => {
-            console.log('search here pressed !')
-            // places.fetch({ around: location, first: 5 });
-            // const result = await placesResult.refetch({
-            //     around: location,
-            //     radius: 10000,
-            //     first: 10,
-            // });
-            setLocation(mapLocation);
-            searchModalRef.current.snapToIndex(0);
+        console.log(`dietetics: ${JSON.stringify(dietetics, null, 4)}`);
 
-            // console.log(`places fetched !!: ${result?.data.places?.edges?.[0]?.node.name}`);
-            // console.log(`places error !!: ${JSON.stringify(result, null, 4)}`);
-        },
-        // [location]
-        [mapLocation]
-    );
+        // placesResult.refetch({
+        //     pricing: pricing ? [pricing.index] : undefined,
+        //     around: mapLocation,
+        //     zip: districts,
+        //     radius: 10000,
+        //     first: 10,
+        // });
+    };
 
     // const skipRefetch = !!location && JSON.stringify(location) != JSON.stringify(mapLocation);
     // const skipRefetch = JSON.stringify(location) != JSON.stringify(mapLocation);
@@ -145,9 +106,9 @@ export default memo(() => {
         // skip: skipRefetch,
         around: location ?? defaultLocation,
         // skip: !location,
-
         radius: 10000,
         first: 10,
+        // ...filters,
     });
 
     useEffect(
@@ -156,17 +117,6 @@ export default memo(() => {
         },
         [places]
     );
-
-    // const places = usePlaces();
-    
-    // useEffect(
-    //     () => {
-    //         (async () => {
-    //             places.fetch({ around: location, first: 5 });
-    //         })();
-    //     },
-    //     [location]
-    // );
 
     const renderMarker = useCallback<RenderMarker>(
         ({ item, focusedPlace }) => (
@@ -183,7 +133,18 @@ export default memo(() => {
 
     const onPlaceDetailsClosed = useCallback(() => setPlace(null), []);
 
+    const onUserPress = useCallback(
+        (user: User) => {},
+        []
+    );
+
+    const onPostPress = useCallback(
+        (post: Post) => {},
+        []
+    );
+
     if (placesResult.error) {
+        return null;
         return (<ScrollView>
             <Text>{JSON.stringify(placesResult.error, null, 4)}</Text>
         </ScrollView>)
@@ -206,6 +167,14 @@ export default memo(() => {
                 <SearchModal
                     animatedIndex={searchAnimatedIndex}
                     modalRef={searchModalRef}
+                    setDietetics={setDietetics}
+                    dietetics={dietetics}
+                    districts={districts}
+                    setDistricts={setDistricts}
+                    gastronomies={gastronomies}
+                    setGastronomies={setGastronomies}
+                    pricing={pricing}
+                    setPricing={setPricing}
                 />
 
                 <PlaceDetailsModal
@@ -219,7 +188,6 @@ export default memo(() => {
             <SearchModalFooter
                 detailsAnimatedPosition={detailsAnimatedPosition}
                 animatedIndex={searchAnimatedIndex}
-                // onPress={() => {}}
                 onPress={onSearchHerePress}
                 disabled={false}
             />
@@ -229,44 +197,9 @@ export default memo(() => {
                 searchAnimatedIndex={searchAnimatedIndex}
                 onPlacePress={onPlacePress}
                 onBackPress={onBackPress}
+                onPostPress={onPostPress}
+                onUserPress={onUserPress}
             />
-
-            {/* <Map
-                initialRegion={initialRegion}
-                focusedPlace={establishment}
-                onChanged={onRegionChanged}
-                renderMarker={renderMarker}
-                data={places.data}
-            />
-
-            {focused && !establishment && (
-                <SearchModal
-                    onFiltersChanged={onFiltersChanged}
-                    onSearchPress={onSearchHerePress}
-                    location={location}
-                    // filters={filters}
-                    // setDistrictSelection={setDistrictSelection}
-                    // districtSelection={districtSelection}
-                    // districts={districts}
-                    setDistrict={filters.setDistrict}
-                    setPricing={filters.setPricing}
-                    canApply={filters.canApply}
-                    district={filters.district}
-                    pricing={filters.pricing}
-                />
-            )}
-
-            {establishment && (
-                <EstablishmentDetails
-                    establishment={establishment}
-                    visible={!!establishment}
-                />
-            )}
-
-            <Search
-                onPlacePress={onPlacePress}
-                ref={searchRef}
-            /> */}
 
         </View>
     )
@@ -280,3 +213,10 @@ type OnRegionChanged = MapProps['onChanged']
 type RenderMarker = MapProps['renderMarker']
 
 type OnMarkerPress = MarkerProps['onPress']
+
+type Filters = {
+    category: string[],
+    pricing: number[],
+    tags: string[],
+    zip: string[],
+}

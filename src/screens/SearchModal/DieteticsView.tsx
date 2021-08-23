@@ -12,6 +12,9 @@ import VegetarianIcon from '@assets/images/dietetic/vegetarian.svg'
 import HalalIcon from '@assets/images/dietetic/halal.svg'
 // import VeganIcon from '@assets/images/dietetic/vegan.svg'
 
+// Helpers
+import { usePlaceCategories } from '@helpers'
+
 // Types
 import { Props as DieteticItemProps } from './DieteticItem'
 import { Dietetic } from '@types'
@@ -21,6 +24,8 @@ export default memo((props: Props) => {
 
     const { current: selectionSet } = useRef<Set<string>>(new Set);
     const { selection, onChange } = props;
+
+    const [placeCategories, placeCategoriesResult] = usePlaceCategories();
 
     useMemo(
         () => {
@@ -48,13 +53,15 @@ export default memo((props: Props) => {
         []
     );
 
+    if (!placeCategories) return null;
+
     return (
         <View style={styles.container}>
             <BottomSheetFlatList
                 contentContainerStyle={styles.content}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={({ id }) => id}
-                data={dietetics}
+                data={placeCategories}
                 renderItem={({ item }) => (
                     <DieteticItem
                         selected={selectionSet.has(item.id)}

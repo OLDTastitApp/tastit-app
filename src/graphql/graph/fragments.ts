@@ -67,3 +67,10 @@ export const PLACE = gql`
     ${IMAGE}
     ${POST}
 `
+
+export const TAG = gql`
+    fragment TagFragment on Tag {
+        name
+        id
+    }
+`

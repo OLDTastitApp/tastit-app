@@ -6,6 +6,9 @@ import { View, StyleSheet, Dimensions } from 'react-native'
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import GastronomyItem from './GastronomyItem'
 
+// Helpers
+import { usePlaceTags } from '@helpers'
+
 // Types
 import { Props as GastronomyItemProps } from './GastronomyItem'
 import { Gastronomy } from '@types'
@@ -15,6 +18,8 @@ export default memo((props: Props) => {
 
     const { current: selectionSet } = useRef<Set<string>>(new Set);
     const { selection, onChange } = props;
+
+    const [placeTags, placeTagsResult] = usePlaceTags();
 
     useMemo(
         () => {
@@ -42,13 +47,15 @@ export default memo((props: Props) => {
         []
     );
 
+    if (!placeTags) return null;
+
     return (
         <View style={styles.container}>
             <BottomSheetScrollView
                 contentContainerStyle={styles.content}
                 showsVerticalScrollIndicator={false}
             >
-                {gastronomies.map(item => {
+                {placeTags.map(item => {
                     return (
                         <GastronomyItem
                             selected={selectionSet.has(item.id)}
@@ -67,15 +74,15 @@ export default memo((props: Props) => {
 // Constants
 const { width, height } = Dimensions.get('window')
 
-const gastronomies: Gastronomy[] = [
-    { id: 'bistro', name: 'Bistro' },
-    { id: 'pizzeria', name: 'Pizzeria' },
-    { id: 'bar', name: 'Bar' },
-    { id: 'street-food', name: 'Street food' },
-    { id: 'grec-restaurant', name: 'Restaurant Grec' },
-    { id: 'kebab', name: 'Kebab' },
-    { id: 'fast-food', name: 'Fast food' },
-]
+// const gastronomies: Gastronomy[] = [
+//     { id: 'bistro', name: 'Bistro' },
+//     { id: 'pizzeria', name: 'Pizzeria' },
+//     { id: 'bar', name: 'Bar' },
+//     { id: 'street-food', name: 'Street food' },
+//     { id: 'grec-restaurant', name: 'Restaurant Grec' },
+//     { id: 'kebab', name: 'Kebab' },
+//     { id: 'fast-food', name: 'Fast food' },
+// ]
 
 // Styles
 const styles = StyleSheet.create({

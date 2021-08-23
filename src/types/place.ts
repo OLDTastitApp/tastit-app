@@ -16,6 +16,7 @@ export type Dietetic = {
 
 export type Pricing = {
     label: string,
+    index: number,
     min?: number,
     max?: number,
     id: string,

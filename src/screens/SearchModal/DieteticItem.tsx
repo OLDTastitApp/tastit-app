@@ -10,7 +10,7 @@ import { TouchableScale } from '@components'
 import { color } from '@constants'
 
 // Types
-import { Dietetic } from '@types'
+import { Dietetic, Tag } from '@types'
 
 
 export default memo((props: Props) => {
@@ -27,24 +27,28 @@ export default memo((props: Props) => {
             activeScale={0.98}
             onPress={onPress}
         >
-            <item.Icon
+            {/* <item.Icon
                 style={styles.icon}
                 fill={color.dark}
                 height={30}
                 width={30}
-            />
+            /> */}
 
-            <Text style={styles.name}>
+            <Text
+                adjustsFontSizeToFit
+                style={styles.name}
+                numberOfLines={1}
+            >
                 {item.name}
             </Text>
 
-            {selected && (
+            {/* {selected && ( */}
                 <Feather
-                    color={color.dark}
+                    color={selected ? color.dark : 'transparent'}
                     name='check'
                     size={20}
                 />
-            )}
+            {/* )} */}
         </TouchableScale>
     )
 })
@@ -55,10 +59,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
+        marginVertical: 10,
     },
     name: {
         fontFamily: 'Avenir Next',
         color: color.dark,
+        marginRight: 20,
         marginLeft: 15,
         fontSize: 16,
         flex: 1,
@@ -70,8 +76,8 @@ const styles = StyleSheet.create({
 
 // Types
 export type Props = {
-    onRemovePress: (item: Dietetic) => void,
-    onSelectPress: (item: Dietetic) => void,
+    onRemovePress: (item: Tag) => void,
+    onSelectPress: (item: Tag) => void,
     selected: boolean,
-    item: Dietetic,
+    item: Tag,
 }

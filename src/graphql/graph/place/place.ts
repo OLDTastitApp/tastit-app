@@ -41,12 +41,10 @@ export const PLACE = gql`
                 }
             }
             categories {
-                name
-                id
+                ...TagFragment
             }
             tags {
-                name
-                id
+                ...TagFragment
             }
             phoneNumber
             timetable
@@ -63,4 +61,5 @@ export const PLACE = gql`
     }
     ${fragments.IMAGE}
     ${fragments.POST}
+    ${fragments.TAG}
 `

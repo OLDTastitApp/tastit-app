@@ -1,5 +1,7 @@
+export * from './placeCategories'
 export * from './dislikePlace'
 export * from './likePlace'
 export * from './favorites'
+export * from './placeTags'
 export * from './places'
 export * from './place'

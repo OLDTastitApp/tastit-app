@@ -2,15 +2,14 @@
 import React, { RefObject, memo, useState, useCallback, useRef, useMemo, useEffect } from 'react'
 
 // Components
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { ScrollView, Dimensions, View } from 'react-native'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { ScrollView, Dimensions } from 'react-native'
 import Animated from 'react-native-reanimated'
 import GastronomyView from './GastronomyView'
 import DieteticsView from './DieteticsView'
 import SectionHeader from './SectionHeader'
 import DistrictView from './DistrictView'
 import PricingView from './PricingView'
-import Footer from './Footer'
 
 // Types
 import { Pricing } from '@types'
@@ -21,10 +20,10 @@ export default memo((props: Props) => {
     const { animatedIndex, modalRef } = props;
 
     const [index, setIndex] = useState(0);
-    const [pricing, setPricing] = useState<Pricing>();
-    const [districts, setDistricts] = useState<string[]>([]);
-    const [dietetics, setDietetics] = useState<string[]>([]);
-    const [gastronomies, setGastronomies] = useState<string[]>([]);
+    // const [pricing, setPricing] = useState<Pricing>();
+    // const [districts, setDistricts] = useState<string[]>([]);
+    // const [dietetics, setDietetics] = useState<string[]>([]);
+    // const [gastronomies, setGastronomies] = useState<string[]>([]);
 
     const scrollViewRef = useRef<ScrollView>(null);
 
@@ -61,7 +60,7 @@ export default memo((props: Props) => {
         []
     );
 
-    console.log(`districts: ${JSON.stringify(districts, null, 4)}`)
+    // console.log(`districts: ${JSON.stringify(props.districts, null, 4)}`)
 
     return (
         <>
@@ -88,20 +87,20 @@ export default memo((props: Props) => {
                     horizontal
                 >
                     <DistrictView
-                        onChange={setDistricts}
-                        selection={districts}
+                        onChange={props.setDistricts}
+                        selection={props.districts}
                     />
                     <PricingView
-                        onChange={setPricing}
-                        selection={pricing}
+                        onChange={props.setPricing}
+                        selection={props.pricing}
                     />
                     <DieteticsView
-                        onChange={setDietetics}
-                        selection={dietetics}
+                        onChange={props.setDietetics}
+                        selection={props.dietetics}
                     />
                     <GastronomyView
-                        onChange={setGastronomies}
-                        selection={gastronomies}
+                        onChange={props.setGastronomies}
+                        selection={props.gastronomies}
                     />
                 </ScrollView>
 
@@ -124,4 +123,13 @@ const snapPoints = ['30%', '60%', '90%']
 export type Props = {
     animatedIndex: Animated.SharedValue<number>,
     modalRef: RefObject<BottomSheetModal>,
+    // Filters
+    setGastronomies: (value: string[]) => void,
+    setDistricts: (value: string[]) => void,
+    setDietetics: (value: string[]) => void,
+    setPricing: (value: Pricing) => void,
+    gastronomies: string[],
+    districts: string[],
+    dietetics: string[],
+    pricing: Pricing,
 }

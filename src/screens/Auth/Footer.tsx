@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         paddingHorizontal: 5,
         paddingVertical: 10,
-        borderRadius: 10,
         marginVertical: 5,
+        borderRadius: 10,
     },
     transparent: {
         backgroundColor: 'transparent',

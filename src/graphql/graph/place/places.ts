@@ -9,8 +9,10 @@ import { Place } from '@types'
 
 export type PlacesArgs = {
     searchText?: string,
+    pricing?: number[],
     around?: number[],
     radius?: number,
+    zip?: string[],
     after?: string,
     first: number,
     name?: string,
@@ -25,6 +27,8 @@ export const PLACES = gql`
     query Places(
         $searchText: String
         $around: [Float!]
+        $pricing: [Int!]
+        $zip: [String!]
         $after: String
         $area: String
         $name: String
@@ -33,12 +37,14 @@ export const PLACES = gql`
     ) {
         places(
             searchText: $searchText
+            pricing: $pricing
             around: $around
             radius: $radius
             after: $after
             first: $first
             name: $name
             area: $area
+            zip: $zip
         ) {
             edges {
                 cursor

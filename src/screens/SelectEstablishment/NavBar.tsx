@@ -55,7 +55,7 @@ export default memo((props: Props) => {
                             !canSubmit && styles.disabled,
                         ]}
                     >
-                        Terminer
+                        {/* Terminer */}
                     </Text>
                 </TouchableScale>
             </View>
@@ -81,6 +81,7 @@ export default memo((props: Props) => {
                     // onBlur={props.onBlur}
                     style={styles.input}
                     autoCorrect={false}
+                    autoFocus
                 />
             </View>
         </>

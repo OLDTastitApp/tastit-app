@@ -3,6 +3,7 @@ import React, { memo } from 'react'
 
 // Components
 import { View, Text, Image, StyleSheet } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 import { TouchableScale } from '@components'
 
 // Constants
@@ -14,7 +15,7 @@ import { Place } from '@types'
 
 export default memo((props: Props) => {
 
-    const { item } = props;
+    const { item, removable } = props;
 
     const onPress = () => {
         props.onPress(item);
@@ -28,14 +29,31 @@ export default memo((props: Props) => {
             activeScale={0.98}
             onPress={onPress}
         >
-            {!!item.cover ? (
-                <Image
-                    source={{ uri: item.cover?.url }}
-                    style={styles.left}
-                />
-            ) : (
-                <View style={styles.left} />
-            )}
+            <View style={removable && styles.removable}>
+                {!!item.cover ? (
+                    <Image
+                        source={{ uri: item.cover?.url }}
+                        style={[
+                            styles.left,
+                            removable && styles.border,
+                        ]}
+                    />
+                ) : (
+                    <View style={[
+                        styles.left,
+                        removable && styles.border,
+                    ]} />
+                )}
+                {removable && (
+                    <View style={[styles.overlay]}>
+                        <Feather
+                            color='white'
+                            size={24}
+                            name='x'
+                        />
+                    </View>
+                )}
+            </View>
 
             <View style={styles.content}>
                 <Text
@@ -56,13 +74,10 @@ export default memo((props: Props) => {
 // Styles
 const styles = StyleSheet.create({
     container: {
-        // backgroundColor: 'red',
         paddingHorizontal: 20,
         flexDirection: 'row',
-        marginVertical: 5,
-        // height: 100,
         alignItems: 'center',
-        // flex: 1,
+        marginVertical: 5,
     },
     left: {
         backgroundColor: '#f8f8f8',
@@ -70,9 +85,28 @@ const styles = StyleSheet.create({
         height: 60,
         width: 60,
     },
+    border: {
+        borderColor: 'white',
+        borderWidth: 2,
+    },
+    removable: {
+        backgroundColor: color.primary,
+        borderRadius: 100,
+        padding: 4,
+    },
+    overlay: {
+        backgroundColor: '#0004',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        alignSelf: 'center',
+        borderRadius: 80,
+        height: 56,
+        width: 56,
+        top: 6,
+    },
     content: {
         justifyContent: 'center',
-        // backgroundColor: 'red',
         marginLeft: 10,
         flex: 1,
     },
@@ -80,7 +114,6 @@ const styles = StyleSheet.create({
         fontFamily: font.regular,
         color: color.dark,
         fontSize: 16,
-        // flex: 1,
     },
     address: {
         fontFamily: font.regular,
@@ -92,5 +125,6 @@ const styles = StyleSheet.create({
 // Types
 export type Props = {
     onPress: (item: Place) => void,
+    removable?: boolean,
     item: Place,
 }

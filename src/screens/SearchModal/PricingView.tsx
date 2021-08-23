@@ -51,11 +51,11 @@ export default memo((props: Props) => {
 const { width } = Dimensions.get('window')
 
 const pricings: Pricing[] = [
-    { id: '0', min: 0, max: 16, label: '< 16€' },
-    { id: '1', min: 16, max: 26, label: '16€ - 25€' },
-    { id: '2', min: 26, max: 36, label: '26€ - 35€' },
-    { id: '3', min: 36, max: 51, label: '36€ - 50€' },
-    { id: '4', min: 51, max: null, label: '> 51€' },
+    { id: '0', index: 1, min: 0, max: 16, label: '< 16€' },
+    { id: '1', index: 2, min: 16, max: 26, label: '16€ - 25€' },
+    { id: '2', index: 3, min: 26, max: 36, label: '26€ - 35€' },
+    { id: '3', index: 4, min: 36, max: 51, label: '36€ - 50€' },
+    { id: '4', index: 5, min: 51, max: null, label: '> 51€' },
 ]
 
 // Styles

@@ -9,6 +9,7 @@ import { TouchableScale, Rating, Timetable } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
+import RateModal from './RateModal'
 import PostItem from './PostItem'
 
 // Icons
@@ -247,6 +248,8 @@ export default memo((props: Props) => {
                     {JSON.stringify(place, null, 4)}
                 </Text> */}
             </BottomSheetScrollView>
+
+            <RateModal visible={true} />
         </BottomSheetModal>
     )
 })

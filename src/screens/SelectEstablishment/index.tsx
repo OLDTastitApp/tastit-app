@@ -62,22 +62,35 @@ export default memo(() => {
     const noResults = searchText?.length > 0 && !hasPlaces;
     const empty = !(searchText?.length > 0) && !hasPlaces;
 
-    const onPress = useCallback<OnPress>(
-        item => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            const selected = selectionSet.has(item.id);
+    // const onPress = useCallback<OnPress>(
+    //     item => {
+    //         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    //         const selected = selectionSet.has(item.id);
 
-            selectionSet.clear();
-            setSelection(selected ? [] : [item]);
-        },
-        []
-    );
+    //         selectionSet.clear();
+    //         setSelection(selected ? [] : [item]);
+    //     },
+    //     []
+    // );
 
     // const canSubmit = !!(place || params.place);
     const canSubmit = selection.length > 0 || !!params?.place;
 
     const onSubmitPress = () => {
-        params.setPlace(selection?.[0]);
+        // params.setPlace(selection?.[0]);
+        // navigation.goBack();
+    };
+
+    const onSelectPress = useCallback<OnPress>(
+        item => {
+            params.setPlace(item);
+            navigation.goBack();
+        },
+        []
+    );
+
+    const onRemovePress = () => {
+        params.setPlace(null);
         navigation.goBack();
     };
 
@@ -97,7 +110,14 @@ export default memo(() => {
             <KeyboardAwareFlatList
                 ListHeaderComponent={() => (
                     <>
-                        <FlatList
+                        {selection?.length > 0 && searchTextEmpty && (
+                            <PlaceItem
+                                onPress={onRemovePress}
+                                item={selection[0]}
+                                removable
+                            />
+                        )}
+                        {/* <FlatList
                             showsHorizontalScrollIndicator={false}
                             // contentContainerStyle={{
                             //     paddingHorizontal: 10,
@@ -113,7 +133,7 @@ export default memo(() => {
                             keyExtractor={({ id }) => id}
                             data={selection}
                             horizontal
-                        />
+                        /> */}
                         {/* {location.error && (
                             <GeolocationError
                                 onPress={onOpenSettingsPress}
@@ -133,7 +153,8 @@ export default memo(() => {
                     // null
                     <PlaceItem
                         // onPress={onPlaceItemPress}
-                        onPress={onPress}
+                        // onPress={onPress}
+                        onPress={onSelectPress}
                         item={item.node}
                     />
                     
