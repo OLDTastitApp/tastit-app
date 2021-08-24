@@ -1,8 +1,8 @@
 // React
-import React, { memo } from 'react'
+import React, { memo, RefObject } from 'react'
 
 // Components
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Animated, Text, StyleSheet } from 'react-native'
 import { FollowButton, ProfileButton } from '@components'
 
 // Helpers
@@ -17,7 +17,7 @@ import { User } from '@types'
 
 export default memo((props: Props) => {
 
-    const { user, myself } = props;
+    const { user, myself, onHeightChanged } = props;
 
     const onFollowPress = () => {
         props.onFollowPress(!user.following);
@@ -26,8 +26,14 @@ export default memo((props: Props) => {
     const edges = useSafeAreaInsets();
     const marginTop = edges.top + 90;
 
+    const onLayout: View['props']['onLayout'] = event => {
+        const { height } = event.nativeEvent.layout;
+        // heightRef.current?.setValue(height);
+        onHeightChanged(height);
+    };
+
     return (
-        <>
+        <View onLayout={onLayout}>
             <View style={[styles.container, { marginTop }]}>
 
                 <View style={styles.header}>
@@ -48,11 +54,11 @@ export default memo((props: Props) => {
                     adjustsFontSizeToFit
                     numberOfLines={1}
                 >
-                    {user.firstName} {user.lastName}
+                    {user?.firstName} {user?.lastName}
                 </Text>
 
                 <Text style={styles.nickname}>
-                    @{user.nickname}
+                    @{user?.nickname}
                 </Text>
 
                 {!!user?.biography && (
@@ -99,7 +105,7 @@ export default memo((props: Props) => {
             </View>
 
             <View style={styles.line} />
-        </>
+        </View>
     )
 })
 
@@ -143,19 +149,22 @@ const styles = StyleSheet.create({
     footer: {
         borderTopColor: '#eee',
         flexDirection: 'row',
-        borderTopWidth: 1,
-        paddingTop: 20,
-        marginTop: 20,
+        // borderTopWidth: 1,
+        // paddingTop: 20,
+        // marginTop: 20,
+        marginTop: 16,
     },
     item: {
-        alignItems: 'center',
-        flex: 1,
+        // alignItems: 'center',
+        // flex: 1,
+        marginRight: 20,
     },
     count: {
         fontFamily: 'Avenir Next',
         color: color.dark,
         fontWeight: '600',
-        fontSize: 24,
+        // fontSize: 24,
+        fontSize: 14,
     },
     title: {
         fontFamily: 'Avenir Next',
@@ -173,6 +182,8 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     onFollowPress: (following: boolean) => void,
+    onHeightChanged: (value: number) => void,
+    // heightRef: RefObject<Animated.Value>,
     onSettingsPress: () => void,
     onEditPress: () => void,
     myself?: boolean,

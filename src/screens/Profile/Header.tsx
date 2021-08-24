@@ -24,6 +24,8 @@ export default memo((props: Props) => {
 
     const edges = useSafeAreaInsets();
     const fullHeight = edges.top + 90;
+    console.log(`fullHeight: ${fullHeight}`);
+    console.log(`outputRange: ${edges.top}`);
 
     const scaleHeader = scrollY.interpolate({
         outputRange: [1 + 200 / fullHeight, 1],
