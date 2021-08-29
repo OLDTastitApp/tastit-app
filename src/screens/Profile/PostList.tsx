@@ -47,10 +47,11 @@ export default memo((props: Props) => {
         <View
             style={[
                 styles.container,
-                { height, backgroundColor: 'white' },
+                { height },
+                { backgroundColor },
             ]}
         >
-            <FlatList
+            {/* <FlatList
                 renderItem={({ item, index }) => (
                     <PictureItem
                         onPress={onPostPress}
@@ -61,7 +62,7 @@ export default memo((props: Props) => {
                 keyExtractor={(item, i) => `${item}_${i}`}
                 data={posts?.edges}
                 numColumns={3}
-            />
+            /> */}
         </View>
     )
 })

@@ -11,6 +11,9 @@ import Header from './Header'
 import { useUserId, usePosts, useLikePost, useDislikePost } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
+// Utils
+import Share from 'react-native-share'
+
 // Constants
 import { font, color } from '@constants'
 
@@ -64,7 +67,12 @@ export default memo(() => {
     );
 
     const onSharePress = useCallback<OnSharePress>(
-        item => {},
+        item => {
+            Share.open({
+                title: item.content.substr(0, 10) + '...',
+                message: `Clic sur le lien suivant pour visualiser le post tastit://post/${item.id}`,
+            });
+        },
         []
     );
 

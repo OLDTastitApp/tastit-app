@@ -42,6 +42,8 @@ export type Params<TRouteName> =
     ? EditProfileParams
     : TRouteName extends 'VerifyEmail'
     ? VerifyEmailParams
+    : TRouteName extends 'PostDetails'
+    ? PostDetailsParams
     : TRouteName extends 'CreatePost'
     ? CreatePostParams
     : TRouteName extends 'AddPlace'
@@ -55,6 +57,7 @@ export type RouteName =
     | 'SelectFriends'
     | 'EditProfile'
     | 'VerifyEmail'
+    | 'PostDetails'
     | 'Screenshot'
     | 'CreatePost'
     | 'Favorites'
@@ -85,6 +88,10 @@ type VerifyEmailParams = {
     username?: string,
     password?: string,
     token?: string,
+}
+
+type PostDetailsParams = {
+    id: string,
 }
 
 type CreatePostParams = {

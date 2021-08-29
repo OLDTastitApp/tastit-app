@@ -17,7 +17,7 @@
         ".prettierrc.js": true,
         ".svgrrc": true,
         ".watchmanconfig": true,
-        "babel.config.js": true,
+        // "babel.config.js": true,
         "declarations.d.ts": true,
         "metro.config.js": true,
         "react-native.config.js": true,

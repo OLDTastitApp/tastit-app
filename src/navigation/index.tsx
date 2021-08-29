@@ -17,6 +17,7 @@ const linking: LinkingOptions<{}> = {
                     'VerifyEmail': 'verify/email',
                 },
             },
+            'PostDetails': 'post/:id',
         },
     },
 }

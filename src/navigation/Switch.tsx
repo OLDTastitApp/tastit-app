@@ -6,6 +6,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
+import PostDetails from '@screens/PostDetails'
 import AddPlace from '@screens/AddPlace'
 import Screenshot from './Screenshot'
 import BottomTab from './BottomTab'
@@ -54,6 +55,10 @@ export default () => {
                     />
                 </>
             )}
+            <Stack.Screen
+                component={PostDetails}
+                name='PostDetails'
+            />
         </Stack.Navigator>
     )
 }
