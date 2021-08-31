@@ -11,6 +11,7 @@ import { Store } from './types'
 const store: Store = {
     authenticated: false,
     appName: app.name,
+    complete: false,
     userId: '',
     role: '',
 }
@@ -23,6 +24,7 @@ export const initializeStore = async (
         query: gql`
             query {
                 authenticated
+                complete
                 appName
                 userId
                 role

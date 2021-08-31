@@ -6,26 +6,29 @@ import { gql } from '@apollo/client'
 import { User } from '@types'
 
 
-export type UpdateProfileArgs = {
+export type CompleteProfileArgs = {
     input: {
         biography?: string,
-        firstName?: string,
-        lastName?: string,
+        firstName: string,
+        lastName: string,
         picture?: string,
+        nickname: string,
+        birthdate: Date,
+        email?: string,
     },
 }
 
-export type UpdateProfileResult = {
-    updateProfile: {
+export type CompleteProfileResult = {
+    completeProfile: {
         me: User,
     },
 }
 
-export const UPDATE_PROFILE = gql`
-    mutation UpdateProfile(
-        $input: UpdateProfileInput!
+export const COMPLETE_PROFILE = gql`
+    mutation CompleteProfile(
+        $input: CompleteProfileInput!
     ) {
-        updateProfile(
+        completeProfile(
             input: $input
         ) {
             me {

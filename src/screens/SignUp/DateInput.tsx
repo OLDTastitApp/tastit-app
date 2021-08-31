@@ -59,11 +59,11 @@ export default memo((props: Props) => {
                 onPress={onPress}
                 activeScale={1}
             >
-                <View style={styles.header}>
+                {/* <View style={styles.header}>
                     <Text style={styles.title}>
                         {props.title}
                     </Text>
-                </View>
+                </View> */}
 
                 <Text
                     style={[
@@ -71,7 +71,7 @@ export default memo((props: Props) => {
                         empty && styles.placeholder,
                     ]}
                 >
-                    {value}
+                    Né le {value}
                 </Text>
             </TouchableScale>
 

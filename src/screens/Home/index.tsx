@@ -3,12 +3,13 @@ import React, { memo, useState, useCallback } from 'react'
 
 // Components
 import { View, Text, FlatList, StatusBar, ScrollView } from 'react-native'
+import CompleteProfile from '../CompleteProfile'
 import PostItem from './PostItem'
 import Header from './Header'
 
 // Helpers
 // import usePosts from './usePosts'
-import { useUserId, usePosts, useLikePost, useDislikePost } from '@helpers'
+import { useUserId, usePosts, useLikePost, useDislikePost, useMe } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
 // Utils
@@ -42,6 +43,7 @@ export default memo(() => {
     const navigation = useNavigation();
 
     const userId = useUserId();
+    const [me, meResult] = useMe();
     // console.log(`userId: ${userId}`)
     const [posts, postsResult] = usePosts({ first: 10 });
 
@@ -93,6 +95,10 @@ export default memo(() => {
         []
     );
 
+    // const complete = me?.roles?.[0]?.complete;
+    const complete = me?.roles?.[0]?.complete;
+    console.log(`*** complete: ${JSON.stringify(me, null, 4)}`);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
 
@@ -137,6 +143,10 @@ export default memo(() => {
                     }, null, 4)}
                 </Text>
             </ScrollView> */}
+
+            <CompleteProfile
+                visible={complete === false}
+            />
 
         </View>
     )

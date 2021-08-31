@@ -1,3 +1,4 @@
+export * from './completeProfile'
 export * from './updateProfile'
 export * from './unfollow'
 export * from './follow'

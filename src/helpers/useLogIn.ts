@@ -4,6 +4,7 @@ import * as graph from '@graphql/graph'
 
 // Utils
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
+import { appleAuth } from '@invertase/react-native-apple-authentication'
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next'
 import AsyncStorage from '@react-native-community/async-storage'
 import update from 'immutability-helper'
@@ -109,7 +110,42 @@ export default () => {
     };
 
     const logInWithApple = async () => {
-        // @TODO
+        try {
+            console.log(`*** logInWithApple ***`);
+
+            const response = await appleAuth.performRequest({
+                requestedScopes: [
+                    appleAuth.Scope.EMAIL,
+                    appleAuth.Scope.FULL_NAME,
+                ],
+                requestedOperation: appleAuth.Operation.LOGIN,
+            });
+    
+            console.log(`appleAuthRequestResponse: ${JSON.stringify(response, null, 4)}`);
+
+            const { authorizationCode, identityToken, nonce } = response;
+
+            return await mutate({
+                authorizationCode,
+                method: 'APPLE',
+                identityToken,
+                nonce,
+            });
+            // appleAuthRequestResponse.
+    
+            // get current authentication state for user
+            // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+            const credentialState = await appleAuth
+                .getCredentialStateForUser(response.user);
+    
+            // use credentialState response to ensure the user is authenticated
+            if (credentialState === appleAuth.State.AUTHORIZED) {
+                // user is authenticated
+                // appleAuthRequestResponse.
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     type LogInWithCredentialsArgs = {

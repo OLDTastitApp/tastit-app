@@ -5,8 +5,8 @@ import React, { useState, useRef, useCallback } from 'react'
 import { TouchableScale, PicturePicker } from '@components'
 import { View, Text, StyleSheet } from 'react-native'
 import DateInput from './DateInput'
-// import TextInput from './TextInput'
-import TextInput from '../LogIn/TextInput'
+import TextInput from './TextInput'
+// import TextInput from '../LogIn/TextInput'
 
 // Constants
 import { color, font, ui } from '@constants'

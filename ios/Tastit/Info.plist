@@ -25,8 +25,8 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb216833050229837</string>
-				<string>com.googleusercontent.apps.945645661784-emprqdu9ft4h6teichnuqp6vilu0i31s</string>
+				<string>fb1950971738388568</string>
+				<string>com.googleusercontent.apps.101873232533-leb7coiuarqgs19ie7goo84qudbht8dq</string>
 			</array>
 		</dict>
 		<dict>
@@ -43,7 +43,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>216833050229837</string>
+	<string>1950971738388568</string>
 	<key>FacebookDisplayName</key>
 	<string>Tastit</string>
 	<key>LSApplicationQueriesSchemes</key>

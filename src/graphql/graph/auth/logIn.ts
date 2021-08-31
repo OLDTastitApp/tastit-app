@@ -20,8 +20,10 @@ export type LogInArgs = {
         method: 'GOOGLE',
         idToken: string,
     } | {
-        accessToken: string,
+        authorizationCode: string,
+        identityToken: string,
         method: 'APPLE',
+        nonce: string,
     } | {
         method: 'CREDENTIALS',
         username: string,

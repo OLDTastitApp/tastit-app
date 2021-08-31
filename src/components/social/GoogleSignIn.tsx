@@ -16,9 +16,9 @@ export default ({ onPress, title }: Props) => (
         activeScale={0.98}
         onPress={onPress}
     >
-        <View style={styles.wrapper}>
+        {/* <View style={styles.wrapper}> */}
             <GoogleIcon style={styles.icon} />
-        </View>
+        {/* </View> */}
 
         <Text
             adjustsFontSizeToFit
@@ -33,16 +33,27 @@ export default ({ onPress, title }: Props) => (
 // Styles
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#4285F4',
+        // backgroundColor: '#4285F4',
+        backgroundColor: 'white',
         borderColor: '#4285F4',
         flexDirection: 'row',
         // alignSelf: 'center',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         marginVertical: 5,
         // borderRadius: 10,
         borderRadius: 100,
-        borderWidth: 1,
+        // borderWidth: 1,
         minWidth: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.36,
+        shadowRadius: 6.68,
+        elevation: 11,
     },
     wrapper: {
         backgroundColor: 'white',
@@ -54,11 +65,14 @@ const styles = StyleSheet.create({
         width: 18,
     },
     title: {
+        // fontFamily: font.semiBold,
         fontFamily: font.semiBold,
         paddingVertical: 10,
         textAlign: 'right',
-        paddingRight: 20,
-        color: 'white',
+        // paddingRight: 20,
+        // color: '#4285F4',
+        color: 'rgb(140,140,140)',
+        // color: 'white',
         marginLeft: 10,
         fontSize: 18,
     },

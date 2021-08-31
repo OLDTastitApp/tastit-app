@@ -15,6 +15,11 @@ export const USER = gql`
         picture(format: "large") {
             ...ImageFragment
         }
+        roles {
+            complete
+            name
+            id
+        }
         biography
         firstName
         lastName

@@ -7,6 +7,7 @@ export type RoleName =
     | 'USER'
 
 export type Role = {
+    complete: boolean,
     name: RoleName,
     id: string,
 }

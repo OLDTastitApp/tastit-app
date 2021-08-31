@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "101873232533",
+    "project_id": "tastitappandroid",
+    "storage_bucket": "tastitappandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101873232533:android:ee9e60704b2b6abd25099c",
+        "android_client_info": {
+          "package_name": "app.tastit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101873232533-imjh9u9emqopsbll0la2a8kfgniqkj94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.tastit",
+            "certificate_hash": "b54440621faad11de1ad2da056557daafbc2f391"
+          }
+        },
+        {
+          "client_id": "101873232533-vvijjgq1uocr8oh47rcfmq3cvjne7rn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgJn3D0vUekRR5Gu2kYdXz0MQlST--FtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101873232533-vvijjgq1uocr8oh47rcfmq3cvjne7rn9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101873232533-leb7coiuarqgs19ie7goo84qudbht8dq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.tastit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
