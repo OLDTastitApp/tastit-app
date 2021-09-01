@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     left: {
-        borderColor: color.primary,
+        borderColor: 'transparent',
+        // borderColor: color.primary,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 36,

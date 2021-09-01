@@ -22,7 +22,7 @@ export default memo((props: Props) => {
     const edges = useSafeAreaInsets();
     const top = edges.top + 40;
 
-    if (headerHeight == null) return null;
+    if (!headerHeight || !position) return null;
 
     const translateY = scrollY.interpolate({
         inputRange: [0, headerHeight - top],
@@ -30,11 +30,19 @@ export default memo((props: Props) => {
         extrapolateRight: 'clamp',
     });
 
+    // console.log(``)
+
     const translateX = position?.interpolate({
         outputRange: [0, width / 3, 2 * width / 3],
         inputRange: [0, 1, 2],
         extrapolate: 'clamp',
     });
+
+    // console.log(`translateX: ${JSON.stringify({
+    //     outputRange: [0, width / 3, 2 * width / 3],
+    //     inputRange: [0, 1, 2],
+    //     extrapolate: 'clamp',
+    // }, null, 4)}`)
 
     return (
         <Animated.View
@@ -60,9 +68,9 @@ export default memo((props: Props) => {
                         <TouchableScale
                             onPress={() => props.onChange(i)}
                             style={styles.wrapper}
+                            key={i}
                         >
                             <Animated.View
-                                key={i}
                                 style={[
                                     styles.icon,
                                     { opacity },
@@ -132,6 +140,7 @@ const styles = StyleSheet.create({
     footer: {
         width: `${100 / 3}%`,
         alignItems: 'center',
+        // width: 100,
     },
     separator: {
         backgroundColor: color.dark,

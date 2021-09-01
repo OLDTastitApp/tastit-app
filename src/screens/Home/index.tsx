@@ -97,7 +97,7 @@ export default memo(() => {
 
     // const complete = me?.roles?.[0]?.complete;
     const complete = me?.roles?.[0]?.complete;
-    console.log(`*** complete: ${JSON.stringify(me, null, 4)}`);
+    // console.log(`*** complete: ${JSON.stringify(me, null, 4)}`);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>

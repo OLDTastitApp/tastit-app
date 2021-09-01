@@ -2,8 +2,8 @@
 import React, { memo, useCallback, useState, useRef, useMemo } from 'react'
 
 // Components
-import { View, Animated, Text, FlatList, StatusBar, Dimensions } from 'react-native'
-import { TabView, SceneMap } from 'react-native-tab-view'
+import { View, FlatList, Animated, Dimensions, LayoutAnimation } from 'react-native'
+import { TabView } from 'react-native-tab-view'
 import Reanimated from 'react-native-reanimated'
 import PictureItem from './PictureItem'
 import EmptyTabBar from './EmptyTabBar'
@@ -13,7 +13,7 @@ import Header from './Header'
 import TabBar from './TabBar'
 
 // Helpers
-import { useMe, useUser, useUserId, usePosts, useFollow, useUnfollow, useScrollY } from '@helpers'
+import { useMe, useUser, useUserId, useFollow, useUnfollow, useScrollY } from '@helpers'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation, useRoute } from '@navigation/utils'
 import { useWindowDimensions } from 'react-native'
@@ -22,45 +22,22 @@ import { useWindowDimensions } from 'react-native'
 import { ui, font, color, style } from '@constants'
 
 // Types
-import { Props as PictureItemProps } from './PictureItem'
-import { Props as EmptyTabBarProps } from './EmptyTabBar'
-import { Post } from '@types'
+import { RefObject } from 'react'
 
-
-const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-);
-
-const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-);
 
 export default memo(() => {
 
     const navigation = useNavigation();
     const { params } = useRoute<'Profile'>();
 
-    const { height } = useWindowDimensions();
+    const { width, height } = useWindowDimensions();
     const edges = useSafeAreaInsets();
     const contentHeight = height - edges.top + 40;
 
     const [position, setPosition] = useState<Animated.AnimatedInterpolation>();
-    // const headerHeightRef = useRef(new Animated.Value(-100));
     const [headerHeight, setHeaderHeight] = useState<number>();
-    // const [tabBarState, setTabBarState] = useState<{
-    //     position: Animated.AnimatedInterpolation,
-    //     y: number,
-    // }>();
 
     const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-        { key: 'mine' },
-        { key: 'tagged' },
-        { key: 'liked' },
-    ]);
-
-    // const [posts, fetchMorePosts, postsResult] = useMyPosts({ first: 10 });
-    // const [me, meResult] = useMe();
 
     const meId = useUserId();
     const userId = params?.userId ?? meId;
@@ -72,26 +49,58 @@ export default memo(() => {
     const [unfollow, unfollowResult] = useUnfollow();
     const [follow, followResult] = useFollow();
 
-    const onPostPress = useCallback(
-        (post: Post) => {},
-        []
-    );
-
-    const [posts, postsResult] = usePosts({
-        creatorId: userId,
-        first: 10,
-    });
-
-    const onBiographyPress = () => {
-        // navigation.navigate('EditProfile', { me });
-    };
+    // @PARALLAX
+    // const edges = useSafeAreaInsets();
+    const top = edges.top + 40;
 
     const { onScroll, scrollY } = useScrollY();
 
-    const onSharePress = useCallback(
-        () => {
-            // ...
+    const { current: offsets } = useRef(routes.map(() => 0));
+    const { current: lists } = useRef<FlatList[]>(
+        routes.map<any>(() => null),
+    );
+
+    const onScrollRef = useCallback(
+        (ref: FlatList, i: number) => {
+            console.log(`Setting ref for index: ${i}`);
+            (lists[i] = ref);
         },
+        [],
+    );
+
+    const scrollableHeaderHeight = headerHeight - top;
+
+    const onScrollEnd = useCallback(
+        (y: number, i: number) => {
+            // Save offset of the current scroll
+            offsets[i] = y;
+        
+            // Update y position of others ScrollView
+            for (const route of routes) {
+                if (route.index === i) {
+                    continue;
+                }
+            
+                if (y < scrollableHeaderHeight && y >= 0) {
+                    // scrollTo(lists[route.index], y);
+                    lists[route.index]?.scrollToOffset?.({ offset: y, animated: false });
+                    offsets[route.index] = y;
+                } else if (
+                    offsets[route.index] < scrollableHeaderHeight &&
+                    y >= scrollableHeaderHeight
+                ) {
+                    // scrollTo(lists[route.index], scrollableHeaderHeight);
+                    lists[route.index]?.scrollToOffset?.({ offset: y, animated: false });
+                    offsets[route.index] = scrollableHeaderHeight;
+                }
+            }
+        },
+        [scrollableHeaderHeight]
+    );
+    // @END
+
+    const onSharePress = useCallback(
+        () => {},
         []
     );
 
@@ -116,69 +125,44 @@ export default memo(() => {
         []
     );
 
-    const onChange = useCallback(
-        (index: number) => {},
+    const onHeightChanged = useCallback(
+        (value: number) => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setHeaderHeight(value);
+        },
         []
     );
-
-    const renderScene = SceneMap({
-        mine: SecondRoute,
-        tagged: FirstRoute,
-        liked: FirstRoute,
-    });
-
-    // const pictures = useMemo(
-    //     () => posts?.edges?.map(({ node }) => node),
-    //     [posts]
-    // );
-
-    // if (!me?.user) return null;
-
-    // if (meResult.loading) return null;
-
-    // const renderTabBar = useCallback(info => {
-    //     setPosition(info.position);
-    // }, []);
-
-    // const onEmptyTabBarLayout = useCallback<
-    //     EmptyTabBarProps['onLayout']
-    // >(
-    //     ({ position, y }) => setTabBarState,
-    //     []
-    // );
 
     if (userResult.error || meResult.error) {
         console.log(userResult.error || meResult.error);
         return null;
     }
-
-    // console.log(postsResult.data?.me)
-    // console.log(postsResult.error)
     
     const data = myself ? me : user;
     
     // console.log(JSON.stringify(userResult.error, null, 4));
 
     return (
-        <View style={style.container}>
+        <View style={{ flex: 1, backgroundColor: 'purple' }}>
 
-            <Animated.ScrollView
+            {/* <Animated.ScrollView
                 showsVerticalScrollIndicator={false}
                 onScroll={onScroll}
-            >
-                <Biography
-                    onHeightChanged={setHeaderHeight}
-                    onSettingsPress={onSettingsPress}
-                    onFollowPress={onFollowPress}
-                    onEditPress={onEditPress}
-                    myself={myself}
-                    user={data}
-                />
+            > */}
+
+            {/* {!!0 && null} */}
+            {/* {!!headerHeight && (
+
+            )} */}
+
+            {!!headerHeight && (
 
                 <TabView
-                    initialLayout={{ width, height: contentHeight }}
+                    // initialLayout={{ width, height: contentHeight }}
+                    initialLayout={{ width, height }}
                     navigationState={{ index, routes }}
-                    style={{ height: contentHeight }}
+                    style={{ width, height }}
+                    // style={{ height: contentHeight, backgroundColor: 'blue' }}
                     renderTabBar={({ position }) => (
                         <EmptyTabBar
                             // onLayout={onEmptyTabBarLayout}
@@ -186,21 +170,38 @@ export default memo(() => {
                             position={position}
                         />
                     )}
+                    // renderTabBar={() => null}
                     // position={null}
                     // renderScene={renderScene}
                     onIndexChange={setIndex}
                     renderScene={({ route, position, jumpTo }) => (
                         <PostList
+                            headerHeight={headerHeight}
+                            onScrollRef={onScrollRef}
+                            onScrollEnd={onScrollEnd}
                             type={route.key as any}
+                            scrollY={scrollY}
                             // jumpTo={jumpTo}
+                            index={route.index}
                             userId={userId}
                         />
                     )}
                     // lazyPreloadDistance={10}
                     lazy={true}
-                    
+                    // lazy={false}
                 />
-            </Animated.ScrollView>
+            )}
+
+            <Biography
+                onHeightChanged={onHeightChanged}
+                onSettingsPress={onSettingsPress}
+                onFollowPress={onFollowPress}
+                onEditPress={onEditPress}
+                scrollY={scrollY}
+                myself={myself}
+                user={data}
+            />
+            {/* </Animated.ScrollView> */}
 
             <Header
                 listCount={data?.placeListCount}
@@ -224,4 +225,8 @@ export default memo(() => {
 })
 
 // Constants
-const { width } = Dimensions.get('window')
+// const { width } = Dimensions.get('window')
+
+const routes = [
+    'mine', 'tagged', 'liked',
+].map((key, index) => ({ key, index }));

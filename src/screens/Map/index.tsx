@@ -13,9 +13,12 @@ import Marker from './Marker'
 import Map from './Map'
 
 // Helpers
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { useWindowDimensions } from 'react-native'
-import { usePlaces } from '@helpers'
+import { usePlaces, useLocation } from '@helpers'
+
+// Utils
+import Geolocation from '@react-native-community/geolocation'
 
 // Constants
 import { style } from '@constants'
@@ -29,6 +32,7 @@ import { Props as MapProps } from './Map'
 // https://github.com/react-native-geolocation/react-native-geolocation#watchposition
 
 
+// [longitude, latitude]
 const defaultLocation = [2.3488, 48.8534];
 
 export default memo(() => {
@@ -46,6 +50,9 @@ export default memo(() => {
     const [location, setLocation] = useState(defaultLocation);
     const [mapLocation, setMapLocation] = useState(defaultLocation);
 
+    // const locationResult = useLocation();
+    // locationResult.
+
     // Filters
     const [pricing, setPricing] = useState<Pricing>();
     const [districts, setDistricts] = useState<string[]>([]);
@@ -53,6 +60,17 @@ export default memo(() => {
     const [gastronomies, setGastronomies] = useState<string[]>([]);
 
     const [filters, setFilters] = useState<Filters | {}>({});
+
+    useFocusEffect(() => {
+        Geolocation.getCurrentPosition(
+            position => {
+                const { longitude, latitude } = position.coords;
+                setLocation([longitude, latitude]);
+            },
+            error => {},
+            { enableHighAccuracy: true }
+        );
+    })
 
     const onBackPress = () => {
         if (place) {

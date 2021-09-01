@@ -2,26 +2,50 @@
 import React, { memo, useCallback } from 'react'
 
 // Components
-import { View, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Animated, StyleSheet } from 'react-native'
+// import Reanimated from 'react-native-reanimated'
 import PictureItem from './PictureItem'
 
 // Helpers
 import { useMe, useUser, useUserId, usePosts } from '@helpers'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useWindowDimensions } from 'react-native'
 
+// Constants
+import { SIZE } from './TabBar'
+
 // Types
+// import { RefObject } from 'react'
 import { Post } from '@types'
 
 
+// const AnimatedFlatList = Reanimated.createAnimatedComponent(FlatList)
+
 export default memo((props: Props) => {
 
-    const { type, userId } = props;
+    const { type, userId, index, scrollY, headerHeight } = props;
 
     // const [posts, postsResult] = usePosts({
     //     creatorId: userId,
     //     first: 10,
     // });
+
+    const onScroll = Animated.event(
+        [
+          {
+            nativeEvent: {
+              contentOffset: {
+                y: scrollY,
+              },
+            },
+          },
+        ],
+        { useNativeDriver: true },
+    );
+
+    const onScrollEnd: FlatList['props']['onScrollEndDrag'] = event => {
+        const { y } = event.nativeEvent.contentOffset;
+        props.onScrollEnd(y, index);
+    };
 
     const onPostPress = useCallback(
         (post: Post) => {},
@@ -34,8 +58,8 @@ export default memo((props: Props) => {
     });
 
     const { height } = useWindowDimensions();
-    const edges = useSafeAreaInsets();
-    const top = edges.top + 40;
+    // const edges = useSafeAreaInsets();
+    // const top = edges.top + 40;
 
     const backgroundColor = ({
         'mine': 'red',
@@ -51,21 +75,39 @@ export default memo((props: Props) => {
                 { backgroundColor },
             ]}
         >
-            {/* <FlatList
+            <Animated.FlatList
                 renderItem={({ item, index }) => (
                     <PictureItem
                         onPress={onPostPress}
                         item={item.node}
                         index={index}
                     />
+                    // <View style={styles.item}>
+                    //     <Text style={{ fontSize: 20, color: 'white' }}>
+                    //         ITEM: {index}
+                    //     </Text>
+                    // </View>
                 )}
                 keyExtractor={(item, i) => `${item}_${i}`}
                 data={posts?.edges}
                 numColumns={3}
-            /> */}
+                // data={data}
+                // contentContainerStyle={{ paddingTop: headerHeight }}
+                contentContainerStyle={{ paddingTop: headerHeight }}
+
+                // ...
+                ref={ref => props.onScrollRef(ref, index)}
+                onMomentumScrollEnd={onScrollEnd}
+                onScrollEndDrag={onScrollEnd}
+                onScrollToTop={onScrollEnd}
+                scrollEventThrottle={16}
+                onScroll={onScroll}
+            />
         </View>
     )
 })
+
+const data = [...Array(20).keys()];
 
 // Styles
 const styles = StyleSheet.create({
@@ -74,6 +116,12 @@ const styles = StyleSheet.create({
         // height: 400,
         // width: 100,
         // flex: 1,
+        // marginTop: 
+    },
+    item: {
+        backgroundColor: 'purple',
+        margin: 20,
+        height: 60,
     },
 })
 
@@ -81,4 +129,12 @@ const styles = StyleSheet.create({
 type Props = {
     type: 'mine' | 'tagged' | 'liked',
     userId: string,
+
+    // Parallax
+    // onScrollRef: (ref: RefObject<FlatList>, index: number) => void,
+    onScrollRef: (ref: Animated.FlatList, index: number) => void,
+    onScrollEnd: (y: number, index: number) => void,
+    scrollY: Animated.Value,
+    headerHeight?: number,
+    index: number,
 }

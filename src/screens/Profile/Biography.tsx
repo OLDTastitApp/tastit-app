@@ -17,7 +17,7 @@ import { User } from '@types'
 
 export default memo((props: Props) => {
 
-    const { user, myself, onHeightChanged } = props;
+    const { user, myself, scrollY, onHeightChanged } = props;
 
     const onFollowPress = () => {
         props.onFollowPress(!user.following);
@@ -32,9 +32,21 @@ export default memo((props: Props) => {
         onHeightChanged(height);
     };
 
+    const translateY = Animated.multiply(-1, scrollY);
+
     return (
-        <View onLayout={onLayout}>
-            <View style={[styles.container, { marginTop }]}>
+        <Animated.View
+            onLayout={onLayout}
+            style={[
+                styles.container,
+                {
+                    transform: [
+                        { translateY },
+                    ],
+                }
+            ]}
+        >
+            <View style={[styles.content, { marginTop }]}>
 
                 <View style={styles.header}>
                     {myself ? (
@@ -105,13 +117,18 @@ export default memo((props: Props) => {
             </View>
 
             <View style={styles.line} />
-        </View>
+        </Animated.View>
     )
 })
 
 // Styles
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'white',
+        position: 'absolute',
+        width: '100%',
+    },
+    content: {
         marginHorizontal: 20,
     },
     header: {
@@ -186,6 +203,7 @@ type Props = {
     // heightRef: RefObject<Animated.Value>,
     onSettingsPress: () => void,
     onEditPress: () => void,
+    scrollY: Animated.Value,
     myself?: boolean,
     user: User,
 }
