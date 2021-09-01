@@ -7,6 +7,7 @@ import { View, Text, FlatList, Animated, StyleSheet } from 'react-native'
 import PictureItem from './PictureItem'
 
 // Helpers
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useMe, useUser, useUserId, usePosts } from '@helpers'
 import { useWindowDimensions } from 'react-native'
 
@@ -58,8 +59,8 @@ export default memo((props: Props) => {
     });
 
     const { height } = useWindowDimensions();
-    // const edges = useSafeAreaInsets();
-    // const top = edges.top + 40;
+    const edges = useSafeAreaInsets();
+    const top = edges.top + 40;
 
     const backgroundColor = ({
         'mine': 'red',
@@ -67,47 +68,47 @@ export default memo((props: Props) => {
         'liked': 'yellow',
     })[props.type];
 
+    const minHeight = height + headerHeight - top - SIZE;
+
     return (
         <View
             style={[
                 styles.container,
-                { height },
+                // { height },
+                // { minHeight: height - top },
                 { backgroundColor },
             ]}
         >
             <Animated.FlatList
                 renderItem={({ item, index }) => (
-                    <PictureItem
-                        onPress={onPostPress}
-                        item={item.node}
-                        index={index}
-                    />
-                    // <View style={styles.item}>
-                    //     <Text style={{ fontSize: 20, color: 'white' }}>
-                    //         ITEM: {index}
-                    //     </Text>
-                    // </View>
+                    // <PictureItem
+                    //     onPress={onPostPress}
+                    //     item={item.node}
+                    //     index={index}
+                    // />
+                    <View style={styles.item}>
+                        <Text style={{ fontSize: 20, color: 'white' }}>
+                            ITEM: {index}
+                        </Text>
+                    </View>
                 )}
                 keyExtractor={(item, i) => `${item}_${i}`}
-                data={posts?.edges}
-                numColumns={3}
-                // data={data}
-                // contentContainerStyle={{ paddingTop: headerHeight }}
-                contentContainerStyle={{ paddingTop: headerHeight }}
-
-                // ...
+                // data={posts?.edges}
+                contentContainerStyle={{ paddingTop: headerHeight, minHeight }}
                 ref={ref => props.onScrollRef(ref, index)}
                 onMomentumScrollEnd={onScrollEnd}
                 onScrollEndDrag={onScrollEnd}
                 onScrollToTop={onScrollEnd}
                 scrollEventThrottle={16}
                 onScroll={onScroll}
+                numColumns={3}
+                data={data}
             />
         </View>
     )
 })
 
-const data = [...Array(20).keys()];
+const data = [...Array(14).keys()];
 
 // Styles
 const styles = StyleSheet.create({
