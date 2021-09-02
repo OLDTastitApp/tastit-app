@@ -69,7 +69,7 @@ export default memo((props: Props) => {
             // title={item.name}
             key={key}
         >
-            <Animated.View
+            <View
                 style={[
                     styles.container,
                     // selected && {
@@ -93,7 +93,7 @@ export default memo((props: Props) => {
                         </Text>
                     </View>
                 )} */}
-            </Animated.View>
+            </View>
         </Marker>
     )
 })

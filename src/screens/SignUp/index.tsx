@@ -57,6 +57,8 @@ export default memo(function SignUp() {
             if (e instanceof ApolloError) {
                 if (e.message === 'NICKNAME_ALREADY_EXISTS') {
                     setExistingNickname(nickname);
+                } else if (e.message === 'USER_ALREADY_EXISTS') {
+                    Alert.alert('Un compte avec cet email existe déjà. Essayez plutôt de vous connecter.');
                 } else {
                     Alert.alert('Une erreur est survenue');
                 }

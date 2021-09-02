@@ -2,7 +2,7 @@
 import React, { RefObject, memo, useEffect, useMemo } from 'react'
 
 // Components
-import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions, Linking, Platform } from 'react-native'
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
@@ -96,6 +96,21 @@ export default memo((props: Props) => {
         navigation.navigate('AddPlace', { placeId: place.id });
     };
 
+    const onMapPress = () => {
+        const url = Platform.OS === 'ios'
+            ? `maps:0,0?q=${place.name}@${place.latitude},${place.longitude}`
+            : `geo:0,0?q=${place.latitude},${place.longitude}(${place.name})`;
+        Linking.openURL(url);
+    };
+    
+    const onPhonePress = () => {
+        Linking.openURL(`phone:${place.phoneNumber}`);
+    };
+
+    const onWebsitePress = () => {
+        Linking.openURL(`https://${place.website}`);
+    };
+
     return (
         <BottomSheetModal
             handleComponent={null}
@@ -180,7 +195,7 @@ export default memo((props: Props) => {
                 >
                     <TouchableScale
                         style={styles.action}
-                        onPress={() => {}}
+                        onPress={onMapPress}
                     >
                         <Feather
                             color={color.dark}
@@ -195,8 +210,8 @@ export default memo((props: Props) => {
 
                     {!!place.phoneNumber && (
                         <TouchableScale
+                            onPress={onPhonePress}
                             style={styles.action}
-                            onPress={() => {}}
                         >
                             <Feather
                                 color={color.dark}
@@ -212,8 +227,8 @@ export default memo((props: Props) => {
 
                     {!!place.website && (
                         <TouchableScale
+                            onPress={onWebsitePress}
                             style={styles.action}
-                            onPress={() => {}}
                         >
                             <Feather
                                 color={color.dark}
@@ -249,7 +264,7 @@ export default memo((props: Props) => {
                 </Text> */}
             </BottomSheetScrollView>
 
-            <RateModal visible={true} />
+            {/* <RateModal visible={true} /> */}
         </BottomSheetModal>
     )
 })

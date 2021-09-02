@@ -30,19 +30,11 @@ export default memo((props: Props) => {
         extrapolateRight: 'clamp',
     });
 
-    // console.log(``)
-
     const translateX = position?.interpolate({
         outputRange: [0, width / 3, 2 * width / 3],
         inputRange: [0, 1, 2],
         extrapolate: 'clamp',
     });
-
-    // console.log(`translateX: ${JSON.stringify({
-    //     outputRange: [0, width / 3, 2 * width / 3],
-    //     inputRange: [0, 1, 2],
-    //     extrapolate: 'clamp',
-    // }, null, 4)}`)
 
     return (
         <Animated.View
@@ -131,7 +123,6 @@ const styles = StyleSheet.create({
     content: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-        // paddingVertical: 10,
     },
     icon: {
         height: 24,
@@ -140,7 +131,6 @@ const styles = StyleSheet.create({
     footer: {
         width: `${100 / 3}%`,
         alignItems: 'center',
-        // width: 100,
     },
     separator: {
         backgroundColor: color.dark,

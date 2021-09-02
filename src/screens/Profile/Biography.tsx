@@ -1,5 +1,5 @@
 // React
-import React, { memo, RefObject } from 'react'
+import React, { memo } from 'react'
 
 // Components
 import { View, Animated, Text, StyleSheet } from 'react-native'
@@ -9,7 +9,7 @@ import { FollowButton, ProfileButton } from '@components'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 // Constants
-import { font, color } from '@constants'
+import { color } from '@constants'
 
 // Types
 import { User } from '@types'

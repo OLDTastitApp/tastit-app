@@ -1,8 +1,8 @@
 // React
-import React, { memo, useCallback, useState, useRef } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
 // Components
-import { View, FlatList, Animated, LayoutAnimation } from 'react-native'
+import { View, Animated, LayoutAnimation } from 'react-native'
 import { TabView } from 'react-native-tab-view'
 import EmptyTabBar from './EmptyTabBar'
 import Biography from './Biography'
@@ -11,7 +11,7 @@ import Header from './Header'
 import TabBar from './TabBar'
 
 // Helpers
-import { useMe, useUser, useUserId, useFollow, useUnfollow, useScrollY } from '@helpers'
+import { useMe, useUser, useUserId, useFollow, useUnfollow } from '@helpers'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation, useRoute } from '@navigation/utils'
 import { useWindowDimensions } from 'react-native'

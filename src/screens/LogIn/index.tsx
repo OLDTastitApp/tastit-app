@@ -26,9 +26,13 @@ export default memo(() => {
 
     const [actions, logInResult] = useLogIn();
 
-    const onCredentialsPress: OnCredentialsPress = form => {
-        const { email: username, password } = form;
-        actions.logInWithCredentials({ username, password });
+    const onCredentialsPress: OnCredentialsPress = async form => {
+        try {
+            const { email: username, password } = form;
+            await actions.logInWithCredentials({ username, password });
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const onForgotPress = () => {

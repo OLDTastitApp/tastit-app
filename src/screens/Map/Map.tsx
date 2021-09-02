@@ -69,6 +69,23 @@ export default memo((props: Props) => {
         [focusedPlace]
     );
 
+    useEffect(
+        () => {
+            if (location) {
+                // ...
+                // const [longitude, latitude] = focusedPlace.location;
+                const [longitude, latitude] = location;
+                mapRef.current.animateCamera({
+                    center: {
+                        longitude,
+                        latitude,
+                    },
+                });
+            }
+        },
+        [location]
+    );
+
     const onPress = useCallback(
         () =>  {
 
@@ -89,7 +106,7 @@ export default memo((props: Props) => {
                 customMapStyle={themes.silver}
                 // customMapStyle={themes.dark}
                 initialRegion={initialRegion}
-                // provider={PROVIDER_GOOGLE}
+                provider={PROVIDER_GOOGLE}
                 onMapReady={onMapReady}
                 // showsMyLocationButton
                 style={styles.map}

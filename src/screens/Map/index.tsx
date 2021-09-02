@@ -61,16 +61,33 @@ export default memo(() => {
 
     const [filters, setFilters] = useState<Filters | {}>({});
 
-    useFocusEffect(() => {
-        Geolocation.getCurrentPosition(
-            position => {
-                const { longitude, latitude } = position.coords;
-                setLocation([longitude, latitude]);
-            },
-            error => {},
-            { enableHighAccuracy: true }
-        );
-    })
+    // useFocusEffect(() => {
+    //     console.log(`Hello`)
+    //     // Geolocation.getCurrentPosition(
+    //     //     position => {
+    //     //         const { longitude, latitude } = position.coords;
+    //     //         setLocation([longitude, latitude]);
+    //     //     },
+    //     //     error => {},
+    //     //     { enableHighAccuracy: true }
+    //     // );
+    // });
+
+    useEffect(
+        () => {
+            Geolocation.getCurrentPosition(
+                position => {
+                    const { longitude, latitude } = position.coords;
+                    // setLocation([longitude, latitude]);
+                    console.log(`position: ${JSON.stringify({ longitude, latitude }, null, 4)}`);
+                    setLocation([longitude, latitude]);
+                },
+                error => {},
+                { enableHighAccuracy: true }
+            );
+        },
+        []
+    );
 
     const onBackPress = () => {
         if (place) {
@@ -104,15 +121,22 @@ export default memo(() => {
         // setLocation(mapLocation);
         searchModalRef.current.snapToIndex(0);
 
-        console.log(`dietetics: ${JSON.stringify(dietetics, null, 4)}`);
+        // console.log(`dietetics: ${JSON.stringify(dietetics, null, 4)}`);
+        console.log(`placesResult.refetch(${JSON.stringify({
+            pricing: pricing ? [pricing.index] : undefined,
+            around: mapLocation,
+            zip: districts,
+            radius: 10000,
+            first: 10,
+        }, null, 4)})`);
 
-        // placesResult.refetch({
-        //     pricing: pricing ? [pricing.index] : undefined,
-        //     around: mapLocation,
-        //     zip: districts,
-        //     radius: 10000,
-        //     first: 10,
-        // });
+        placesResult.refetch({
+            pricing: pricing ? [pricing.index] : undefined,
+            around: mapLocation,
+            zip: districts,
+            radius: 10000,
+            first: 10,
+        });
     };
 
     // const skipRefetch = !!location && JSON.stringify(location) != JSON.stringify(mapLocation);

@@ -62,11 +62,11 @@ export default memo((props: Props) => {
     const edges = useSafeAreaInsets();
     const top = edges.top + 40;
 
-    const backgroundColor = ({
-        'mine': 'red',
-        'tagged': 'purple',
-        'liked': 'yellow',
-    })[props.type];
+    // const backgroundColor = ({
+    //     'mine': 'red',
+    //     'tagged': 'purple',
+    //     'liked': 'yellow',
+    // })[props.type];
 
     const minHeight = height + headerHeight - top - SIZE;
 
@@ -76,24 +76,23 @@ export default memo((props: Props) => {
                 styles.container,
                 // { height },
                 // { minHeight: height - top },
-                { backgroundColor },
+                // { backgroundColor },
             ]}
         >
             <Animated.FlatList
                 renderItem={({ item, index }) => (
-                    // <PictureItem
-                    //     onPress={onPostPress}
-                    //     item={item.node}
-                    //     index={index}
-                    // />
-                    <View style={styles.item}>
-                        <Text style={{ fontSize: 20, color: 'white' }}>
-                            ITEM: {index}
-                        </Text>
-                    </View>
+                    <PictureItem
+                        onPress={onPostPress}
+                        item={item.node}
+                        index={index}
+                    />
+                    // <View style={styles.item}>
+                    //     <Text style={{ fontSize: 20, color: 'white' }}>
+                    //         ITEM: {index}
+                    //     </Text>
+                    // </View>
                 )}
                 keyExtractor={(item, i) => `${item}_${i}`}
-                // data={posts?.edges}
                 contentContainerStyle={{ paddingTop: headerHeight, minHeight }}
                 ref={ref => props.onScrollRef(ref, index)}
                 onMomentumScrollEnd={onScrollEnd}
@@ -101,8 +100,9 @@ export default memo((props: Props) => {
                 onScrollToTop={onScrollEnd}
                 scrollEventThrottle={16}
                 onScroll={onScroll}
+                data={posts?.edges}
                 numColumns={3}
-                data={data}
+                // data={data}
             />
         </View>
     )
