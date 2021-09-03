@@ -38,13 +38,13 @@ export default memo((props: Props) => {
             onLongPress={onLongPress}
             style={[
                 styles.container,
-                route.name === 'Favorites' && styles.main,
+                route.name === 'FavoritesStack' && styles.main,
             ]}
             disabled={focused}
             activeScale={0.95}
             onPress={onPress}
         >
-            {route.name === 'Favorites' ? (
+            {route.name === 'FavoritesStack' ? (
                 <Icon
                     // fill={focused ? color.primary : `${color.primary}22`}
                     // fill={focused ? color.primary : `${color.darkGray}`}
@@ -81,10 +81,10 @@ const iconMap: {
     'HomeStack': {
         Icon: HomeIcon,
     },
-    'Map': {
+    'MapStack': {
         Icon: SearchIcon,
     },
-    'Favorites': {
+    'FavoritesStack': {
         Icon: MainIcon,
     },
     // 'Screenshot': {

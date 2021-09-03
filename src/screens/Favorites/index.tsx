@@ -14,6 +14,7 @@ import Header from './Header'
 import { usePlaceLists, useLikePlace, useDislikePlace, useRemovePlace } from '@helpers'
 import { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import { useWindowDimensions } from 'react-native'
+import { useNavigation } from '@navigation/utils'
 
 // Types
 import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
@@ -26,6 +27,8 @@ export default memo(() => {
     const [index, setIndex] = useState(0);
 
     const { width } = useWindowDimensions();
+
+    const navigation = useNavigation();
 
     const optionsModalRef = useRef<OptionsModalRef>(null);
 
@@ -51,9 +54,7 @@ export default memo(() => {
     );
 
     const onPlacePress = useCallback(
-        (item: Place) => {
-            // ...
-        },
+        ({ id }: Place) => navigation.navigate('PlaceDetails', { placeId: id }),
         []
     );
 

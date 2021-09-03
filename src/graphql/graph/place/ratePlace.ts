@@ -6,23 +6,24 @@ import gql from 'graphql-tag'
 import { Place } from '@types'
 
 
-export type LikePlaceArgs = {
+export type RatePlaceArgs = {
     input: {
         placeId: string,
+        rating: number,
     },
 }
 
-export type LikePlaceResult = {
-    likePlace: {
+export type RatePlaceResult = {
+    ratePlace: {
         place: Place,
     },
 }
 
-export const LIKE_PLACE = gql`
-    mutation LikePlace(
-        $input: LikePlaceInput!
+export const RATE_PLACE = gql`
+    mutation RatePlace(
+        $input: RatePlaceInput!
     ) {
-        likePlace(
+        ratePlace(
             input: $input
         ) {
             place {

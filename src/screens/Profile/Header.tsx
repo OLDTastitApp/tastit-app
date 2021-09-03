@@ -16,7 +16,7 @@ import { User } from '@types'
 
 export default memo((props: Props) => {
 
-    const { listCount, scrollY, myself, user } = props;
+    const { listCount, canGoBack, scrollY, myself, user } = props;
 
     const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`;
 
@@ -24,8 +24,6 @@ export default memo((props: Props) => {
 
     const edges = useSafeAreaInsets();
     const fullHeight = edges.top + 90;
-    console.log(`fullHeight: ${fullHeight}`);
-    console.log(`outputRange: ${edges.top}`);
 
     const scaleHeader = scrollY.interpolate({
         outputRange: [1 + 200 / fullHeight, 1],
@@ -153,7 +151,7 @@ export default memo((props: Props) => {
                     },
                 ]}
             >
-                {!myself ? (
+                {(!myself || canGoBack) ? (
                     <TouchableScale
                         onPress={props.onBackPress}
                         style={styles.button}
@@ -269,6 +267,7 @@ type Props = {
     onSharePress: () => void,
     onBackPress: () => void,
     scrollY: Animated.Value,
+    canGoBack?: boolean,
     listCount: number,
     myself?: boolean,
     user: User,

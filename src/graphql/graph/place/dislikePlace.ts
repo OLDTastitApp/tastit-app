@@ -29,6 +29,8 @@ export const DISLIKE_PLACE = gql`
                 cover {
                     ...ImageFragment
                 }
+                recommendationCount
+                userRating
                 longitude
                 latitude
                 address

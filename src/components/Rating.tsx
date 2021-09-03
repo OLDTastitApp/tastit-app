@@ -3,7 +3,7 @@ import React from 'react'
 
 // Components
 import RatingIcon from '@assets/images/rating.svg'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 // Constants
 import { color } from '@constants'
@@ -11,7 +11,7 @@ import { color } from '@constants'
 
 export default (props: Props) => {
 
-    const { onRatePress, value = 3, size = 14 } = props;
+    const { alreadyRated, onRatePress, value = 3, size = 14 } = props;
     const percent = Math.round(value * 2) * 10;
 
     return (
@@ -34,12 +34,16 @@ export default (props: Props) => {
                 />
             </View>
 
-            <Text
+            <TouchableOpacity
+                disabled={alreadyRated}
                 onPress={onRatePress}
-                style={styles.rate}
+                style={styles.right}
+                activeOpacity={0.9}
             >
-                Rédiger un avis
-            </Text>
+                <Text style={styles.rate}>
+                    {alreadyRated ? 'Déjà noté !' : 'Laisser une note'}
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -82,6 +86,9 @@ const styles = StyleSheet.create({
         height: '100%',
         marginTop: 1,
     },
+    right: {
+        flex: 1,
+    },
     rate: {
         fontFamily: 'Avenir Next',
         color: color.primary,
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginRight: 5,
         fontSize: 14,
-        flex: 1,
         top: 2,
     },
 })
@@ -97,6 +103,7 @@ const styles = StyleSheet.create({
 // Types
 export type Props = {
     onRatePress?: () => void,
+    alreadyRated: boolean,
     value?: number,
     size?: number,
 }

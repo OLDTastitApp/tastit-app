@@ -88,12 +88,16 @@ export default memo(() => {
         []
     );
 
+    // if (!user) return null;
+
     if (userResult.error || meResult.error) {
         console.log(userResult.error || meResult.error);
         return null;
     }
     
     const data = myself ? me : user;
+
+    if (!data) return null;
 
     return (
         <View style={style.container}>
@@ -138,6 +142,7 @@ export default memo(() => {
             <Header
                 listCount={data?.placeListCount}
                 onBackPress={navigation.goBack}
+                canGoBack={params?.canGoBack}
                 onSharePress={onSharePress}
                 scrollY={scrollY}
                 myself={myself}

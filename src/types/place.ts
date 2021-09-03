@@ -52,8 +52,10 @@ export type Tag = {
 
 export type Place = {
     timetable?: [number, number][],
+    recommendationCount?: number,
     posts: Connection<Post>,
     phoneNumber?: string,
+    userRating?: number,
     categories?: Tag[],
     longitude: number,
     website?: string,

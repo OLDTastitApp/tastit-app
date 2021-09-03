@@ -59,11 +59,11 @@ export default memo((props: Props) => {
     const hidden = route.state?.index > 0
         || focusedOptions.tabBarVisible === false
         || route.name === 'ScreenshotStack'
-        || route.name === 'Map';
+        || route.name === 'MapStack';
         // || route.name === 'Search';
 
     // const delay = route.name === 'Search' ? 1000 : 0;
-    const delay = route.name === 'Map' ? 1000 : 0;
+    const delay = route.name === 'MapStack' ? 1000 : 0;
 
     useEffect(
         () => {

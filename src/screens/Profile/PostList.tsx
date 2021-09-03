@@ -1,9 +1,10 @@
 // React
-import React, { memo, useCallback } from 'react'
+import React, { memo, useRef, useMemo, useCallback } from 'react'
 
 // Components
 import { View, Text, FlatList, Animated, StyleSheet } from 'react-native'
 // import Reanimated from 'react-native-reanimated'
+import PictureViewer from './PictureViewer'
 import PictureItem from './PictureItem'
 
 // Helpers
@@ -16,6 +17,7 @@ import { SIZE } from './TabBar'
 
 // Types
 // import { RefObject } from 'react'
+import { Ref as PictureViewerRef } from './PictureViewer'
 import { Post } from '@types'
 
 
@@ -24,6 +26,8 @@ import { Post } from '@types'
 export default memo((props: Props) => {
 
     const { type, userId, index, scrollY, headerHeight } = props;
+
+    const pictureViewerRef = useRef<PictureViewerRef>(null);
 
     // const [posts, postsResult] = usePosts({
     //     creatorId: userId,
@@ -49,7 +53,9 @@ export default memo((props: Props) => {
     };
 
     const onPostPress = useCallback(
-        (post: Post) => {},
+        (post: Post) => {
+            pictureViewerRef.current.show(post)
+        },
         []
     );
 
@@ -58,7 +64,12 @@ export default memo((props: Props) => {
         first: 10,
     });
 
-    const { height } = useWindowDimensions();
+    const pictures = useMemo(
+        () => posts?.edges?.map(({ node }) => node),
+        [posts]
+    );
+
+    const { height, width } = useWindowDimensions();
     const edges = useSafeAreaInsets();
     const top = edges.top + 40;
 
@@ -77,6 +88,7 @@ export default memo((props: Props) => {
                 // { height },
                 // { minHeight: height - top },
                 // { backgroundColor },
+                { width },
             ]}
         >
             <Animated.FlatList
@@ -93,7 +105,7 @@ export default memo((props: Props) => {
                     // </View>
                 )}
                 keyExtractor={(item, i) => `${item}_${i}`}
-                contentContainerStyle={{ paddingTop: headerHeight, minHeight }}
+                contentContainerStyle={{ paddingTop: headerHeight + 20, minHeight }}
                 ref={ref => props.onScrollRef(ref, index)}
                 onMomentumScrollEnd={onScrollEnd}
                 onScrollEndDrag={onScrollEnd}
@@ -103,6 +115,11 @@ export default memo((props: Props) => {
                 data={posts?.edges}
                 numColumns={3}
                 // data={data}
+            />
+
+            <PictureViewer
+                ref={pictureViewerRef}
+                data={pictures ?? []}
             />
         </View>
     )

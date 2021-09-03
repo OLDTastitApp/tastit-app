@@ -38,6 +38,8 @@ export type Params<TRouteName> =
     ? SelectEstablishmentParams
     : TRouteName extends 'SelectFriends'
     ? SelectFriendsParams
+    : TRouteName extends 'PlaceDetails'
+    ? PlaceDetailsParams
     : TRouteName extends 'EditProfile'
     ? EditProfileParams
     : TRouteName extends 'VerifyEmail'
@@ -55,6 +57,7 @@ export type Params<TRouteName> =
 export type RouteName =
     | 'SelectEstablishment'
     | 'SelectFriends'
+    | 'PlaceDetails'
     | 'EditProfile'
     | 'VerifyEmail'
     | 'PostDetails'
@@ -78,6 +81,10 @@ type SelectEstablishmentParams = {
 type SelectFriendsParams = {
     setUsers: (users: User[]) => void,
     users?: User[],
+}
+
+type PlaceDetailsParams = {
+    placeId: string,
 }
 
 type EditProfileParams = {
@@ -105,5 +112,6 @@ type AddPlaceParams = {
 }
 
 type ProfileParams = {
+    canGoBack?: boolean,
     userId?: string,
 }

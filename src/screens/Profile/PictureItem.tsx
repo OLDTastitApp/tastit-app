@@ -2,8 +2,9 @@
 import React, { memo } from 'react'
 
 // Components
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { TouchableScale } from '@components'
+import Image from 'react-native-fast-image'
 
 // Helpers
 import { useWindowDimensions } from 'react-native'
@@ -35,7 +36,7 @@ export default memo((props: Props) => {
                 { width: size + 2 * margin },
                 styles.container,
             ]}
-            activeScale={0.98}
+            activeScale={0.99}
             onPress={onPress}
         >
             <Image

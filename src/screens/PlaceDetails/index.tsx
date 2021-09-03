@@ -1,5 +1,5 @@
 // React
-import React, { RefObject, memo, useEffect, useMemo, useState, useCallback } from 'react'
+import React, { RefObject, memo, useCallback, useMemo, useState } from 'react'
 
 // Components
 import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions, Linking, Platform } from 'react-native'
@@ -11,14 +11,16 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
 import RateModal from './RateModal'
 import PostItem from './PostItem'
+import NavBar from './NavBar'
 
 // Icons
 import HeartFilledIcon from '@assets/icons/heart-filled.svg'
 import HeartIcon from '@assets/icons/heart.svg'
+import UsersIcon from '@assets/icons/users.svg'
 
 // Helpers
-import { usePlace, useLikePlace, useDislikePlace } from '@helpers'
-import { useNavigation } from '@navigation/utils'
+import { usePlace, useRatePlace, useLikePlace, useDislikePlace } from '@helpers'
+import { useNavigation, useRoute } from '@navigation/utils'
 
 // Constants
 import { color, ui } from '@constants'
@@ -27,30 +29,33 @@ import { color, ui } from '@constants'
 import { Place } from '@types'
 
 
-export default memo((props: Props) => {
+export default memo(() => {
 
     const navigation = useNavigation();
-
-    const { modalRef, onClosed, animatedPosition } = props;
+    const { params } = useRoute<'PlaceDetails'>();
 
     const [ratingModalVisible, setRatingModalVisible] = useState(false);
 
-    const [place, placeResult] = usePlace({ id: props.place?.id });
+    // const { modalRef, onClosed, animatedPosition } = props;
+
+    // const [place, placeResult] = usePlace({ id: props.place?.id });
+    const [place, placeResult] = usePlace({ id: params.placeId });
 
     const [dislikePlace, dislikePlaceResult] = useDislikePlace();
     const [likePlace, likePlaceResult] = useLikePlace();
+    const [ratePlace, ratePlaceResult] = useRatePlace();
 
-    useEffect(
-        () => {
-            if (place) {
-                // modalRef.current?.snapToIndex(1);
-                modalRef.current?.present();
-            } else {
-                modalRef.current?.dismiss();
-            }
-        },
-        [place]
-    );
+    // useEffect(
+    //     () => {
+    //         if (place) {
+    //             // modalRef.current?.snapToIndex(1);
+    //             modalRef.current?.present();
+    //         } else {
+    //             modalRef.current?.dismiss();
+    //         }
+    //     },
+    //     [place]
+    // );
 
     const { tags } = useMemo(
         () => {
@@ -67,34 +72,18 @@ export default memo((props: Props) => {
         [place?.tags]
     );
 
-    // if (placeResult.error) {
+    // if (placeResult) {
     //     return (
     //         <ScrollView contentContainerStyle={{ paddingTop: 100, backgroundColor: 'white' }}>
     //             <Text>
-    //                 {JSON.stringify(placeResult.error, null, 4)}
+    //                 {JSON.stringify(tags, null, 4)}
+    //                 {JSON.stringify(placeResult.data, null, 4)}
     //             </Text>
     //         </ScrollView>
     //     )
     // }
 
-    const onRatePress = () => setRatingModalVisible(true);
-
-    const onCancelRating = useCallback(() => setRatingModalVisible(false), []);
-
-    const onSubmitRating = useCallback(
-        (value: number) => {
-            // ...
-            setRatingModalVisible(false);
-        },
-        []
-    );
-
-    if (place == null) {
-        console.log(JSON.stringify(placeResult.error, null, 4));
-        return null;
-    }
-
-    const LikeIcon = place.liked ? HeartFilledIcon : HeartIcon;
+    const LikeIcon = place?.liked ? HeartFilledIcon : HeartIcon;
 
     const onLikePress = async () => {
         if (place.liked) {
@@ -125,25 +114,46 @@ export default memo((props: Props) => {
         Linking.openURL(`https://${place.website}`);
     };
 
+    const onRatePress = () => setRatingModalVisible(true);
+
+    const onCancelRating = useCallback(() => setRatingModalVisible(false), []);
+
+    const onSubmitRating = useCallback(
+        async (value: number) => {
+            try {
+                await ratePlace({
+                    placeId: place.id,
+                    rating: value,
+                });
+            } catch (e) {
+                console.log(e);
+            }
+            setRatingModalVisible(false);
+        },
+        []
+    );
+
+    if (place == null) {
+        console.log(JSON.stringify(placeResult.error, null, 4));
+        return null;
+    }
+
     const alreadyRated = place.userRating !== null;
 
-    return (
-        <BottomSheetModal
-            handleComponent={null}
-            animatedPosition={animatedPosition}
-            enablePanDownToClose={true}
-            snapPoints={snapPoints}
-            enableDismissOnClose
-            onDismiss={onClosed}
-            stackBehavior='push'
-            ref={modalRef}
-            index={0}
-        >
-            <View style={styles.handle} />
+    // console.log('place: ', JSON.stringify(place, null, 4));
 
-            <BottomSheetScrollView
-                contentContainerStyle={styles.container}
+    return (
+        <>
+            <ScrollView
+                // contentContainerStyle={styles.container}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                style={{ backgroundColor: 'white' }}
+                showsVerticalScrollIndicator={false}
             >
+                <NavBar
+                    onBackPress={navigation.goBack}
+                />
+
                 <Image
                     source={{ uri: place.cover?.url }}
                     style={styles.image}
@@ -262,6 +272,22 @@ export default memo((props: Props) => {
                     )}
                 </ScrollView>
 
+                {place.recommendationCount > 0 && (
+                    <View style={styles.recommendation}>
+                        <View style={styles.recommendationIcon}>
+                            <UsersIcon width={26} height={26} />
+                        </View>
+
+                        <Text
+                            style={styles.recommendationCount}
+                            adjustsFontSizeToFit
+                            numberOfLines={1}
+                        >
+                            {place.recommendationCount} amis ont recommandé ce lieu
+                        </Text>
+                    </View>
+                )}
+
                 <FlatList
                     renderItem={({ item }) => (
                         <PostItem
@@ -279,15 +305,14 @@ export default memo((props: Props) => {
                 {/* <Text>
                     {JSON.stringify(place, null, 4)}
                 </Text> */}
-            </BottomSheetScrollView>
+            </ScrollView>
 
-            {/* <RateModal visible={true} /> */}
             <RateModal
                 visible={ratingModalVisible}
                 onCancel={onCancelRating}
                 onSubmit={onSubmitRating}
             />
-        </BottomSheetModal>
+        </>
     )
 })
 
@@ -299,19 +324,11 @@ const snapPoints = ['90%']
 // Styles
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'white',
         // paddingBottom: ui.safePaddingBottom + 20,
         // paddingHorizontal: 20,
         paddingTop: 20,
         paddingBottom: height + 300,
-    },
-    handle: {
-        backgroundColor: color.lightGray,
-        alignSelf: 'center',
-        marginBottom: 10,
-        borderRadius: 6,
-        marginTop: 20,
-        width: 40,
-        height: 6,
     },
     image: {
         marginHorizontal: 20,
@@ -391,13 +408,24 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 16,
     },
+    recommendation: {
+        marginHorizontal: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    recommendationIcon: {
+        backgroundColor: color.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 100,
+        padding: 10,
+    },
+    recommendationCount: {
+        fontFamily: 'Avenir Next',
+        color: color.dark,
+        fontWeight: '500',
+        marginLeft: 10,
+        fontSize: 16,
+    },
 })
-
-// Types
-export type Props = {
-    animatedPosition: Animated.SharedValue<number>,
-    modalRef: RefObject<BottomSheetModal>,
-    onClosed: () => void,
-    favorited?: boolean,
-    place?: Place,
-}

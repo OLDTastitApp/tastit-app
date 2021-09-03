@@ -2,11 +2,12 @@
 import React, { memo } from 'react'
 
 // Components
-import { View, TouchableOpacity, Image, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import { TouchableScale } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
+import Image from 'react-native-fast-image'
 
 // Icons
 import HeartFilledIcon from '@assets/icons/heart-filled.svg'
@@ -89,10 +90,18 @@ export default memo((props: Props) => {
                     style={styles.header}
                     activeScale={0.99}
                 >
-                    <Image
-                        source={{ uri: creator.picture?.url }}
-                        style={styles.avatar}
-                    />
+                    {creator.picture ? (
+                        <Image
+                            source={{ uri: creator.picture?.url }}
+                            style={styles.avatar}
+                        />
+                    ) : (
+                        <View style={styles.avatar}>
+                            <Text style={{ fontSize: 20 }}>
+                                👽
+                            </Text>
+                        </View>
+                    )}
 
                     <Text style={styles.name}>
                         { creator?.firstName}
@@ -169,6 +178,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     avatar: {
+        backgroundColor: '#f2f2f2',
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 40,
         height: 40,
         width: 40,

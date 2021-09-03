@@ -106,13 +106,19 @@ export default memo((props: Props) => {
                 customMapStyle={themes.silver}
                 // customMapStyle={themes.dark}
                 initialRegion={initialRegion}
-                provider={PROVIDER_GOOGLE}
+                // provider={PROVIDER_GOOGLE}
                 onMapReady={onMapReady}
                 // showsMyLocationButton
                 style={styles.map}
                 // region={region}
                 loadingEnabled
                 ref={mapRef}
+                // liteMode
+                cacheEnabled
+                // showsTraffic
+                // showsIndoorLevelPicker
+                // showsBuildings
+                showsMyLocationButton
                 liteMode
             >
                 {props.data?.map((item, index) => (

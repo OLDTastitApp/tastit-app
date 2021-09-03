@@ -46,7 +46,9 @@ export const PLACE = gql`
             tags {
                 ...TagFragment
             }
+            recommendationCount
             phoneNumber
+            userRating
             timetable
             longitude
             latitude

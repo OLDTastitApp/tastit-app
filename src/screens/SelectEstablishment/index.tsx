@@ -94,6 +94,8 @@ export default memo(() => {
         navigation.goBack();
     };
 
+    // console.log(placesResult.error, null, 4)
+
     return (
         <View style={style.container}>
             <NavBar

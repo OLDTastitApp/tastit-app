@@ -8,11 +8,13 @@ import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-nav
 import { TabBar, TabBarItem } from '@components'
 
 // Screens
-import Favorites from '@screens/Favorites'
+// import Favorites from '@screens/Favorites'
 // import Profile from '@screens/Profile'
 // import Screenshot from './Screenshot'
-import Map from '@screens/Map'
+// import Map from '@screens/Map'
 // import Home from '@screens/Home'
+import FavoritesStack from './Favorites'
+import MapStack from './Map'
 import Profile from './Profile'
 import HomeStack from './Home'
 
@@ -75,8 +77,8 @@ export default () => (
                     />
                 ),
             })}
-            component={Map}
-            name='Map'
+            component={MapStack}
+            name='MapStack'
         />
         <Tab.Screen
             options={() => ({
@@ -87,8 +89,8 @@ export default () => (
                     />
                 ),
             })}
-            component={Favorites}
-            name='Favorites'
+            component={FavoritesStack}
+            name='FavoritesStack'
         />
         <Tab.Screen
             options={() => ({

@@ -15,6 +15,7 @@ import Header from './Header'
 
 // Helpers
 import { usePlaces, useUsers, usePosts } from '@helpers'
+import { useNavigation } from '@navigation/utils'
 
 // Types
 import { Props as PlaceItemProps } from './PlaceItem'
@@ -25,6 +26,8 @@ import { Props as UserItemProps } from './UserItem'
 export default memo((props: Props) => {
 
     const { searchAnimatedIndex, detailsAnimatedPosition } = props;
+
+    const navigation = useNavigation();
 
     // const onFocus: () => 
     const [searchText, setSearchText] = useState<string>();
@@ -79,16 +82,14 @@ export default memo((props: Props) => {
     );
 
     const onUserPress = useCallback<OnUserPress>(
-        () => {
-            // ...
+        user => {
+            navigation.navigate('Profile', { userId: user.id, canGoBack: true });
         },
         [props.onUserPress]
     );
 
     const onPostPress = useCallback<OnPostPress>(
-        () => {
-            // ...
-        },
+        post => navigation.navigate('PostDetails', { id: post.id }),
         [props.onPostPress]
     );
 
