@@ -61,7 +61,7 @@ export default ((props: Props) => {
         // });
     };
 
-    const nicknameError = props.existingNickname === props.nickname
+    const nicknameError = props.nickname && props.existingNickname === props.nickname
         ? `Ce nom d'utilisateur est déjà utilisé`
         : undefined;
 

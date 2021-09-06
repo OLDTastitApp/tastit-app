@@ -20,8 +20,7 @@ export default memo((props: Props) => {
         props.onPress(item);
     };
 
-    // console.log('cover: ', item.cover)
-    const tag = item.tags?.find(tag => tag.startsWith(searchText));
+    const tag = item.tags?.find(tag => tag.startsWith(searchText?.toLowerCase()));
 
     return (
         <TouchableScale

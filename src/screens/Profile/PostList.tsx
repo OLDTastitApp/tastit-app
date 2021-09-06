@@ -60,8 +60,10 @@ export default memo((props: Props) => {
     );
 
     const [posts, postsResult] = usePosts({
-        creatorId: userId,
+        // creatorId: userId,
         first: 10,
+        userId,
+        type,
     });
 
     const pictures = useMemo(
@@ -104,9 +106,10 @@ export default memo((props: Props) => {
                     //     </Text>
                     // </View>
                 )}
-                keyExtractor={(item, i) => `${item}_${i}`}
                 contentContainerStyle={{ paddingTop: headerHeight + 20, minHeight }}
+                keyExtractor={(item, i) => `${item}_${i}`}
                 ref={ref => props.onScrollRef(ref, index)}
+                showsVerticalScrollIndicator={false}
                 onMomentumScrollEnd={onScrollEnd}
                 onScrollEndDrag={onScrollEnd}
                 onScrollToTop={onScrollEnd}
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
-    type: 'mine' | 'tagged' | 'liked',
+    type: 'MINE' | 'TAGGED' | 'LIKED',
     userId: string,
 
     // Parallax

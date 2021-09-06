@@ -13,7 +13,7 @@
         ".eslintrc.js": true,
         ".flowconfig": true,
         ".gitattributes": true,
-        ".gitignore": true,
+        // ".gitignore": true,
         ".prettierrc.js": true,
         ".svgrrc": true,
         ".watchmanconfig": true,

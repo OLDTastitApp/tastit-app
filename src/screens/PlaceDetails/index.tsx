@@ -133,10 +133,7 @@ export default memo(() => {
         []
     );
 
-    if (place == null) {
-        console.log(JSON.stringify(placeResult.error, null, 4));
-        return null;
-    }
+    if (place == null) return null;
 
     const alreadyRated = place.userRating !== null;
 

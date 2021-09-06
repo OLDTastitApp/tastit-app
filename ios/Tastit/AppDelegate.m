@@ -11,6 +11,8 @@
 
 #import <React/RCTLinkingManager.h>
 
+#import <Firebase.h>
+
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -34,7 +36,10 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyDWheYpaadxkDLA6_LLFxGJYJhOS106W60"];
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+  [GMSServices provideAPIKey:@"AIzaSyAWyooVTVp5BHW5AjYGLeEzlVUweNIibjQ"];
 
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);

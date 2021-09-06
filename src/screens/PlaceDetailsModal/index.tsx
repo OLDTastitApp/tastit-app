@@ -17,7 +17,7 @@ import HeartFilledIcon from '@assets/icons/heart-filled.svg'
 import HeartIcon from '@assets/icons/heart.svg'
 
 // Helpers
-import { usePlace, useLikePlace, useDislikePlace } from '@helpers'
+import { usePlace, useRatePlace, useLikePlace, useDislikePlace } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
 // Constants
@@ -39,6 +39,7 @@ export default memo((props: Props) => {
 
     const [dislikePlace, dislikePlaceResult] = useDislikePlace();
     const [likePlace, likePlaceResult] = useLikePlace();
+    const [ratePlace, ratePlaceResult] = useRatePlace();
 
     useEffect(
         () => {
@@ -82,17 +83,21 @@ export default memo((props: Props) => {
     const onCancelRating = useCallback(() => setRatingModalVisible(false), []);
 
     const onSubmitRating = useCallback(
-        (value: number) => {
-            // ...
+        async (value: number) => {
+            try {
+                await ratePlace({
+                    placeId: props.place?.id,
+                    rating: value,
+                });
+            } catch (e) {
+                console.log(e);
+            }
             setRatingModalVisible(false);
         },
-        []
+        [props.place?.id]
     );
 
-    if (place == null) {
-        console.log(JSON.stringify(placeResult.error, null, 4));
-        return null;
-    }
+    if (place == null) return null;
 
     const LikeIcon = place.liked ? HeartFilledIcon : HeartIcon;
 

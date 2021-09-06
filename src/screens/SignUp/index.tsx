@@ -26,13 +26,13 @@ export default memo(function SignUp() {
     const [existingNickname, setExistingNickname] = useState<string>();
     const [pictureDataUri, setPictureDataUri] = useState<string>();
     const [pictureUri, setPictureUri] = useState<string>();
-    const [firstName, setFirstName] = useState<string>('Raphael1');
-    const [birthdate, setBirthdate] = useState<Date>(new Date());
-    const [nickname, setNickname] = useState<string>('raphael1');
-    const [lastName, setLastName] = useState<string>('Hadjadj1');
-    const [password, setPassword] = useState<string>('Azerty123');
+    const [firstName, setFirstName] = useState<string>();
+    const [birthdate, setBirthdate] = useState<Date>();
+    const [nickname, setNickname] = useState<string>();
+    const [lastName, setLastName] = useState<string>();
+    const [password, setPassword] = useState<string>();
     const [phone, setPhone] = useState<string>();
-    const [email, setEmail] = useState<string>('raphael.hadjadj+1@gmail.com');
+    const [email, setEmail] = useState<string>();
 
     const [signUp, signUpResult] = useSignUp();
 
@@ -60,9 +60,11 @@ export default memo(function SignUp() {
                 } else if (e.message === 'USER_ALREADY_EXISTS') {
                     Alert.alert('Un compte avec cet email existe déjà. Essayez plutôt de vous connecter.');
                 } else {
+                    console.log(e);
                     Alert.alert('Une erreur est survenue');
                 }
             } else {
+                console.log(e);
                 Alert.alert('Une erreur est survenue');
             }
         }

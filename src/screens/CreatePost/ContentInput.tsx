@@ -3,6 +3,8 @@ import React, { memo, useRef } from 'react'
 
 // Components
 import { View, Image, TextInput, StyleSheet } from 'react-native'
+import ImageEditor from '@react-native-community/image-editor'
+import ImageResizer from 'react-native-image-resizer'
 
 // Utils
 import { filters } from '../Screenshot/utils'
@@ -27,8 +29,8 @@ export default memo((props: Props) => {
 
     const onExtractImage = async (event: any) => {
         const { uri } = event.nativeEvent;
-        const value = await RNFS.readFile(uri, 'base64');
-        console.log(`input: $$$$ ${value?.substr(0, 100)}`)
+        const res = await ImageResizer.createResizedImage(uri, 1080, 1920, 'JPEG', 90);
+        const value = await RNFS.readFile(res.uri, 'base64');
         props.onPictureBase64Extracted(value);
     };
 

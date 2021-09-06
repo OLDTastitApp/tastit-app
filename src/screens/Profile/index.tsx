@@ -162,5 +162,5 @@ export default memo(() => {
 
 // Constants
 const routes = [
-    'mine', 'tagged', 'liked',
+    'MINE', 'TAGGED', 'LIKED',
 ].map((key, index) => ({ key, index }));

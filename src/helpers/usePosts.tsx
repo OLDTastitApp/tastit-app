@@ -5,15 +5,17 @@ import * as graph from '@graphql/graph'
 
 type Args = {
     creatorId?: string,
+    userId?: string,
     skip?: boolean,
     after?: string,
     first: number,
+    type?: string,
     tag?: string,
 }
 
 export default (args: Args) => {
 
-    const { creatorId, first, tag, after, skip } = args;
+    const { creatorId, userId, first, type, tag, after, skip } = args;
 
     const result = useQuery<
         graph.PostsResult,
@@ -23,8 +25,10 @@ export default (args: Args) => {
         {
             variables: {
                 creatorId,
+                userId,
                 after,
                 first,
+                type,
                 tag,
             },
             skip,

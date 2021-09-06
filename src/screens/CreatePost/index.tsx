@@ -41,6 +41,7 @@ export default memo(() => {
 
     // const { pictureUri, pictureBase64 } = route.params;
     const { pictureUri, filter } = route.params;
+    console.log(`pictureBase64: ${route.params.pictureBase64?.length}`)
 
     // console.log(`pictureBase64: ${pictureBase64.substr(0, 100)}`)
 
@@ -56,13 +57,34 @@ export default memo(() => {
     const [createPost, createPostResult] = useCreatePost();
 
     const onSubmit = async () => {
-        await createPost({
-            userIds: users?.map(({ id }) => id),
-            picture: pictureBase64,
-            placeId: place?.id,
-            content,
-        });
-        navigation.navigate('BottomTab');
+        try {
+            // console.log('createPost.input: ', JSON.stringify({
+            //     userIds: users?.map(({ id }) => id),
+            //     picture: pictureBase64,
+            //     placeId: place?.id,
+            //     content,
+            // }, null, 4));
+            const input = JSON.stringify({
+                userIds: users?.map(({ id }) => id),
+                picture: pictureBase64,
+                placeId: place?.id,
+                content,
+            }, null, 4);
+            console.log(`createPost.input: ${input.length / 1000} KB`)
+            await createPost({
+                userIds: users?.map(({ id }) => id),
+                picture: pictureBase64,
+                placeId: place?.id,
+                content,
+            });
+            navigation.navigate('BottomTab');
+        } catch (e) {
+            if (e instanceof Error) {
+                console.log('ERROR', e.stack)
+            } else {
+                console.log(`[Error][CreatePost] `, typeof e);
+            }
+        }
     };
 
     const onAddLocationPress = () => {
@@ -122,9 +144,9 @@ export default memo(() => {
                     value={usersValue}
                 />
 
-                <Section title='Partager' />
+                {/* <Section title='Partager' /> */}
 
-                <Share onShareChanged={setService} />
+                {/* <Share onShareChanged={setService} /> */}
 
                 <Footer
                     disabled={disabled || createPostResult.loading}

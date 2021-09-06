@@ -58,6 +58,7 @@ export default memo((props: Props) => {
                 });
 
                 const { uri: pictureUri, width, height } = result;
+                console.log(`takePictureAsync: image size: ${result.uri.length * 3 / 4} KB`)
 
                 const thumbnailUri = await ImageEditor.cropImage(pictureUri, {
                     displaySize: {
@@ -93,9 +94,11 @@ export default memo((props: Props) => {
 
     const onLibraryPress = async () => {
         const result = await ImagePicker.openPicker({
-            compressImageQuality: 0.5,
+            // compressImageQuality: 0.5,
+            compressImageQuality: 0.1,
             mediaType: 'photo',
         });
+        console.log(`onLibraryPress: image size: ${result.sourceURL.length * 3 / 4} KB`)
         const { width, height, sourceURL: pictureUri } = result;
         const thumbnailUri = await ImageEditor.cropImage(pictureUri, {
             displaySize: {

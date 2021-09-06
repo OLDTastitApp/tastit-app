@@ -15,8 +15,8 @@ import { Ref as TextInputRef, Props as TextInputProps } from './TextInput'
 
 export default memo((props: Props) => {
 
-    const [password, setPassword] = useState<string>('Azerty123');
-    const [email, setEmail] = useState<string>('raphael.hadjadj@gmail.com');
+    const [password, setPassword] = useState<string>();
+    const [email, setEmail] = useState<string>();
 
     const passwordRef = useRef<TextInputRef>();
 
