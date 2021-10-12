@@ -6,6 +6,7 @@ import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions, Linkin
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
@@ -21,6 +22,9 @@ import UsersIcon from '@assets/icons/users.svg'
 // Helpers
 import { usePlace, useRatePlace, useLikePlace, useDislikePlace } from '@helpers'
 import { useNavigation, useRoute } from '@navigation/utils'
+
+// Utils
+import Share from 'react-native-share'
 
 // Constants
 import { color, ui } from '@constants'
@@ -107,11 +111,19 @@ export default memo(() => {
     };
     
     const onPhonePress = () => {
-        Linking.openURL(`phone:${place.phoneNumber}`);
+        Linking.openURL(`tel:${place.phoneNumber}`);
     };
 
     const onWebsitePress = () => {
-        Linking.openURL(`https://${place.website}`);
+        // Linking.openURL(`https://www.${place.website}`);
+        Linking.openURL(place.website);
+    };
+
+    const onSharePress = () => {
+        Share.open({
+            title: place.name,
+            message: `Clic sur le lien suivant pour le lieu suivant tastit://place/${place.id}`,
+        });
     };
 
     const onRatePress = () => setRatingModalVisible(true);
@@ -169,6 +181,16 @@ export default memo(() => {
                             fill={color.primary}
                             height={20}
                             width={20}
+                        />
+                    </TouchableScale>
+                    <TouchableScale
+                        onPress={onSharePress}
+                        style={styles.icon}
+                    >
+                        <Ionicons
+                            name='ios-share-social'
+                            color={color.primary}
+                            size={24}
                         />
                     </TouchableScale>
                     <TouchableScale

@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
 import EditProfile from '@screens/EditProfile'
+import Favorites from '@screens/Favorites'
 import Settings from '@screens/Settings'
 import Profile from '@screens/Profile'
 
@@ -33,6 +34,10 @@ export default () => {
             <Stack.Screen
                 component={EditProfile}
                 name='EditProfile'
+            />
+            <Stack.Screen
+                component={Favorites}
+                name='Favorites'
             />
         </Stack.Navigator>
     )

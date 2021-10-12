@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
         width,
     },
     content: {
-        paddingBottom: height + 300,
+        // paddingBottom: height + 300,
+        paddingBottom: 120,
         paddingHorizontal: 15,
         flexDirection: 'row',
         flexWrap: 'wrap',

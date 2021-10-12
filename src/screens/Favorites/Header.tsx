@@ -1,9 +1,10 @@
 // React
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 
 // Components
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { View, Text, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, StatusBar, StyleSheet, LayoutAnimation } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
 import HeartIcon from '@assets/images/heart.svg'
 import { TouchableScale } from '@components'
@@ -14,11 +15,35 @@ import { ui, font, color } from '@constants'
 
 export default memo((props: Props) => {
 
+    const [moreVisible, setMoreVisible] = useState(props.moreVisible);
+
+    useEffect(
+        () => {
+            if (props.moreVisible !== moreVisible) {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                setMoreVisible(props.moreVisible);
+            }
+        },
+        [props.moreVisible]
+    );
+
     return (
         <>
             <StatusBar barStyle='dark-content' />
 
             <View style={styles.container}>
+
+                {props.backVisible && (
+                    <TouchableScale
+                        onPress={props.onBackPress}
+                        style={styles.back}
+                    >
+                        <Feather
+                            name='arrow-left'
+                            size={26}
+                        />
+                    </TouchableScale>
+                )}
 
                 <View style={styles.left}>
                     <HeartIcon
@@ -32,21 +57,23 @@ export default memo((props: Props) => {
                     {props.title}
                 </Text>
 
-                <TouchableScale
-                    // onPress={props.onSharePress}
-                >
-                    {/* <MaterialCommunityIcons
-                        color={color.darkGray}
-                        name='share'
-                        size={30}
-                    /> */}
-                    <Entypo
-                        name='dots-three-horizontal'
-                        // color={color.dark}
-                        color='transparent'
-                        size={20}
-                    />
-                </TouchableScale>
+                {moreVisible && (
+                    <TouchableScale
+                        onPress={props.onMorePress}
+                    >
+                        {/* <MaterialCommunityIcons
+                            color={color.darkGray}
+                            name='share'
+                            size={30}
+                        /> */}
+                        <Entypo
+                            name='dots-three-horizontal'
+                            color={color.dark}
+                            // color='transparent'
+                            size={20}
+                        />
+                    </TouchableScale>
+                )}
 
             </View>
         </>
@@ -63,6 +90,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         // paddingBottom: 10,
+    },
+    back: {
+        justifyContent: 'center',
+        marginRight: 10,
+        height: 50,
     },
     left: {
         backgroundColor: color.primary,
@@ -86,5 +118,9 @@ const styles = StyleSheet.create({
 // Types
 type Props = {
     // onSharePress: () => void,
+    onBackPress?: () => void,
+    onMorePress: () => void,
+    backVisible?: boolean,
+    moreVisible?: boolean,
     title: string,
 }

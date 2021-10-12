@@ -6,6 +6,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
+import PlaceDetails from '@screens/PlaceDetails'
 import PostDetails from '@screens/PostDetails'
 import AddPlace from '@screens/AddPlace'
 import Screenshot from './Screenshot'
@@ -58,6 +59,10 @@ export default () => {
             <Stack.Screen
                 component={PostDetails}
                 name='PostDetails'
+            />
+            <Stack.Screen
+                component={PlaceDetails}
+                name='PlaceDetails'
             />
         </Stack.Navigator>
     )

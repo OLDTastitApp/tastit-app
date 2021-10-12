@@ -68,7 +68,7 @@ export default memo((props: Props) => {
                     />
                 </TouchableScale>
 
-                {!props.favorite && (
+                {!props.favorite && props.removable && (
                     <TouchableScale
                         onPress={onMorePress}
                         style={styles.icon}
@@ -158,6 +158,7 @@ export type Props = {
     onMorePress?: (item: Place) => void,
     onLikePress: (item: Place) => void,
     onPress: (item: Place) => void,
+    removable?: boolean,
     favorite?: boolean,
     item: Place,
 }

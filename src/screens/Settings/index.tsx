@@ -2,7 +2,7 @@
 import React, { memo, useState } from 'react'
 
 // Components
-import { View, ScrollView, StatusBar } from 'react-native'
+import { View, ScrollView, StatusBar, Linking } from 'react-native'
 import SwitchRow from './SwitchRow'
 import LinkRow from './LinkRow'
 import Section from './Section'
@@ -51,51 +51,51 @@ export default memo(() => {
             <Section title='General settings' />
 
             <LinkRow
+                onPress={() => Linking.openURL('mailto:support@tastit.app')}
                 label='Un problème avec votre compte ?'
-                onPress={() => {}}
                 uri=''
             />
 
-            <LinkRow
+            {/* <LinkRow
                 label={`Noter l'application`}
                 onPress={() => {}}
                 uri=''
-            />
+            /> */}
 
             <LinkRow
-                onPress={() => {}}
+                onPress={() => Linking.openURL('https://www.tastit.app')}
                 label='À propos'
                 uri=''
             />
 
             <LinkRow
+                onPress={() => Linking.openURL('mailto:hello@tastit.app')}
                 label='Nous contacter'
-                onPress={() => {}}
                 uri=''
             />
 
             <Section title='App settings' />
 
-            <LinkRow
+            {/* <LinkRow
                 onPress={() => {}}
                 label='Notifications'
                 uri=''
-            />
+            /> */}
 
             <LinkRow
-                onPress={() => {}}
+                onPress={() => Linking.openURL('https://www.tastit.app/dataprivacy')}
                 label='Données personnelles'
                 uri=''
             />
 
             <LinkRow
-                onPress={() => {}}
+                onPress={() => Linking.openURL('https://www.tastit.app/terms')}
                 label={`Conditions d'utilisation`}
                 uri=''
             />
 
             <LinkRow
-                onPress={() => {}}
+                onPress={() => Linking.openURL('https://www.tastit.app/privacy')}
                 label={`Cookies`}
                 uri=''
             />
@@ -103,8 +103,8 @@ export default memo(() => {
             <Section title='General settings' />
 
             <LinkRow
+                onPress={() => 'mailto:support@tastit.app?subject=Suppression de compte&body=Je souhaite supprimer mon compte'}
                 label='Supprimer mon compte'
-                onPress={logOut}
                 uri=''
             />
 

@@ -69,8 +69,10 @@ export default memo((props: Props) => {
 const items = [
     { name: 'Quartier', Icon: DistrictIcon },
     { name: 'Prix', Icon: PricingIcon },
-    { name: 'Diététique', Icon: DieteticsIcon },
+    // { name: 'Diététique', Icon: DieteticsIcon },
     { name: 'Gastronomie', Icon: GastronomyIcon },
+    // { name: 'Gastronomie', Icon: GastronomyIcon },
+    { name: 'Divers', Icon: DieteticsIcon },
 ]
 
 const margin = 3

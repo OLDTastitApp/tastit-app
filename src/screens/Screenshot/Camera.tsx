@@ -3,13 +3,17 @@ import React, { memo, useState, useRef, useEffect, useCallback } from 'react'
 
 // Components
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { View, Text, Animated, StatusBar, StyleSheet, Platform, LayoutAnimation } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { View, Image, Animated, StatusBar, StyleSheet } from 'react-native'
 import ImageEditor from '@react-native-community/image-editor'
 import Feather from 'react-native-vector-icons/Feather'
 import { RNCamera, Constants } from 'react-native-camera'
 import ImagePicker from 'react-native-image-crop-picker'
 import { TouchableScale } from '@components'
+
+// Utils
+import { openSettings, check, PERMISSIONS } from 'react-native-permissions'
+// import {  } from 'react-native'
 
 // Constants
 import { ui, color } from '@constants'
@@ -54,6 +58,7 @@ export default memo((props: Props) => {
                 const result = await cameraRef?.current?.takePictureAsync({
                     // pauseAfterCapture: true,
                     // base64: true,
+                    forceUpOrientation: true,
                     quality: 0.5,
                 });
 
@@ -93,6 +98,13 @@ export default memo((props: Props) => {
     );
 
     const onLibraryPress = async () => {
+
+        const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        console.log(status)
+        if (status !== 'granted') {
+            return openSettings();
+        }
+
         const result = await ImagePicker.openPicker({
             // compressImageQuality: 0.5,
             compressImageQuality: 0.1,
@@ -127,6 +139,23 @@ export default memo((props: Props) => {
         ));
     };
 
+    const [cameraEnabled, setCameraEnalbed] = useState(true);
+
+    useEffect(
+        () => {
+            (async () => {
+                if (Platform.OS === 'ios') {
+                    const status = await check(PERMISSIONS.IOS.CAMERA);
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                    setCameraEnalbed(false);
+                    if (status !== 'granted') {
+                    }
+                }
+            })();
+        },
+        []
+    );
+
     return (
         <View style={styles.container}>
 
@@ -145,6 +174,23 @@ export default memo((props: Props) => {
                         style={StyleSheet.absoluteFill}
                         source={{ uri: pictureUri }}
                     /> */}
+
+                    {!cameraEnabled && (
+                        <View style={styles.message}>
+                            <Text style={styles.description}>
+                                Veuillez autoriser l'application à accéder à l'appareil photo depuis vos paramètres
+                            </Text>
+
+                            <TouchableScale
+                                onPress={openSettings}
+                                style={styles.open}
+                            >
+                                <Text style={styles.settings}>
+                                    Paramètres
+                                </Text>
+                            </TouchableScale>
+                        </View>
+                    )}
 
                     <View style={styles.footer}>
 
@@ -203,6 +249,34 @@ const styles = StyleSheet.create({
     },
     overlay: {
         backgroundColor: 'black',
+    },
+    message: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        paddingHorizontal: 30,
+        position: 'absolute',
+        alignItems: 'center',
+    },
+    description: {
+        fontFamily: 'Avenir Next',
+        textAlign: 'center',
+        fontWeight: '600',
+        color: 'white',
+        fontSize: 14,
+    },
+    open: {
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 100,
+        marginTop: 20,
+    },
+    settings: {
+        fontFamily: 'Avenir Next',
+        textAlign: 'center',
+        fontWeight: '600',
+        color: 'black',
+        fontSize: 14,
     },
     footer: {
         // alignSelf: 'center',

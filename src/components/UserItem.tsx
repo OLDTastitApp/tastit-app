@@ -22,7 +22,7 @@ export default memo((props: Props) => {
         props.onPress(item);
     };
 
-    // console.log('cover: ', item.cover)
+    // console.log('item: ', JSON.stringify(item, null, 4))
 
     return (
         <TouchableScale
@@ -37,11 +37,16 @@ export default memo((props: Props) => {
                 />
             ) : (
                 <View style={styles.left}>
-                    <Text style={styles.initials}>
-                        {item.firstName?.[0]}
-                        {item.lastName?.[0]}
+                    <Text style={{ fontSize: 20 }}>
+                        👽
                     </Text>
                 </View>
+                // <View style={styles.left}>
+                //     <Text style={styles.initials}>
+                //         {item.firstName?.[0]}
+                //         {item.lastName?.[0]}
+                //     </Text>
+                // </View>
             )}
 
             <Text

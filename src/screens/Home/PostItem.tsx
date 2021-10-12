@@ -5,8 +5,8 @@ import React, { memo } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
-import { TouchableScale } from '@components'
 import Feather from 'react-native-vector-icons/Feather'
+import { TouchableScale } from '@components'
 import Image from 'react-native-fast-image'
 
 // Icons
@@ -54,10 +54,18 @@ export default memo((props: Props) => {
         props.onCreatorPress(item);
     };
 
+    const onPlacePress = () => {
+        props.onPlacePress(item);
+    };
+
+    const onDeletePress = () => {
+        props.onDeletePress(item);
+    };
+
     const liked = item.liked || !canLike;
     const LikeIcon = liked ? HeartFilledIcon : HeartIcon;
 
-    console.log(`liked: ${item.liked}`)
+    // console.log(`*** item: ${JSON.stringify(item, null, 4)}`)
 
     return (
         <View style={styles.container}>
@@ -67,12 +75,12 @@ export default memo((props: Props) => {
                     source={{ uri: item.picture?.url }}
                     style={{ flex: 1 }}
                 />
-                {/* <LinearGradient
-                    colors={['#000f', 'transparent']}
+                <LinearGradient
+                    colors={['#0005', 'transparent']}
                     end={{ x: 0.3, y: 0.2 }}
                     style={styles.gradient}
                     start={{ x: 1, y: 0 }}
-                /> */}
+                />
             </View>
 
             {/* <View /> */}
@@ -109,9 +117,14 @@ export default memo((props: Props) => {
                 </TouchableScale>
                 
                 {!!item.place?.name && (
-                    <Text style={styles.position}>
-                        {item.place.name}
-                    </Text>
+                    <TouchableOpacity
+                        onPress={onPlacePress}
+                        activeOpacity={1}
+                    >
+                        <Text style={styles.position}>
+                            {item.place.name}
+                        </Text>
+                    </TouchableOpacity>
                 )}
 
                 <Text
@@ -153,6 +166,20 @@ export default memo((props: Props) => {
                         width={32}
                     />
                 </TouchableScale>
+
+                {props.canDelete && (
+                    <TouchableScale
+                        onPress={onDeletePress}
+                        style={styles.like}
+                        activeScale={0.99}
+                    >
+                        <Feather
+                            name='trash-2'
+                            color='white'
+                            size={36}
+                        />
+                    </TouchableScale>
+                )}
             </View>
 
         </View>
@@ -225,8 +252,11 @@ const styles = StyleSheet.create({
 // Types
 export type Props = {
     onCreatorPress: (item: Post) => void,
+    onDeletePress: (item: Post) => void,
     onSharePress: (item: Post) => void,
+    onPlacePress: (item: Post) => void,
     onLikePress: (item: Post) => void,
+    canDelete?: boolean,
     canLike?: boolean,
     item: Post,
 }

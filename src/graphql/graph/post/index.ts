@@ -1,5 +1,6 @@
-export * from './createPost'
 export * from './dislikePost'
+export * from './createPost'
+export * from './deletePost'
 export * from './likePost'
 export * from './myPosts'
 export * from './posts'

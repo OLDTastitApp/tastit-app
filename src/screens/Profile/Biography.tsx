@@ -2,7 +2,7 @@
 import React, { memo } from 'react'
 
 // Components
-import { View, Animated, Text, StyleSheet } from 'react-native'
+import { View, Animated, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { FollowButton, ProfileButton } from '@components'
 
 // Helpers
@@ -33,6 +33,10 @@ export default memo((props: Props) => {
     };
 
     const translateY = Animated.multiply(-1, scrollY);
+
+    const onPlaceListsPress = () => {
+        props.onPlaceListsPress(user.id);
+    };
 
     return (
         <Animated.View
@@ -105,14 +109,17 @@ export default memo((props: Props) => {
                         </Text>
                     </View>
 
-                    <View style={styles.item}>
+                    <TouchableOpacity
+                        onPress={onPlaceListsPress}
+                        style={styles.item}
+                    >
                         <Text style={styles.count}>
                             {user?.placeListCount}
                         </Text>
                         <Text style={styles.title}>
                             Listes
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -198,6 +205,7 @@ const styles = StyleSheet.create({
 
 // Types
 type Props = {
+    onPlaceListsPress: (userId: string) => void,
     onFollowPress: (following: boolean) => void,
     onHeightChanged: (value: number) => void,
     // heightRef: RefObject<Animated.Value>,

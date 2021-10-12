@@ -16,6 +16,7 @@ import { ViewStyle, StyleProp } from 'react-native'
 export default memo((props: Props) => {
 
     const { timetable } = props;
+    // const timetable = [];
 
     const [expanded, setExpanded] = useState(false);
 
@@ -27,10 +28,12 @@ export default memo((props: Props) => {
     };
 
     // return null;
-    if (timetable.length === 0) return null;
+    // if (timetable.length === 0) return null;
 
     const { data, currentHours } = useMemo(
         () => {
+            if (timetable.length === 0) return {};
+
             const data = [
                 { name: 'Dimanche', intervals: [] },
                 { name: 'Lundi', intervals: [] },
@@ -110,7 +113,7 @@ export default memo((props: Props) => {
 
             {expanded && (
                 <View style={styles.timetable}>
-                    {data.map(({ name, intervals }, i) => (
+                    {data?.map(({ name, intervals }, i) => (
                         <View
                             style={styles.row}
                             key={i}

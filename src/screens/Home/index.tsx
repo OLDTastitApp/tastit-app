@@ -9,7 +9,7 @@ import Header from './Header'
 
 // Helpers
 // import usePosts from './usePosts'
-import { useUserId, usePosts, useLikePost, useDislikePost, useMe } from '@helpers'
+import { useUserId, usePosts, useLikePost, useDislikePost, useDeletePost, useMe } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
 // Utils
@@ -58,6 +58,8 @@ export default memo(() => {
         }
     };
 
+    const [deletePost, deletePostResult] = useDeletePost();
+
     const [dislikePost, dislikePostResult] = useDislikePost();
     const [likePost, likePostResult] = useLikePost();
 
@@ -82,7 +84,7 @@ export default memo(() => {
         async item => {
             try {
                 const { id: postId } = item;
-                console.log(`onLikePress: ${postId}`)
+                console.log(`onLikePress: ${postId}, liked(${item.liked})`)
                 if (item.liked) {
                     await dislikePost({ postId });
                 } else {
@@ -91,6 +93,26 @@ export default memo(() => {
             } catch (e) {
                 console.log(e);
             }
+        },
+        []
+    );
+
+    const onDeletePress = useCallback<OnDeletePress>(
+        async item => {
+            try {
+                const { id: postId } = item;
+                console.log(`onDeletePress: ${postId}`)
+                await deletePost({ id: postId });
+            } catch (e) {
+                console.log(e);
+            }
+        },
+        []
+    );
+
+    const onPlacePress = useCallback<OnPlacePress>(
+        item => {
+            navigation.navigate('PlaceDetails', { placeId: item.place?.id });
         },
         []
     );
@@ -122,11 +144,15 @@ export default memo(() => {
                 // keyExtractor={({ id }) => id}
                 renderItem={({ item }) => (
                     <PostItem
-                        canLike={item.node.creator.id !== userId}
+                        // canLike={item.node.creator.id !== userId}
+                        canDelete={item.node.creator.id === userId}
                         onCreatorPress={onCreatorPress}
+                        onDeletePress={onDeletePress}
+                        onPlacePress={onPlacePress}
                         onSharePress={onSharePress}
                         onLikePress={onLikePress}
                         item={item.node}
+                        canLike
                         // item={item}
                     />
                 )}
@@ -154,5 +180,7 @@ export default memo(() => {
 
 // Types
 type OnCreatorPress = PostItemProps['onCreatorPress']
+type OnDeletePress = PostItemProps['onDeletePress']
 type OnSharePress = PostItemProps['onSharePress']
+type OnPlacePress = PostItemProps['onPlacePress']
 type OnLikePress = PostItemProps['onLikePress']

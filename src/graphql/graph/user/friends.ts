@@ -7,24 +7,21 @@ import { Connection } from '../../types'
 import { User } from '@types'
 
 
-export type UsersArgs = {
-    searchText?: string,
+export type FriendsArgs = {
     after?: string,
     first: number,
 }
 
-export type UsersResult = {
-    users: Connection<User>,
+export type FriendsResult = {
+    friends: Connection<User>,
 }
 
-export const USERS = gql`
-    query Users(
-        $searchText: String
+export const FRIENDS = gql`
+    query Friends(
         $after: String
         $first: Int!
     ) {
-        users(
-            searchText: $searchText
+        friends(
             after: $after
             first: $first
         ) {

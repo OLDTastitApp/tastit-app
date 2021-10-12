@@ -48,6 +48,8 @@ export type Params<TRouteName> =
     ? PostDetailsParams
     : TRouteName extends 'CreatePost'
     ? CreatePostParams
+    : TRouteName extends 'Favorites'
+    ? FavoritesParams
     : TRouteName extends 'AddPlace'
     ? AddPlaceParams
     : TRouteName extends 'Profile'
@@ -105,6 +107,12 @@ type CreatePostParams = {
     pictureBase64?: string,
     pictureUri: string,
     filter: string,
+}
+
+type FavoritesParams = {
+    backVisible?: boolean,
+    userId?: string,
+    id?: string,
 }
 
 type AddPlaceParams = {

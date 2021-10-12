@@ -88,6 +88,13 @@ export default memo(() => {
         []
     );
 
+    const onPlaceListsPress = useCallback(
+        (userId: string) => {
+            navigation.navigate('Favorites', { backVisible: true, userId });
+        },
+        []
+    );
+
     // if (!user) return null;
 
     if (userResult.error || meResult.error) {
@@ -130,6 +137,7 @@ export default memo(() => {
             )}
 
             <Biography
+                onPlaceListsPress={onPlaceListsPress}
                 onHeightChanged={onHeightChanged}
                 onSettingsPress={onSettingsPress}
                 onFollowPress={onFollowPress}

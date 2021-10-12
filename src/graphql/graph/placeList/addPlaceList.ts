@@ -5,23 +5,23 @@ import gql from 'graphql-tag'
 import { PlaceList } from '@types'
 
 
-export type CreatePlaceListArgs = {
+export type AddPlaceListArgs = {
     input: {
-        name: string,
+        code: string,
     },
 }
 
-export type CreatePlaceListResult = {
-    createPlaceList: {
+export type AddPlaceListResult = {
+    addPlaceList: {
         placeList: PlaceList,
     },
 }
 
-export const CREATE_PLACE_LIST = gql`
-    mutation CreatePlaceList(
-        $input: CreatePlaceListInput!
+export const ADD_PLACE_LIST = gql`
+    mutation AddPlaceList(
+        $input: AddPlaceListInput!
     ) {
-        createPlaceList(
+        addPlaceList(
             input: $input
         ) {
             placeList {

@@ -30,11 +30,16 @@ export default memo((props: Props) => {
                 />
             ) : (
                 <View style={styles.placeholder}>
-                    <Text style={styles.initials}>
-                        {item.firstName?.[0]}
-                        {item.lastName?.[0]}
+                    <Text style={{ fontSize: 30 }}>
+                        👽
                     </Text>
                 </View>
+                // <View style={styles.placeholder}>
+                //     <Text style={styles.initials}>
+                //         {item.firstName?.[0]}
+                //         {item.lastName?.[0]}
+                //     </Text>
+                // </View>
             )}
 
             <TouchableScale
@@ -78,6 +83,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         width: 70,
     },
+    // avatar: {
+    //     backgroundColor: '#f2f2f2',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     borderRadius: 40,
+    //     height: 40,
+    //     width: 40,
+    // },
     placeholder: {
         backgroundColor: '#f8f8f8',
         justifyContent: 'center',
@@ -86,13 +99,13 @@ const styles = StyleSheet.create({
         height: 60,
         width: 60,
     },
-    initials: {
-        textTransform: 'capitalize',
-        fontFamily: 'Avenir Next',
-        color: color.mediumGray,
-        fontWeight: 'bold',
-        fontSize: 24,
-    },
+    // initials: {
+    //     textTransform: 'capitalize',
+    //     fontFamily: 'Avenir Next',
+    //     color: color.mediumGray,
+    //     fontWeight: 'bold',
+    //     fontSize: 24,
+    // },
     content: {
         justifyContent: 'center',
     },

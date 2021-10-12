@@ -8,6 +8,7 @@ import { PlaceList } from '@types'
 
 
 export type PlaceListsArgs = {
+    userId?: string,
     after?: string,
     first: number,
 }
@@ -20,8 +21,10 @@ export const PLACE_LISTS = gql`
     query PlaceLists(
         $after: String
         $first: Int!
+        $userId: ID
     ) {
         placeLists(
+            userId: $userId
             after: $after
             first: $first
         ) {
@@ -32,6 +35,7 @@ export const PLACE_LISTS = gql`
                         ...ImageFragment
                     }
                     count
+                    role
                     name
                     id
                 }

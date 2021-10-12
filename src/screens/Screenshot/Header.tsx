@@ -34,7 +34,7 @@ export default memo((props: Props) => {
 // Styles
 const styles = StyleSheet.create({
     container: {
-        top: ui.safePaddingTop + 10,
+        top: ui.safePaddingTop,
         position: 'absolute',
         width: '100%',
     },
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'flex-start',
         alignItems: 'center',
-        marginHorizontal: 20,
+        marginHorizontal: 10,
         borderRadius: 50,
         padding: 10,
     },

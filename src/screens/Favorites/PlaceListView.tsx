@@ -5,6 +5,7 @@ import React, { memo, useState, useCallback } from 'react'
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { View, FlatList, Text, StyleSheet } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 import FavoriteItem from './FavoriteItem'
 import { TouchableScale } from '@components'
 
@@ -58,6 +59,7 @@ export default memo((props: Props) => {
                     <FavoriteItem
                         onLikePress={props.onLikePress}
                         onMorePress={onOptionsPress}
+                        removable={props.removable}
                         onPress={props.onPress}
                         item={item.node}
                     />
@@ -75,6 +77,11 @@ export default memo((props: Props) => {
                             name='playlist-add'
                             size={60}
                         /> */}
+                        <Feather
+                            color={color.lightGray}
+                            name='frown'
+                            size={60}
+                        />
                         <Text style={styles.title}>
                             Vous n'avez aucune place
                         </Text>
@@ -84,7 +91,7 @@ export default memo((props: Props) => {
                             backgroundColor: '#f2f2f2',
                             marginVertical: 30,
                         }} /> */}
-                        <TouchableScale style={{
+                        {/* <TouchableScale style={{
                             // backgroundColor: '#f2f2f2',
                             backgroundColor: color.lightGray,
                             paddingHorizontal: 10,
@@ -102,7 +109,7 @@ export default memo((props: Props) => {
                             }}>
                                 Supprimer la liste
                             </Text>
-                        </TouchableScale>
+                        </TouchableScale> */}
                     </View>
                 )}
             />
@@ -140,5 +147,6 @@ type Props = {
     onOptionsPress: (item: Place, placeListId: string) => void,
     onLikePress: (item: Place) => void,
     onPress: (item: Place) => void,
+    removable?: boolean,
     id: string,
 }

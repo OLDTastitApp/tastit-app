@@ -3,14 +3,15 @@ import React, { memo, useState, useCallback, useRef } from 'react'
 
 // Components
 // import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
-import { FlatList, ScrollView, Text, View, LayoutAnimation } from 'react-native'
+import { FlatList, ScrollView, Text, View, LayoutAnimation, StyleSheet } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 import SelectedUserItem from './SelectedUserItem'
 import { UserItem } from '@components'
 import NavBar from './NavBar'
 
 // Helpers
 import { useNavigation, useRoute } from '@navigation/utils'
-import { useFriends } from '@helpers'
+import { useFriends, useUsers } from '@helpers'
 
 // Utils
 import update from 'immutability-helper'
@@ -33,7 +34,17 @@ export default memo(() => {
     const { current: selectionSet } = useRef(new Set<string>(params?.users?.map(({ id }) => id)));
     const [selection, setSelection] = useState<User[]>(params.users ?? []);
 
-    const [friends, friendsResult] = useFriends({ searchText, first: 10 });
+    // const [friends, friendsResult] = useFriends({ searchText, first: 10 });
+    const [friends, friendsResult] = useFriends({
+        // skip: !(searchText?.length > 0),
+        first: 10,
+    });
+
+    const [users, usersResult] = useUsers({
+        skip: !(searchText?.length > 0),
+        searchText,
+        first: 10,
+    });
 
     const onPress = useCallback<OnPress>(
         item => {
@@ -71,6 +82,8 @@ export default memo(() => {
 
     const canSubmit = selection.length > 0 || params?.users?.length > 0;
 
+    const data = searchText?.length > 0 ? users : friends;
+
     return (
         <View style={style.container}>
             <NavBar
@@ -84,23 +97,17 @@ export default memo(() => {
 
             {/* <ScrollView>
                 <Text>
-                    {JSON.stringify(friendsResult.data, null, 4)}
+                    {JSON.stringify(friendsResult.error, null, 4)}
                     {friends?.edges?.length}
                 </Text>
             </ScrollView> */}
 
-            <FlatList
-                ListHeaderComponent={() => (
-                    // <View style={{
-                    //     backgroundColor: 'red',
-                    //     // flex: 0,
-                    // }}>
+            {searchText?.length > 0 || friends?.edges?.length > 0 ? (
+                <FlatList
+                    ListHeaderComponent={() => (
                         <FlatList
-                            showsHorizontalScrollIndicator={false}
-                            // contentContainerStyle={{
-                            //     paddingHorizontal: 10,
-                            // }}
                             style={{ marginBottom: selection?.length > 0 ? 20 : 0 }}
+                            showsHorizontalScrollIndicator={false}
                             renderItem={({ item }) => (
                                 <SelectedUserItem
                                     // selected={selectionSet.has(item.id)}
@@ -112,25 +119,57 @@ export default memo(() => {
                             data={selection}
                             horizontal
                         />
-                    // </View>
-                )}
-                renderItem={({ item }) => (
-                    <UserItem
-                        selected={selectionSet.has(item.node.id)}
-                        onPress={onPress}
-                        item={item.node}
+                    )}
+                    renderItem={({ item }) => (
+                        <UserItem
+                            selected={selectionSet.has(item.node.id)}
+                            onPress={onPress}
+                            item={item.node}
+                        />
+                    )}
+                    keyExtractor={({ node: { id } }) => id}
+                    keyboardShouldPersistTaps='handled'
+                    keyboardDismissMode='interactive'
+                    // enableResetScrollToCoords
+                    extraData={selection}
+                    // data={friends}
+                    data={data?.edges}
+                />
+            ) : (
+                <View style={styles.footer}>
+                    <Feather
+                        color={color.mediumGray}
+                        name='frown'
+                        size={30}
                     />
-                )}
-                keyExtractor={({ node: { id } }) => id}
-                keyboardShouldPersistTaps='handled'
-                keyboardDismissMode='interactive'
-                // enableResetScrollToCoords
-                extraData={selection}
-                // data={friends}
-                data={friends?.edges}
-            />
+                    <Text style={styles.empty}>
+                        Rajoute des amis pour les trouver plus rapidement
+                    </Text>
+                </View>
+            )}
         </View>
     )
+})
+
+const styles = StyleSheet.create({
+    footer: {
+        // alignItems: 'center',
+        marginHorizontal: 20,
+        marginVertical: 30,
+        marginTop: 100,
+        // justifyContent: 'center',
+        // backgroundColor: 'red',
+        alignItems: 'center',
+        flex: 1,
+    },
+    empty: {
+        fontFamily: 'Avenir Next',
+        color: color.mediumGray,
+        textAlign: 'center',
+        fontWeight: '600',
+        marginTop: 20,
+        fontSize: 16,
+    },
 })
 
 // Types

@@ -34,7 +34,12 @@ export default memo((props: Props) => {
                     style={styles.left}
                 />
             ) : (
-                <View style={styles.left} />
+                // <View style={styles.left} />
+                <View style={styles.left}>
+                    <Text style={{ fontSize: 30 }}>
+                        👽
+                    </Text>
+                </View>
             )}
 
             <View style={styles.content}>
@@ -66,7 +71,9 @@ const styles = StyleSheet.create({
     },
     left: {
         backgroundColor: '#f8f8f8',
-        borderRadius: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 60,
         height: 60,
         width: 60,
     },

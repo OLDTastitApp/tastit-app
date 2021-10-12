@@ -11,6 +11,7 @@ import Header from './Header'
 import Camera from './Camera'
 
 // Utils
+import { check, PERMISSIONS } from 'react-native-permissions'
 import { useNavigation } from '@navigation/utils'
 import { filters } from './utils'
 

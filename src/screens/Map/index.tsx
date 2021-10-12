@@ -100,12 +100,20 @@ export default memo(() => {
     };
     
     const onMarkerPress = useCallback<OnMarkerPress>(
-        place => setPlace(place),
+        place => {
+            console.log(`placePress: ${place.name}`);
+            // placeDetailsModalRef.current.present();
+            setPlace(place);
+        },
         []
     );
 
     const onPlacePress = useCallback<OnPlacePress>(
-        place => setPlace(place),
+        place => {
+            // console.log(`placePress: ${place.name}`)
+            // placeDetailsModalRef.current.present();
+            setPlace(place);
+        },
         []
     );
 
@@ -122,13 +130,13 @@ export default memo(() => {
         searchModalRef.current.snapToIndex(0);
 
         // console.log(`dietetics: ${JSON.stringify(dietetics, null, 4)}`);
-        console.log(`placesResult.refetch(${JSON.stringify({
-            pricing: pricing ? [pricing.index] : undefined,
-            around: mapLocation,
-            zip: districts,
-            radius: 10000,
-            first: 10,
-        }, null, 4)})`);
+        // console.log(`placesResult.refetch(${JSON.stringify({
+        //     pricing: pricing ? [pricing.index] : undefined,
+        //     around: mapLocation,
+        //     zip: districts,
+        //     radius: 10000,
+        //     first: 10,
+        // }, null, 4)})`);
 
         placesResult.refetch({
             pricing: pricing ? [pricing.index] : undefined,

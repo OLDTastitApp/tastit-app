@@ -6,6 +6,7 @@ import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions, Linkin
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Animated from 'react-native-reanimated'
@@ -19,6 +20,9 @@ import HeartIcon from '@assets/icons/heart.svg'
 // Helpers
 import { usePlace, useRatePlace, useLikePlace, useDislikePlace } from '@helpers'
 import { useNavigation } from '@navigation/utils'
+
+// Utils
+import Share from 'react-native-share'
 
 // Constants
 import { color, ui } from '@constants'
@@ -97,9 +101,9 @@ export default memo((props: Props) => {
         [props.place?.id]
     );
 
-    if (place == null) return null;
+    // if (place == null) return null;
 
-    const LikeIcon = place.liked ? HeartFilledIcon : HeartIcon;
+    const LikeIcon = place?.liked ? HeartFilledIcon : HeartIcon;
 
     const onLikePress = async () => {
         if (place.liked) {
@@ -123,178 +127,391 @@ export default memo((props: Props) => {
     };
     
     const onPhonePress = () => {
-        Linking.openURL(`phone:${place.phoneNumber}`);
+        Linking.openURL(`tel:${place.phoneNumber}`);
     };
 
     const onWebsitePress = () => {
-        Linking.openURL(`https://${place.website}`);
+        // Linking.openURL(`https://${place.website}`);
+        Linking.openURL(place.website);
     };
 
-    const alreadyRated = place.userRating !== null;
+    const onSharePress = () => {
+        Share.open({
+            title: place.name,
+            message: `Clic sur le lien suivant pour le lieu suivant tastit://place/${place.id}`,
+        });
+    };
+
+    const alreadyRated = place?.userRating !== null;
 
     return (
         <BottomSheetModal
-            handleComponent={null}
             animatedPosition={animatedPosition}
             enablePanDownToClose={true}
             snapPoints={snapPoints}
+            handleComponent={null}
             enableDismissOnClose
             onDismiss={onClosed}
-            stackBehavior='push'
+            // stackBehavior='push'
             ref={modalRef}
-            index={0}
+            // index={0}
         >
-            <View style={styles.handle} />
+            {!!place && (
+                <>
+                    <View style={styles.handle} />
 
-            <BottomSheetScrollView
-                contentContainerStyle={styles.container}
-            >
-                <Image
-                    source={{ uri: place.cover?.url }}
-                    style={styles.image}
-                />
-
-                <View style={styles.header}>
-                    <Text style={styles.name}>
-                        {place.name}
-                    </Text>
-
-                    <TouchableScale
-                        onPress={onLikePress}
-                        style={styles.icon}
+                    <BottomSheetScrollView
+                        contentContainerStyle={styles.container}
                     >
-                        <LikeIcon
-                            fill={color.primary}
-                            height={20}
-                            width={20}
-                        />
-                    </TouchableScale>
-                    <TouchableScale
-                        onPress={onAddToListPress}
-                        style={styles.icon}
-                    >
-                        <Feather
-                            // fill={color.primary}
-                            color={color.primary}
-                            name='plus'
-                            size={24}
-                        />
-                    </TouchableScale>
-                </View>
-
-                <Text style={styles.address}>
-                    {place.address}
-                </Text>
-
-                <View style={styles.rating}>
-                    <Rating
-                        alreadyRated={alreadyRated}
-                        onRatePress={onRatePress}
-                        value={place.rating}
-                        size={18}
-                    />
-                </View>
-
-                <Timetable
-                    // style={{ marginHorizontal: 20 }}
-                    timetable={place.timetable}
-                />
-
-                <Text style={styles.category}>
-                    {place.categories?.[0].name}
-                </Text>
-
-                <Text style={styles.tags}>
-                    {/* {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')} */}
-                    {tags}
-                </Text>
-
-                <ScrollView
-                    contentContainerStyle={styles.actionContent}
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.actionContainer}
-                    horizontal
-                >
-                    <TouchableScale
-                        style={styles.action}
-                        onPress={onMapPress}
-                    >
-                        <Feather
-                            color={color.dark}
-                            name='send'
-                            size={16}
+                        <Image
+                            source={{ uri: place.cover?.url }}
+                            style={styles.image}
                         />
 
-                        <Text style={styles.actionText}>
-                            Direction
+                        <View style={styles.header}>
+                            <Text style={styles.name}>
+                                {place.name}
+                            </Text>
+
+                            <TouchableScale
+                                onPress={onLikePress}
+                                style={styles.icon}
+                            >
+                                <LikeIcon
+                                    fill={color.primary}
+                                    height={20}
+                                    width={20}
+                                />
+                            </TouchableScale>
+                            <TouchableScale
+                                onPress={onSharePress}
+                                style={styles.icon}
+                            >
+                                <Ionicons
+                                    name='ios-share-social'
+                                    color={color.primary}
+                                    size={24}
+                                />
+                            </TouchableScale>
+                            <TouchableScale
+                                onPress={onAddToListPress}
+                                style={styles.icon}
+                            >
+                                <Feather
+                                    // fill={color.primary}
+                                    color={color.primary}
+                                    name='plus'
+                                    size={24}
+                                />
+                            </TouchableScale>
+                        </View>
+
+                        <Text style={styles.address}>
+                            {place.address}
                         </Text>
-                    </TouchableScale>
 
-                    {!!place.phoneNumber && (
-                        <TouchableScale
-                            onPress={onPhonePress}
-                            style={styles.action}
-                        >
-                            <Feather
-                                color={color.dark}
-                                name='phone'
-                                size={16}
+                        <View style={styles.rating}>
+                            <Rating
+                                alreadyRated={alreadyRated}
+                                onRatePress={onRatePress}
+                                value={place.rating}
+                                size={18}
                             />
+                        </View>
 
-                            <Text style={styles.actionText}>
-                                Appeler
-                            </Text>
-                        </TouchableScale>
-                    )}
-
-                    {!!place.website && (
-                        <TouchableScale
-                            onPress={onWebsitePress}
-                            style={styles.action}
-                        >
-                            <Feather
-                                color={color.dark}
-                                // name='external-link'
-                                // name='link'
-                                name='globe'
-                                size={16}
+                        {place.timetable?.length > 0 && (
+                            <Timetable
+                                // style={{ marginHorizontal: 20 }}
+                                timetable={place.timetable}
                             />
+                        )}
 
-                            <Text style={styles.actionText}>
-                                Site web
-                            </Text>
-                        </TouchableScale>
-                    )}
-                </ScrollView>
+                        <Text style={styles.category}>
+                            {place.categories?.[0].name}
+                        </Text>
 
-                <FlatList
-                    renderItem={({ item }) => (
-                        <PostItem
-                            item={item.node}
+                        <Text style={styles.tags}>
+                            {/* {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')} */}
+                            {tags}
+                        </Text>
+
+                        <Animated.ScrollView
+                            contentContainerStyle={styles.actionContent}
+                            showsHorizontalScrollIndicator={false}
+                            style={styles.actionContainer}
+                            horizontal
+                        >
+                            <TouchableScale
+                                style={styles.action}
+                                onPress={onMapPress}
+                            >
+                                <Feather
+                                    color={color.dark}
+                                    name='send'
+                                    size={16}
+                                />
+
+                                <Text style={styles.actionText}>
+                                    Direction
+                                </Text>
+                            </TouchableScale>
+
+                            {!!place.phoneNumber && (
+                                <TouchableScale
+                                    onPress={onPhonePress}
+                                    style={styles.action}
+                                >
+                                    <Feather
+                                        color={color.dark}
+                                        name='phone'
+                                        size={16}
+                                    />
+
+                                    <Text style={styles.actionText}>
+                                        Appeler
+                                    </Text>
+                                </TouchableScale>
+                            )}
+
+                            {!!place.website && (
+                                <TouchableScale
+                                    onPress={onWebsitePress}
+                                    style={styles.action}
+                                >
+                                    <Feather
+                                        color={color.dark}
+                                        // name='external-link'
+                                        // name='link'
+                                        name='globe'
+                                        size={16}
+                                    />
+
+                                    <Text style={styles.actionText}>
+                                        Site web
+                                    </Text>
+                                </TouchableScale>
+                            )}
+                        </Animated.ScrollView>
+
+                        <AnimatedFlatList
+                            renderItem={({ item }) => (
+                                <PostItem
+                                    item={item.node}
+                                />
+                            )}
+                            contentContainerStyle={{
+                                paddingHorizontal: 10,
+                                marginTop: 20,
+                            }}
+                            keyExtractor={({ node: { id } }) => id}
+                            data={place?.posts?.edges}
+                            horizontal
                         />
-                    )}
-                    contentContainerStyle={{
-                        paddingHorizontal: 10,
-                        marginTop: 20,
-                    }}
-                    keyExtractor={({ node: { id } }) => id}
-                    data={place?.posts?.edges}
-                    horizontal
-                />
-                {/* <Text>
-                    {JSON.stringify(place, null, 4)}
-                </Text> */}
-            </BottomSheetScrollView>
+                        {/* <Text>
+                            {JSON.stringify(place, null, 4)}
+                        </Text> */}
+                    </BottomSheetScrollView>
 
-            {/* <RateModal visible={true} /> */}
-            <RateModal
-                visible={ratingModalVisible}
-                onCancel={onCancelRating}
-                onSubmit={onSubmitRating}
-            />
+                    {/* <RateModal visible={true} /> */}
+                    <RateModal
+                        visible={ratingModalVisible}
+                        onCancel={onCancelRating}
+                        onSubmit={onSubmitRating}
+                    />
+                </>
+            )}
         </BottomSheetModal>
     )
 })
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as typeof FlatList
+
+// export default memo((props: Props) => {
+//     // const navigation = useNavigation();
+
+//     const { modalRef, onClosed, animatedPosition } = props;
+
+//     // const [ratingModalVisible, setRatingModalVisible] = useState(false);
+
+//     // const [placeK, placeResult] = usePlace({ id: props.place?.id });
+
+//     // const [dislikePlace, dislikePlaceResult] = useDislikePlace();
+//     // const [likePlace, likePlaceResult] = useLikePlace();
+//     // const [ratePlace, ratePlaceResult] = useRatePlace();
+
+//     // useEffect(
+//     //     () => {
+//     //         if (place) {
+//     //             // modalRef.current?.snapToIndex(1);
+//     //             // modalRef.current?.present();
+//     //         } else {
+//     //             modalRef.current?.dismiss?.();
+//     //         }
+//     //     },
+//     //     [place]
+//     // );
+//     const place = props.place;
+
+//     // const { tags } = useMemo(
+//     //     () => {
+//     //         if (!place) return {};
+
+//     //         const tags = place.tags?.map(
+//     //             ({ name }) => name
+//     //         ).join('  -  ');
+
+//     //         // const timetable = 
+
+//     //         return { tags };
+//     //     },
+//     //     [place?.tags]
+//     // );
+
+//     const LikeIcon = place?.liked ? HeartFilledIcon : HeartIcon;
+
+//     return (
+//         <BottomSheetModal
+//             snapPoints={snapPoints}
+//             ref={props.modalRef}
+//             name='C'
+//         >
+//             <BottomSheetScrollView
+//                 contentContainerStyle={styles.container}
+//             >
+//                 {!!place && (
+//                     <View style={{
+//                         backgroundColor: 'yellow',
+//                         width: '100%',
+//                         // height: 3000,
+//                     }}>
+//                         {/* <Text>
+//                             {JSON.stringify(props.place, null, 4)}
+//                         </Text> */}
+
+//                         <Image
+//                             source={{ uri: place.cover?.url }}
+//                             style={styles.image}
+//                         />
+
+//                         <View style={styles.header}>
+//                             <Text style={styles.name}>
+//                                 {place.name}
+//                             </Text>
+
+//                             <TouchableScale
+//                                 // onPress={onLikePress}
+//                                 style={styles.icon}
+//                             >
+//                                 <LikeIcon
+//                                     fill={color.primary}
+//                                     height={20}
+//                                     width={20}
+//                                 />
+//                             </TouchableScale>
+//                             <TouchableScale
+//                                 // onPress={onAddToListPress}
+//                                 style={styles.icon}
+//                             >
+//                                 <Feather
+//                                     // fill={color.primary}
+//                                     color={color.primary}
+//                                     name='plus'
+//                                     size={24}
+//                                 />
+//                             </TouchableScale>
+//                         </View>
+
+//                         <Text style={styles.address}>
+//                             {place?.address}
+//                         </Text>
+
+//                         <View style={styles.rating}>
+//                             {/* <Rating
+//                                 alreadyRated={false}
+//                                 // alreadyRated={alreadyRated}
+//                                 // onRatePress={onRatePress}
+//                                 value={place.rating}
+//                                 size={18}
+//                             /> */}
+//                         </View>
+
+//                         {/* <Timetable
+//                             // style={{ marginHorizontal: 20 }}
+//                             timetable={place.timetable}
+//                         /> */}
+
+//                         <Text style={styles.category}>
+//                             {place?.categories?.[0]?.name}
+//                         </Text>
+
+//                         <Text style={styles.tags}>
+//                             {['French food', 'Pizza', 'Bar', 'Végératien', 'Vegan'].join(' - ')}
+//                             {/* {tags} */}
+//                         </Text>
+
+//                         <Animated.ScrollView
+//                             contentContainerStyle={[styles.actionContent, { flexGrow: 0 }]}
+//                             showsHorizontalScrollIndicator={false}
+//                             style={[styles.actionContainer, { flexGrow: 0 }]}
+//                             horizontal
+//                         >
+//                             <TouchableScale
+//                                 style={styles.action}
+//                                 // onPress={onMapPress}
+//                             >
+//                                 <Feather
+//                                     color={color.dark}
+//                                     name='send'
+//                                     size={16}
+//                                 />
+
+//                                 <Text style={styles.actionText}>
+//                                     Direction
+//                                 </Text>
+//                             </TouchableScale>
+
+//                             {!!place?.phoneNumber && (
+//                                 <TouchableScale
+//                                     // onPress={onPhonePress}
+//                                     style={styles.action}
+//                                 >
+//                                     <Feather
+//                                         color={color.dark}
+//                                         name='phone'
+//                                         size={16}
+//                                     />
+
+//                                     <Text style={styles.actionText}>
+//                                         Appeler
+//                                     </Text>
+//                                 </TouchableScale>
+//                             )}
+
+//                             {!!place?.website && (
+//                                 <TouchableScale
+//                                     // onPress={onWebsitePress}
+//                                     style={styles.action}
+//                                 >
+//                                     <Feather
+//                                         color={color.dark}
+//                                         // name='external-link'
+//                                         // name='link'
+//                                         name='globe'
+//                                         size={16}
+//                                     />
+
+//                                     <Text style={styles.actionText}>
+//                                         Site web
+//                                     </Text>
+//                                 </TouchableScale>
+//                             )}
+//                         </Animated.ScrollView>
+//                     </View>
+//                 )}
+//             </BottomSheetScrollView>
+//         </BottomSheetModal>
+//     )  
+// })
 
 // Constants
 const { width, height } = Dimensions.get('window')
@@ -307,7 +524,8 @@ const styles = StyleSheet.create({
         // paddingBottom: ui.safePaddingBottom + 20,
         // paddingHorizontal: 20,
         paddingTop: 20,
-        paddingBottom: height + 300,
+        // paddingBottom: height + 300,
+        paddingBottom: 120,
     },
     handle: {
         backgroundColor: color.lightGray,
@@ -403,6 +621,6 @@ export type Props = {
     animatedPosition: Animated.SharedValue<number>,
     modalRef: RefObject<BottomSheetModal>,
     onClosed: () => void,
-    favorited?: boolean,
+    // favorited?: boolean,
     place?: Place,
 }

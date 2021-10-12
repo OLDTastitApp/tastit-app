@@ -23,10 +23,10 @@ export default () => {
                 component={Favorites}
                 name='Favorites'
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 component={PlaceDetails}
                 name='PlaceDetails'
-            />
+            /> */}
         </Stack.Navigator>
     )
 }

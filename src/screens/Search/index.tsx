@@ -77,6 +77,7 @@ export default memo((props: Props) => {
         place => {
             Keyboard.dismiss();
             props.onPlacePress(place);
+            setSearchText(undefined);
         },
         [props.onPlacePress]
     );
@@ -84,12 +85,16 @@ export default memo((props: Props) => {
     const onUserPress = useCallback<OnUserPress>(
         user => {
             navigation.navigate('Profile', { userId: user.id, canGoBack: true });
+            setSearchText(undefined);
         },
         [props.onUserPress]
     );
 
     const onPostPress = useCallback<OnPostPress>(
-        post => navigation.navigate('PostDetails', { id: post.id }),
+        post => {
+            navigation.navigate('PostDetails', { id: post.id });
+            setSearchText(undefined);
+        },
         [props.onPostPress]
     );
 

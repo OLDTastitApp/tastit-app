@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         // flexDirection: 'row',
         // flexWrap: 'wrap',
-        paddingBottom: height + 300,
+        // paddingBottom: height + 300,
+        paddingBottom: 120,
     },
 })
 

@@ -4,6 +4,7 @@ import * as graph from '@graphql/graph'
 
 
 type Args = {
+    userId?: string,
     skip?: boolean,
     after?: string,
     first: number,
@@ -11,7 +12,7 @@ type Args = {
 
 export default (args: Args) => {
 
-    const { first, after, skip } = args;
+    const { userId, first, after, skip } = args;
 
     const result = useQuery<
         graph.PlaceListsResult,
@@ -21,6 +22,7 @@ export default (args: Args) => {
         {
             fetchPolicy: 'cache-and-network',
             variables: {
+                userId,
                 after,
                 first,
             },

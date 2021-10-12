@@ -23,6 +23,16 @@ const linking: LinkingOptions<{}> = {
                     'VerifyEmail': 'verify/email',
                 },
             },
+            BottomTab: {
+                screens: {
+                    FavoritesStack: {
+                        screens: {
+                            'Favorites': 'favorite/:id',
+                        },
+                    },
+                },
+            },
+            'PlaceDetails': 'place/:placeId',
             'PostDetails': 'post/:id',
         },
     },

@@ -26,6 +26,12 @@ target 'Tastit' do
   # Google Maps
   pod 'react-native-google-maps', :path => '../node_modules/react-native-maps'
 
+  # Permissions
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+
   post_install do |installer|
     react_native_post_install(installer)
   end
