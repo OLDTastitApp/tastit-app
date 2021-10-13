@@ -64,7 +64,6 @@ export const PLACE = gql`
         latitude
         address
         rating
-        rating
         liked
         name
         id

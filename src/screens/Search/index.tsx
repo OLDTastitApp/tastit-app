@@ -14,7 +14,7 @@ import PostItem from './PostItem'
 import Header from './Header'
 
 // Helpers
-import { usePlaces, useUsers, usePosts } from '@helpers'
+import { usePlaces, useUsers, usePosts, useSearch } from '@helpers'
 import { useNavigation } from '@navigation/utils'
 
 // Types
@@ -51,8 +51,21 @@ export default memo((props: Props) => {
     const onFocus = () => setFocused(true);
     const onBlur = () => setFocused(false);
 
+    const [search, searchResult] = useSearch({
+        skip: searchTextEmpty || index !== 0,
+        text: searchText,
+        first: 10,
+    });
+
+    if (searchResult.error) {
+        console.log(searchResult.error);
+    } else {
+        console.log(`*** search: ${JSON.stringify(search, null, 4)}`);
+    }
+
     const [places, placesResult] = usePlaces({
-        skip: searchTextEmpty || ![0, 2].includes(index),
+        // skip: searchTextEmpty || ![0, 2].includes(index),
+        skip: searchTextEmpty || index !== 2,
         ...(index === 0 ? {
             name: searchText,
         } : {
@@ -98,7 +111,7 @@ export default memo((props: Props) => {
         [props.onPostPress]
     );
 
-    const data = [places, users, places, posts][index];
+    const data = [search, users, places, posts][index];
 
     // console.log(`searchText: ${searchText}`)
     // console.log(`places: ${places?.edges?.length}`)
@@ -110,28 +123,59 @@ export default memo((props: Props) => {
     // console.log(`places.error: ${placesResult.error}`);
 
     const renderItem = ({ item }) => {
-        
-        return ({
-            place: () => (
+
+        console.log(`__typename: ${item.node.__typename}`);
+        const { __typename } = item.node;
+
+        if (__typename === 'Place') {
+            return (
                 <PlaceItem
                     onPress={onPlacePress}
                     item={item.node}
                 />
-            ),
-            user: () => (
+            )
+        }
+
+        if (__typename === 'User') {
+            return (
                 <UserItem
                     onPress={onUserPress}
                     item={item.node}
                 />
-            ),
-            post: () => (
+            )
+        }
+
+        if (__typename === 'Post') {
+            return (
                 <PostItem
                     searchText={searchText}
                     onPress={onPostPress}
                     item={item.node}
                 />
             )
-        })[typeMap[index]]();
+        }
+
+        // return ({
+        //     place: () => (
+        //         <PlaceItem
+        //             onPress={onPlacePress}
+        //             item={item.node}
+        //         />
+        //     ),
+        //     user: () => (
+        //         <UserItem
+        //             onPress={onUserPress}
+        //             item={item.node}
+        //         />
+        //     ),
+        //     post: () => (
+        //         <PostItem
+        //             searchText={searchText}
+        //             onPress={onPostPress}
+        //             item={item.node}
+        //         />
+        //     )
+        // })[typeMap[index]]();
     };
 
     if (postsResult.error) {

@@ -8,5 +8,5 @@ export const version = Config.VERSION
 
 export const APIUri = Config.API_URI
 
-// export const GraphQLUri = `${APIUri}/graphql`
-export const GraphQLUri = `${'http://localhost:3000'}/graphql`
+export const GraphQLUri = `${APIUri}/graphql`
+// export const GraphQLUri = `${'http://localhost:3000'}/graphql`

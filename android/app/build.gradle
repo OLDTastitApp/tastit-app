@@ -132,10 +132,10 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.tastit"
+        applicationId "app.tastit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
 
         // react-native-camera
@@ -188,6 +188,9 @@ android {
 }
 
 dependencies {
+    // Google
+    apply plugin: 'com.google.gms.google-services'
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

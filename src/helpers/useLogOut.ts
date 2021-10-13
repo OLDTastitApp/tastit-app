@@ -7,7 +7,8 @@ import * as graph from '@graphql/graph'
 
 // Utils
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import AsyncStorage from '@react-native-community/async-storage'
+// import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LoginManager } from 'react-native-fbsdk-next'
 import update from 'immutability-helper'
 

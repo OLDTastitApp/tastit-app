@@ -3,7 +3,8 @@ import { NormalizedCacheObject, ApolloClient } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 
 // Services
-import AsyncStorage from '@react-native-community/async-storage'
+// import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Graph
 import * as graph from './graph/auth/refreshToken'
