@@ -1,15 +1,20 @@
 // React
-import React, { memo, useRef, useCallback } from 'react'
+import React, { memo, useRef, useCallback, useEffect } from 'react'
 
 // Components
-import { View, StatusBar, Button, YellowBox, LogBox } from 'react-native'
+import { BottomSheetModalProvider, BottomSheetModal, useBottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { View, StatusBar, Button, YellowBox, LogBox, Platform } from 'react-native'
 import App from '@screens/App'
 
 // Apollo
 import { ApolloProvider } from '@apollo/client'
 import client from '@graphql/client'
 
-import { BottomSheetModalProvider, BottomSheetModal, useBottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+// Utils
+import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency'
+
+// Helpers
+import useAppTracking, { AppTrackingContext } from '@helpers/useAppTracking'
 
 // YellowBox.ignoreWarnings([
 //     'Require cycle',
@@ -119,6 +124,8 @@ const Main = memo(() => {
 })
 
 export default () => {
+
+    const { allowed: appTrackingAllowed } = useAppTracking();
     
     return (
         <>
@@ -133,9 +140,11 @@ export default () => {
                 <Main />
             </BottomSheetModalProvider> */}
 
-            <ApolloProvider client={client}>
-                <App />
-            </ApolloProvider>
+            <AppTrackingContext.Provider value={{ allowed: appTrackingAllowed }}>
+                <ApolloProvider client={client}>
+                    <App />
+                </ApolloProvider>
+            </AppTrackingContext.Provider>
             {/* <Splash /> */}
             {/* {(global as any).HermesInternal == null ? null : (
                 <Text>

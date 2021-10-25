@@ -12,7 +12,7 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { TouchableScale } from '@components'
 
 // Utils
-import { openSettings, check, PERMISSIONS } from 'react-native-permissions'
+import { openSettings, check, request, PERMISSIONS } from 'react-native-permissions'
 // import {  } from 'react-native'
 
 // Constants
@@ -53,7 +53,6 @@ export default memo((props: Props) => {
         async () => {
             try {
                 setLocked(true);
-                cameraRef.current?.pausePreview();
 
                 const result = await cameraRef?.current?.takePictureAsync({
                     // pauseAfterCapture: true,
@@ -62,10 +61,13 @@ export default memo((props: Props) => {
                     quality: 0.5,
                 });
 
-                const { uri: pictureUri, width, height } = result;
-                console.log(`takePictureAsync: image size: ${result.uri.length * 3 / 4} KB`)
+                cameraRef.current?.pausePreview();
 
-                const thumbnailUri = await ImageEditor.cropImage(pictureUri, {
+                const { uri: pictureUri, width, height } = result;
+                console.log(`takePictureAsync: image size: ${result.uri.length * 3 / 4} KB`);
+                console.log(`takePictureAsync.result: ${JSON.stringify(result, null, 4)}`);
+
+                console.log(`** thumbnailUri: ${JSON.stringify({
                     displaySize: {
                         height: 100 * height / width,
                         width: 100,
@@ -76,7 +78,26 @@ export default memo((props: Props) => {
                         // height: 280 * height / width,
                         // width: 280,
                     },
-                });
+                }, null, 4)}`);
+
+                // const thumbnailUri = await ImageEditor.cropImage('https://source.unsplash.com/2Ts5HnA67k8/200x100', {
+                const thumbnailUri = await ImageEditor.cropImage(pictureUri, Platform.select({
+                    ios: {
+                        displaySize: {
+                            height: 100 * height / width,
+                            width: 100,
+                        },
+                        offset: { x: 0, y: 0 },
+                        size: { width, height },
+                    },
+                    android: {
+                        displaySize: { width, height },
+                        size: { width, height },
+                        offset: { x: 0, y: 0 },
+                    },
+                }));
+
+                console.log(`thumbnailUri: ${thumbnailUri}`);
 
                 // console.log(result.base64)
 
@@ -98,37 +119,50 @@ export default memo((props: Props) => {
     );
 
     const onLibraryPress = async () => {
-
-        const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-        console.log(status)
-        if (status !== 'granted') {
-            return openSettings();
+        try {
+            const result = await ImagePicker.openPicker({
+                // compressImageQuality: 0.5,
+                mediaType: 'photo',
+            });
+    
+            const pictureUri = result.sourceURL ?? result.path;
+            console.log(`onLibraryPress.result: ${JSON.stringify(result, null, 4)}`);
+            // console.log(`onLibraryPress: image size: ${result.sourceURL?.length * 3 / 4} KB`)
+            const { width, height } = result;
+            const thumbnailUri = await ImageEditor.cropImage(pictureUri, Platform.select({
+                ios: {
+                    displaySize: {
+                        height: 100 * height / width,
+                        width: 100,
+                    },
+                    size: { width, height },
+                    offset: { x: 0, y: 0 },
+                },
+                android: {
+                    displaySize: { width, height },
+                    size: { width, height },
+                    offset: { x: 0, y: 0 },
+                },
+            }));
+            props.onCaptured({
+                // pictureBase64: `data:image;base64,${result.base64}`,
+                // pictureBase64: result.base64,
+                // base64: `data:image;base64,${result.base64}`,
+                // pictureBase64: result.uri,
+                thumbnailUri,
+                pictureUri,
+            });
+            // console.log(JSON.stringify(result, null, 4))
+        } catch (e) {
+            if (e instanceof Error) {
+                if (Platform.OS === 'ios') {
+                    const status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+                    if (status !== 'granted') {
+                        return openSettings();
+                    }
+                }
+            }
         }
-
-        const result = await ImagePicker.openPicker({
-            // compressImageQuality: 0.5,
-            compressImageQuality: 0.1,
-            mediaType: 'photo',
-        });
-        console.log(`onLibraryPress: image size: ${result.sourceURL.length * 3 / 4} KB`)
-        const { width, height, sourceURL: pictureUri } = result;
-        const thumbnailUri = await ImageEditor.cropImage(pictureUri, {
-            displaySize: {
-                height: 100 * height / width,
-                width: 100,
-            },
-            size: { width, height },
-            offset: { x: 0, y: 0 },
-        });
-        props.onCaptured({
-            // pictureBase64: `data:image;base64,${result.base64}`,
-            // pictureBase64: result.base64,
-            // base64: `data:image;base64,${result.base64}`,
-            // pictureBase64: result.uri,
-            thumbnailUri,
-            pictureUri,
-        });
-        // console.log(JSON.stringify(result, null, 4))
     };
 
     const onRotatePress = () => {

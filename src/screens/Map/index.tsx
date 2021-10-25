@@ -194,7 +194,7 @@ export default memo(() => {
     );
 
     if (placesResult.error) {
-        return null;
+        // return null;
         return (<ScrollView>
             <Text>{JSON.stringify(placesResult.error, null, 4)}</Text>
         </ScrollView>)

@@ -2,7 +2,7 @@
 import React, { memo, useRef, useState, forwardRef, useImperativeHandle } from 'react'
 
 // Components
-import { View, Text, Animated, Modal, StyleSheet } from 'react-native'
+import { View, Text, Animated, Modal, StyleSheet, Platform } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { BlurView } from '@react-native-community/blur'
 import sendSource from '@assets/animations/send.json'
@@ -76,9 +76,11 @@ export default memo(forwardRef<Ref, Props>((props, ref) => {
                 ]}
             >
                 <BlurView
-                    blurType='chromeMaterialLight'
+                    // blurType='chromeMaterialLight'
+                    blurType={Platform.OS === 'ios' ? 'chromeMaterialLight' : 'light'}
                     style={styles.content}
-                    blurRadius={100}
+                    // blurRadius={100}
+                    blurRadius={25}
                 >
                     <AntDesign
                         // color={color.primary}

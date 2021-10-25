@@ -1,5 +1,5 @@
 // React
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useState, useRef } from 'react'
 
 // Components
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -36,7 +36,12 @@ export default memo(function SignUp() {
 
     const [signUp, signUpResult] = useSignUp();
 
+    const loadingRef = useRef(false);
+
     const onSubmitPress = async () => {
+        if (loadingRef.current) return;
+        loadingRef.current = true;
+
         try {
             await signUp({
                 picture: pictureDataUri,
@@ -67,6 +72,8 @@ export default memo(function SignUp() {
                 console.log(e);
                 Alert.alert('Une erreur est survenue');
             }
+        } finally {
+            loadingRef.current = false;
         }
     };
 

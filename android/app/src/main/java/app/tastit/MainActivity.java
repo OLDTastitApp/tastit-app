@@ -1,4 +1,4 @@
-package com.tastit;
+package app.tastit;
 
 import com.facebook.react.ReactActivity;
 

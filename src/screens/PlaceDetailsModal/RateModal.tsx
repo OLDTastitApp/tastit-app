@@ -115,7 +115,7 @@
 import React, { memo, useState } from 'react'
 
 // Components
-import { View, Text, Pressable, StyleSheet, Modal } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Modal, Platform } from 'react-native'
 import { BlurView } from '@react-native-community/blur'
 // import { Modal, TouchableScale } from '@components'
 import { TouchableScale } from '@components'
@@ -164,8 +164,9 @@ export default memo((props: Props) => {
                     style={styles.blur}
                     // blurType='light'
                     // blurType='chromeMaterialLight'
-                    blurType='xlight'
+                    // blurType='xlight'
                     // blurRadius={0.1}
+                    blurType={Platform.OS === 'ios' ? 'xlight' : 'light'}
                 />
             </View>
 

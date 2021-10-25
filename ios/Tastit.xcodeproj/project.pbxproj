@@ -638,7 +638,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tastit/Tastit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7VVYDB6PU9;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
@@ -654,7 +654,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.tastit;
 				PRODUCT_NAME = Tastit;
-				PROVISIONING_PROFILE_SPECIFIER = "Tastit Ad Hoc (app.tastit)";
+				PROVISIONING_PROFILE_SPECIFIER = "Tastit Production (app.tastit)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tastit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -671,7 +671,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tastit/Tastit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7VVYDB6PU9;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = Tastit/Info.plist;
@@ -686,7 +686,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.tastit;
 				PRODUCT_NAME = Tastit;
-				PROVISIONING_PROFILE_SPECIFIER = "Tastit Ad Hoc (app.tastit)";
+				PROVISIONING_PROFILE_SPECIFIER = "Tastit Production (app.tastit)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tastit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

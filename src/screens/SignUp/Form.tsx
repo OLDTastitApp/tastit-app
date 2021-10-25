@@ -3,6 +3,7 @@ import React, { useState, useRef, useCallback } from 'react'
 
 // Components
 import { TouchableScale, PicturePicker } from '@components'
+import Feather from 'react-native-vector-icons/Feather'
 import { View, Text, StyleSheet } from 'react-native'
 import DateInput from './DateInput'
 import TextInput from './TextInput'
@@ -147,6 +148,27 @@ export default ((props: Props) => {
                 ref={passwordRef}
                 secureTextEntry
             />
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, }}>
+                <Feather
+                    color={color.darkGray}
+                    size={12}
+                    name='info'
+                />
+                <Text
+                    style={{
+                        fontFamily: 'Avenir Next',
+                        color: color.darkGray,
+                        fontWeight: '500',
+                        marginLeft: 5,
+                        fontSize: 12,
+                    }}
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                >
+                    Le mot de passe doit comporter au moins 9 caractères
+                </Text>
+            </View>
 
             <DateInput
                 onChange={props.onBirthdateChanged}

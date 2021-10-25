@@ -3,7 +3,8 @@ import React, { memo } from 'react'
 
 // Components
 import Animated, { useAnimatedStyle, interpolate, Extrapolate } from 'react-native-reanimated'
-import { View, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import { TouchableScale } from '@components'
 
 // Helpers
@@ -57,30 +58,43 @@ export default memo((props: Props) => {
     );
 
     return (
-        <Animated.View
-            style={[
-                styles.container,
-                detailsStyle,
-            ]}
-        >
+        <>
+            {Platform.OS !== 'ios' && (
+                <View style={{
+                    backgroundColor: 'transparent',
+                    position: 'absolute',
+                    width: '100%',
+                    height: 50,
+                    bottom: 0,
+                }} />
+            )}
             <Animated.View
                 style={[
                     styles.container,
-                    buttonStyle,
+                    detailsStyle,
                 ]}
             >
-                <View style={styles.wrapper}>
-                    <TouchableScale
-                        onPress={props.onPress}
-                        style={styles.button}
-                    >
-                        <Text style={styles.title}>
-                            Rechercher
-                        </Text>
-                    </TouchableScale>
-                </View>
+                <Animated.View
+                    style={[
+                        styles.container,
+                        buttonStyle,
+                        // { backgroundColor: 'green' }
+                    ]}
+                >
+                    <View style={styles.wrapper}>
+                        <TouchableOpacity
+                            onPress={props.onPress}
+                            style={styles.button}
+                            activeOpacity={0.9}
+                        >
+                            <Text style={styles.title}>
+                                Rechercher
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </Animated.View>
             </Animated.View>
-        </Animated.View>
+        </>
     )
 })
 
@@ -92,7 +106,7 @@ const styles = StyleSheet.create({
         width: '100%',
         bottom: 0,
         // top: 500,
-        // zIndex: 100000,
+        zIndex: 100000,
     },
     wrapper: {
         marginHorizontal: 20,

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "101873232533-dvfiq3u9h4tckaj84jjtj328usppk3pl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.tastit",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "101873232533-imjh9u9emqopsbll0la2a8kfgniqkj94.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

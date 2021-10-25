@@ -1,11 +1,16 @@
 // React
-import React, { useRef } from 'react'
+import React, { useRef, useContext, useEffect } from 'react'
+
+// Utils
+import { getTrackingStatus, requestTrackingPermission } from 'react-native-tracking-transparency'
+import { Platform } from 'react-native'
 
 // Navigation
 import { NavigationContainer, LinkingOptions } from '@react-navigation/native'
 
 // Helpers
 import { useNavigationContainerRef } from '@react-navigation/native'
+import { AppTrackingContext } from '@helpers/useAppTracking'
 
 // Services
 import analytics from '@react-native-firebase/analytics'
@@ -42,6 +47,8 @@ export default () => {
 
     const navigationRef = useNavigationContainerRef();
     const routeNameRef = useRef<string>();
+
+    const { allowed } = useContext(AppTrackingContext);
     
     return (
         <NavigationContainer
@@ -49,20 +56,24 @@ export default () => {
             ref={navigationRef}
             onReady={() => {
                 routeNameRef.current = navigationRef.getCurrentRoute().name;
-                analytics().logScreenView({
-                    screen_class: routeNameRef.current,
-                    screen_name: routeNameRef.current,
-                });
+                if (allowed) {
+                    analytics().logScreenView({
+                        screen_class: routeNameRef.current,
+                        screen_name: routeNameRef.current,
+                    });
+                }
             }}
             onStateChange={async () => {
                 const previousRouteName = routeNameRef.current;
                 const currentRouteName = navigationRef.getCurrentRoute().name;
 
                 if (previousRouteName !== currentRouteName) {
-                    await analytics().logScreenView({
-                        screen_class: currentRouteName,
-                        screen_name: currentRouteName,
-                    });
+                    if (allowed) {
+                        await analytics().logScreenView({
+                            screen_class: currentRouteName,
+                            screen_name: currentRouteName,
+                        });
+                    }
                 }
 
                 routeNameRef.current = currentRouteName;

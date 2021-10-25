@@ -121,6 +121,10 @@ export default memo(() => {
     const complete = me?.roles?.[0]?.complete;
     // console.log(`*** complete: ${JSON.stringify(me, null, 4)}`);
 
+    const template = posts?.edges?.length === 0;
+    const edges = (template ? DEFAULT_POSTS : posts?.edges) as typeof posts['edges'];
+    // posts.edges?.[0].node?.creator.picture.
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
 
@@ -130,7 +134,8 @@ export default memo(() => {
                 // data={posts}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
-                data={posts?.edges}
+                // data={posts?.edges}
+                data={edges}
                 // contentContainerStyle={{
                 //     backgroundColor: 'red',
                 //     paddingBottom: 30,
@@ -151,6 +156,7 @@ export default memo(() => {
                         onPlacePress={onPlacePress}
                         onSharePress={onSharePress}
                         onLikePress={onLikePress}
+                        template={template}
                         item={item.node}
                         canLike
                         // item={item}
@@ -177,6 +183,67 @@ export default memo(() => {
         </View>
     )
 })
+
+// Constants
+const DEFAULT_POSTS = [
+    {
+        node: {
+            content: `Je viens de découvrir ce merveilleux restaurant au coeur du 16e, le service était juste whaou!\nLe plat était délicieux et le cadre est très agréable ^^`,
+            picture: {
+                url: 'https://images.pexels.com/photos/3838628/pexels-photo-3838628.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+            },
+            place: {
+                name: 'Au Vieux Paris',
+            },
+            creator: {
+                firstName: 'Vanessa de tastit',
+                picture: {
+                    url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80',
+                },
+            },
+            liked: true,
+            id: '0',
+        },
+    },
+    {
+        node: {
+            content: `La création de liste se fait directement depuis les pages des restaurants ou des bars que vous retrouvez sur l'onglet "rechercher" ! Profitez-en 😉`,
+            picture: {
+                url: 'https://images.pexels.com/photos/7218637/pexels-photo-7218637.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+            },
+            place: {
+                name: `Création d'une liste`,
+            },
+            creator: {
+                firstName: 'Vanessa de tastit',
+                picture: {
+                    url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80',
+                },
+            },
+            liked: true,
+            id: '1',
+        },
+    },
+    {
+        node: {
+            content: `Cliquez sur la petite loupe pour découvrir la map interactive. Elle vous permettra de trouver l'établissement de votre choix !`,
+            picture: {
+                url: 'https://images.pexels.com/photos/4871175/pexels-photo-4871175.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+            },
+            place: {
+                name: `Découvrir des nouveaux Restos`,
+            },
+            creator: {
+                firstName: 'Vanessa de tastit',
+                picture: {
+                    url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80',
+                },
+            },
+            liked: true,
+            id: '2',
+        },
+    },
+];
 
 // Types
 type OnCreatorPress = PostItemProps['onCreatorPress']

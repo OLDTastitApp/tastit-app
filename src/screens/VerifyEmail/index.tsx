@@ -78,7 +78,7 @@ export default memo(function VerifyEmail() {
                     marginHorizontal: 20,
                     // jus
                 }}>
-                    🎉👏 Bienvenu sur Tastit,
+                    🎉👏 Bienvenue sur Tastit,
                     Nous avons besoin de vérifier ton email avant de poursuivre
                     {/* {JSON.stringify({
                         ...params,

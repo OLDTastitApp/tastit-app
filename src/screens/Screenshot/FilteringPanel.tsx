@@ -2,7 +2,7 @@
 import React, { memo, useState, useRef, useEffect, useMemo } from 'react'
 
 // Components
-import { View, Text, FlatList, Animated, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Animated, StyleSheet, Platform } from 'react-native'
 import { BlurView } from '@react-native-community/blur'
 import FilterTumbnail from './FilterThumbnail'
 import { TouchableScale } from '@components'
@@ -24,11 +24,14 @@ export default memo((props: Props) => {
     const { current: progress } = useRef(new Animated.Value(0));
     const [height, setHeight] = useState<number>(0);
     const [visible, setVisible] = useState(false);
+    const [headerVisible, setHeaderVisible] = useState(false);
 
     useEffect(
         () => {
             if (props.visible) {
                 setVisible(true);
+                setTimeout(() => setHeaderVisible(true), 100);
+                // setHeaderVisible(true);
             }
 
             Animated.spring(progress, {
@@ -37,6 +40,7 @@ export default memo((props: Props) => {
             }).start(() => {
                 if (!props.visible) {
                     setVisible(false);
+                    setTimeout(() => setHeaderVisible(false), 100);
                 }
             });
         },
@@ -68,6 +72,7 @@ export default memo((props: Props) => {
             style={[
                 styles.container,
                 {
+                    // backgroundColor: 'blue',
                     transform: [{ translateY }],
                     opacity,
                 }
@@ -75,49 +80,83 @@ export default memo((props: Props) => {
             onLayout={onLayout}
         >
             <BlurView
-                blurType='chromeMaterialDark'
+                // blurType='chromeMaterialDark'
+                // blurType='chromeMaterialDark'
+                blurType={Platform.OS === 'ios' ? 'chromeMaterialDark' : 'dark'}
                 // blurType='extraDark'
                 // blurType='dark'
-                blurRadius={100}
+                // blurRadius={100}
+                blurRadius={25}
+                // style={{
+                //     // backgroundColor: 'red',
+                //     // borderRadius: 0,
+                //     // flex: 1,
+                // }}
+                // overlayColor='transparent'
             >
-                <View style={styles.header}>
-                    <TouchableScale
-                        onPress={props.onRetakePress}
-                    >
-                        <Text style={styles.take}>
-                            Reprendre
-                        </Text>
-                    </TouchableScale>
+                <View style={{  }}>
 
-                    <TouchableScale
-                        onPress={props.onSubmit}
-                        style={styles.submit}
-                    >
-                        <Text style={styles.title}>
-                            Suivant
-                        </Text>
-                    </TouchableScale>
-                </View>
+                    <FlatList
+                        renderItem={({ item }) => (
+                            <FilterTumbnail
+                                selected={item[0] === filter}
+                                onPress={props.onChanged}
+                                empty={!props.uri}
+                                uri={props.uri}
+                                item={item}
+                            />
+                        )}
+                        // contentContainerStyle={styles.content}
+                        contentContainerStyle={{
+                            // backgroundColor: 'purple',
+                            // height: 100,
+                            paddingHorizontal: 10,
+                            paddingBottom: 20,
+                            marginTop: 70,
+                        }}
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={([name]) => name}
+                        decelerationRate={0.3}
+                        data={filters}
+                        horizontal
+                    />
 
-                <FlatList
-                    renderItem={({ item }) => (
-                        <FilterTumbnail
-                            selected={item[0] === filter}
-                            onPress={props.onChanged}
-                            empty={!props.uri}
-                            uri={props.uri}
-                            item={item}
-                        />
+                    {headerVisible && (
+
+                        <View style={[styles.header, {
+                            position: 'absolute',
+                            width: '100%',
+                            // marginTop: 20,
+                            // backgroundColor: 'purple',
+                            // height: '100%',
+                            transform: [{
+                                translateY: 20,
+                            }],
+                            top: 0,
+                            // bottom: 0,
+                            left: 0,
+                        }]}>
+                            <TouchableScale
+                                onPress={props.onRetakePress}
+                            >
+                                <Text style={styles.take}>
+                                    Reprendre
+                                </Text>
+                            </TouchableScale>
+
+                            <TouchableScale
+                                onPress={props.onSubmit}
+                                style={styles.submit}
+                            >
+                                <Text style={styles.title}>
+                                    Suivant
+                                </Text>
+                            </TouchableScale>
+                        </View>
                     )}
-                    contentContainerStyle={styles.content}
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={([name]) => name}
-                    decelerationRate={0.3}
-                    data={filters}
-                    horizontal
-                />
 
-                {/* <Footer /> */}
+                    {/* <Footer /> */}
+                </View>
             </BlurView>
         </Animated.View>
     )
@@ -137,13 +176,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: 15,
-        marginTop: 20,
+        // marginHorizontal: 15,
+        // marginTop: 20,
+        backgroundColor: 'transparent',
     },
     take: {
         fontFamily: 'Avenir Next',
         fontWeight: '600',
-        marginHorizontal: 5,
+        marginHorizontal: 20,
         color: color.light,
         fontSize: 18,
     },
@@ -152,6 +192,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5,
         borderRadius: 10,
+        marginHorizontal: 20,
     },
     title: {
         fontFamily: 'Avenir Next',

@@ -41,7 +41,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>1950971738388568</string>
 	<key>FacebookDisplayName</key>
@@ -82,10 +82,14 @@
 	<string>Allow us to take some pictures of food</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Allow us to find restaurants near you</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow us to find restaurants near you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow us to find restaurants near you</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow us to update your profile or posts</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Nous utilisons des outils analytiques afin d'améliorer votre expérience utilisateur</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Prompt-Black.ttf</string>
@@ -135,8 +139,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

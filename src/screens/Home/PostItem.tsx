@@ -29,7 +29,7 @@ const { width, height } = Dimensions.get('window')
 
 export default memo((props: Props) => {
 
-    const { item, canLike } = props;
+    const { item, canLike, template } = props;
     const { place, picture, content} = item;
 
     // const createdAt = moment(item.createdAt).fromNow();
@@ -94,6 +94,7 @@ export default memo((props: Props) => {
                 />
 
                 <TouchableScale
+                    disabled={!creator.id || template}
                     onPress={onCreatorPress}
                     style={styles.header}
                     activeScale={0.99}
@@ -118,6 +119,7 @@ export default memo((props: Props) => {
                 
                 {!!item.place?.name && (
                     <TouchableOpacity
+                        disabled={!item.place.id || template}
                         onPress={onPlacePress}
                         activeOpacity={1}
                     >
@@ -143,8 +145,8 @@ export default memo((props: Props) => {
                 top: 60,
             }}>
                 <TouchableScale
+                    disabled={!canLike || template}
                     onPress={onLikePress}
-                    disabled={!canLike}
                     style={styles.like}
                     activeScale={0.99}
                 >
@@ -157,6 +159,7 @@ export default memo((props: Props) => {
                 
                 <TouchableScale
                     onPress={onSahrePress}
+                    disabled={template}
                     style={styles.like}
                     activeScale={0.99}
                 >
@@ -170,6 +173,7 @@ export default memo((props: Props) => {
                 {props.canDelete && (
                     <TouchableScale
                         onPress={onDeletePress}
+                        disabled={template}
                         style={styles.like}
                         activeScale={0.99}
                     >
@@ -257,6 +261,7 @@ export type Props = {
     onPlacePress: (item: Post) => void,
     onLikePress: (item: Post) => void,
     canDelete?: boolean,
+    template?: boolean,
     canLike?: boolean,
     item: Post,
 }

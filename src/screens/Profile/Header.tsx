@@ -93,7 +93,8 @@ export default memo((props: Props) => {
                         { height: fullHeight },
                     ]}
                     source={{ uri: coverUrl }}
-                    blurRadius={80}
+                    // blurRadius={80}
+                    blurRadius={25}
                 />
             </Animated.View>
 

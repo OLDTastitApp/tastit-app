@@ -24,6 +24,8 @@ import { Settings as FacebookSettings } from 'react-native-fbsdk-next'
 // import useConfigureStripe from './useConfigureStripe'
 import useRestoreAuth from '@helpers/useRestoreAuth'
 
+// Env
+import * as env from '@env'
 
 // Ignore specific warnings
 LogBox.ignoreLogs([
@@ -52,7 +54,9 @@ export default memo(() => {
             FacebookSettings.initializeSDK();
 
             // Google
-            GoogleSignin.configure();
+            GoogleSignin.configure({
+                webClientId: env.GoogleWebClientId,
+            });
         },
         []
     );

@@ -2,9 +2,9 @@
 import React, { memo } from 'react'
 
 // Components
-import { View, Text } from 'react-native'
 import { LegalLinks, FacebookSignIn, GoogleSignIn, AppleSignIn } from '@components'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { View, Text, Platform } from 'react-native'
 import { useNavigation } from '@navigation/utils'
 import NavBar from './NavBar'
 import Form from './Form'
@@ -85,10 +85,12 @@ export default memo(() => {
             />
 
             <View style={{ alignItems: 'center' }}>
-                <AppleSignIn
-                    title='Continuer avec Apple'
-                    onPress={actions.logInWithApple}
-                />
+                {Platform.OS === 'ios' && (
+                    <AppleSignIn
+                        title='Continuer avec Apple'
+                        onPress={actions.logInWithApple}
+                    />
+                )}
                 <FacebookSignIn
                     title='Continuer avec Facebook'
                     onPress={actions.logInWithFacebook}
