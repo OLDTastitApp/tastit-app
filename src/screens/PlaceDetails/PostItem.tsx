@@ -2,6 +2,7 @@
 import React, { memo } from 'react'
 
 // Components
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import LinearGradient from 'react-native-linear-gradient'
 import { View, Text, StyleSheet } from 'react-native'
 import { TouchableScale } from '@components'
@@ -53,9 +54,14 @@ export default memo((props: Props) => {
                     />
                 ) : (
                     <View style={styles.picture}>
-                        <Text style={{ fontSize: 12 }}>
+                        {/* <Text style={{ fontSize: 12 }}>
                             👽
-                        </Text>
+                        </Text> */}
+                        <FontAwesome5
+                            name='user-circle'
+                            color='white'
+                            size={12}
+                        />
                     </View>
                 )}
 

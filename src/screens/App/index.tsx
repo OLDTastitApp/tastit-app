@@ -13,6 +13,7 @@ import AppNavigator from '@navigation'
 // Utils
 import Geolocation from '@react-native-community/geolocation'
 import { LogBox, Platform, UIManager } from 'react-native'
+import axios from 'axios'
 
 // Services
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -47,16 +48,27 @@ if (Platform.OS === 'android') {
 
 export default memo(() => {
 
+    const [initialized, setInitialized] = useState(false);
+
     useEffect(
         () => {
-            // Facebook
-            FacebookSettings.setAdvertiserTrackingEnabled(true);
-            FacebookSettings.initializeSDK();
-
-            // Google
-            GoogleSignin.configure({
-                webClientId: env.GoogleWebClientId,
-            });
+            try {
+                // Call backend to prevent lambda cold starts
+                axios.get(env.APIUri).then(response => {
+                    console.log(`Calling backend: ${env.APIUri}: ${JSON.stringify(response.data)}`);
+                });
+    
+                // Facebook
+                // FacebookSettings.setAdvertiserTrackingEnabled(true);
+                FacebookSettings.initializeSDK();
+    
+                // Google
+                GoogleSignin.configure({
+                    webClientId: env.GoogleWebClientId,
+                });
+            } finally {
+                setInitialized(true);
+            }
         },
         []
     );
@@ -67,7 +79,7 @@ export default memo(() => {
     const restoreAuthResult = useRestoreAuth();
 
     // const loaded = true;
-    const loaded = restoreAuthResult.complete;
+    const loaded = initialized && restoreAuthResult.complete;
         // && configureOneSignalResult.complete
         // && configurePassbaseResult.complete
         // && configureStripeResult.complete

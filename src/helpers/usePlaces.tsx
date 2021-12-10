@@ -20,8 +20,7 @@ type Args = {
 
 export default (args: Args) => {
 
-    const { searchText, first, after, name, area, around, radius, skip } = args;
-    const { category, pricing, tag, zip } = args;
+    const { skip, ...variables } = args;
 
     const result = useQuery<
         graph.PlacesResult,
@@ -30,17 +29,7 @@ export default (args: Args) => {
         graph.PLACES,
         {
             fetchPolicy: 'cache-and-network',
-            variables: {
-                searchText,
-                pricing,
-                around,
-                radius,
-                after,
-                first,
-                name,
-                area,
-                zip,
-            },
+            variables,
             skip,
         }
     );

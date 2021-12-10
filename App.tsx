@@ -3,7 +3,7 @@ import React, { memo, useRef, useCallback, useEffect } from 'react'
 
 // Components
 import { BottomSheetModalProvider, BottomSheetModal, useBottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { View, StatusBar, Button, YellowBox, LogBox, Platform } from 'react-native'
+import { View, StatusBar, Button, YellowBox, LogBox, Platform, Linking } from 'react-native'
 import App from '@screens/App'
 
 // Apollo

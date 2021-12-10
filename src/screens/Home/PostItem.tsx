@@ -3,6 +3,7 @@ import React, { memo } from 'react'
 
 // Components
 import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 import Feather from 'react-native-vector-icons/Feather'
@@ -15,6 +16,9 @@ import HeartIcon from '@assets/icons/heart.svg'
 import ShareIcon from '@assets/icons/share.svg'
 import SendIcon from '@assets/icons/send.svg'
 
+// Helpers
+import { useWindowDimensions } from 'react-native'
+
 // Utils
 import moment from 'moment'
 
@@ -25,7 +29,7 @@ import { color, font } from '@constants'
 import { Post } from '@types'
 
 
-const { width, height } = Dimensions.get('window')
+// const { width, height } = Dimensions.get('window')
 
 export default memo((props: Props) => {
 
@@ -41,6 +45,8 @@ export default memo((props: Props) => {
     const { creator } = item;
 
     // const username = `@${ creator?.firstName?.toLocaleLowerCase()}${creator?.lastName?.toLocaleLowerCase()}`;
+
+    const { width, height } = useWindowDimensions();
 
     const onLikePress = () => {
         props.onLikePress(item);
@@ -68,12 +74,13 @@ export default memo((props: Props) => {
     // console.log(`*** item: ${JSON.stringify(item, null, 4)}`)
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { height }]}>
             <View style={StyleSheet.absoluteFill}>
                 <Image
                     // source={{ uri: item.pictureUris?.[0] }}
-                    source={{ uri: item.picture?.url }}
+                    source={item.pictureSource ?? { uri: item.picture?.url }}
                     style={{ flex: 1 }}
+                    // style={{ width: '100%', height: '100%' }}
                 />
                 <LinearGradient
                     colors={['#0005', 'transparent']}
@@ -106,9 +113,14 @@ export default memo((props: Props) => {
                         />
                     ) : (
                         <View style={styles.avatar}>
-                            <Text style={{ fontSize: 20 }}>
+                            {/* <Text style={{ fontSize: 20 }}>
                                 👽
-                            </Text>
+                            </Text> */}
+                            <FontAwesome5
+                                name='user-circle'
+                                color='white'
+                                size={20}
+                            />
                         </View>
                     )}
 
@@ -195,7 +207,12 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
         backgroundColor: 'white',
-        height,
+        // width: 200,
+        // height,
+        // height: '100%',
+        // bottom: 50,
+        // flex: 1,
+        // width: '100%',
     },
     header: {
         alignSelf: 'flex-start',

@@ -33,13 +33,14 @@ export type PageInfo = {
 }
 
 export type Post = {
+    pictureSource?: any,
     createdAt: Date,
     updatedAt: Date,
     liked?: boolean,
     content: string,
     tags?: string[],
+    picture?: Image,
     users?: User[],
-    picture: Image,
     creator: User,
     place?: Place,
     id: string,

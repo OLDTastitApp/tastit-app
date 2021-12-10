@@ -57,12 +57,6 @@ export default memo((props: Props) => {
         first: 10,
     });
 
-    if (searchResult.error) {
-        console.log(searchResult.error);
-    } else {
-        console.log(`*** search: ${JSON.stringify(search, null, 4)}`);
-    }
-
     const [places, placesResult] = usePlaces({
         // skip: searchTextEmpty || ![0, 2].includes(index),
         skip: searchTextEmpty || index !== 2,

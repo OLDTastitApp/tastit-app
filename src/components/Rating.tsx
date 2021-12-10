@@ -38,7 +38,8 @@ export default (props: Props) => {
                 disabled={alreadyRated}
                 onPress={onRatePress}
                 style={styles.right}
-                activeOpacity={0.9}
+                // activeOpacity={0.9}
+                hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}
             >
                 <Text style={styles.rate}>
                     {alreadyRated ? 'Déjà noté !' : 'Laisser une note'}

@@ -16,6 +16,9 @@ import { useNavigation } from '@navigation/utils'
 import Share from 'react-native-share'
 
 // Constants
+import postSource0 from '@assets/images/posts/0.jpg'
+import postSource1 from '@assets/images/posts/1.jpg'
+import postSource2 from '@assets/images/posts/2.jpg'
 import { font, color } from '@constants'
 
 // Data
@@ -125,6 +128,8 @@ export default memo(() => {
     const edges = (template ? DEFAULT_POSTS : posts?.edges) as typeof posts['edges'];
     // posts.edges?.[0].node?.creator.picture.
 
+    console.log(`*** me: ${JSON.stringify(me, null, 4)}`);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
 
@@ -189,9 +194,10 @@ const DEFAULT_POSTS = [
     {
         node: {
             content: `Je viens de découvrir ce merveilleux restaurant au coeur du 16e, le service était juste whaou!\nLe plat était délicieux et le cadre est très agréable ^^`,
-            picture: {
-                url: 'https://images.pexels.com/photos/3838628/pexels-photo-3838628.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-            },
+            // picture: {
+            //     url: 'https://images.pexels.com/photos/3838628/pexels-photo-3838628.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+            // },
+            pictureSource: postSource0,
             place: {
                 name: 'Au Vieux Paris',
             },
@@ -208,9 +214,10 @@ const DEFAULT_POSTS = [
     {
         node: {
             content: `La création de liste se fait directement depuis les pages des restaurants ou des bars que vous retrouvez sur l'onglet "rechercher" ! Profitez-en 😉`,
-            picture: {
-                url: 'https://images.pexels.com/photos/7218637/pexels-photo-7218637.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-            },
+            // picture: {
+            //     url: 'https://images.pexels.com/photos/7218637/pexels-photo-7218637.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+            // },
+            pictureSource: postSource1,
             place: {
                 name: `Création d'une liste`,
             },
@@ -227,9 +234,10 @@ const DEFAULT_POSTS = [
     {
         node: {
             content: `Cliquez sur la petite loupe pour découvrir la map interactive. Elle vous permettra de trouver l'établissement de votre choix !`,
-            picture: {
-                url: 'https://images.pexels.com/photos/4871175/pexels-photo-4871175.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-            },
+            // picture: {
+            //     url: 'https://images.pexels.com/photos/4871175/pexels-photo-4871175.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+            // },
+            pictureSource: postSource2,
             place: {
                 name: `Découvrir des nouveaux Restos`,
             },

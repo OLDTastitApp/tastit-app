@@ -141,6 +141,8 @@ export default memo(() => {
         placesResult.refetch({
             pricing: pricing ? [pricing.index] : undefined,
             around: mapLocation,
+            category: dietetics,
+            tag: gastronomies,
             zip: districts,
             radius: 10000,
             first: 10,

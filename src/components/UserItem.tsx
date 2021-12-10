@@ -3,6 +3,7 @@ import React, { memo } from 'react'
 
 // Components
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import { TouchableScale } from '@components'
@@ -37,9 +38,14 @@ export default memo((props: Props) => {
                 />
             ) : (
                 <View style={styles.left}>
-                    <Text style={{ fontSize: 20 }}>
+                    {/* <Text style={{ fontSize: 20 }}>
                         👽
-                    </Text>
+                    </Text> */}
+                    <FontAwesome5
+                        name='user-circle'
+                        color='white'
+                        size={20}
+                    />
                 </View>
                 // <View style={styles.left}>
                 //     <Text style={styles.initials}>

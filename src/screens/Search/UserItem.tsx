@@ -2,6 +2,7 @@
 import React, { memo } from 'react'
 
 // Components
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableScale } from '@components'
 
@@ -39,6 +40,11 @@ export default memo((props: Props) => {
                     <Text style={{ fontSize: 30 }}>
                         👽
                     </Text>
+                    <FontAwesome5
+                        name='user-circle'
+                        color='white'
+                        size={30}
+                    />
                 </View>
             )}
 

@@ -2,8 +2,9 @@
 import React, { RefObject, memo, useEffect, useMemo, useState, useCallback } from 'react'
 
 // Components
-import { View, Text, Image, ScrollView, FlatList, StyleSheet, Dimensions, Linking, Platform } from 'react-native'
+import { View, Text, Image, FlatList, StyleSheet, Dimensions, Linking, Platform } from 'react-native'
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import { ScrollView as RNGHScrollView } from 'react-native-gesture-handler'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { TouchableScale, Rating, Timetable } from '@components'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -30,6 +31,10 @@ import { color, ui } from '@constants'
 // Types
 import { Place } from '@types'
 
+
+const HorizontalFlatList = Platform.OS === 'ios'
+    ? Animated.ScrollView
+    : RNGHScrollView;
 
 export default memo((props: Props) => {
 
@@ -235,7 +240,7 @@ export default memo((props: Props) => {
                             {tags}
                         </Text>
 
-                        <Animated.ScrollView
+                        <HorizontalFlatList
                             contentContainerStyle={styles.actionContent}
                             showsHorizontalScrollIndicator={false}
                             style={styles.actionContainer}
@@ -291,7 +296,7 @@ export default memo((props: Props) => {
                                     </Text>
                                 </TouchableScale>
                             )}
-                        </Animated.ScrollView>
+                        </HorizontalFlatList>
 
                         <AnimatedFlatList
                             renderItem={({ item }) => (

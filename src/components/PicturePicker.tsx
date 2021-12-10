@@ -90,16 +90,16 @@ export default memo((props: Props) => {
                     />
                 ) : (
                     <View style={styles.placeholder}>
-                        {/* <FontAwesome5
+                        <FontAwesome5
                             name='user-circle'
                             color='white'
                             size={60}
-                        /> */}
-                        <Text style={{
+                        />
+                        {/* <Text style={{
                             fontSize: 60,
                         }}>
                             👽
-                        </Text>
+                        </Text> */}
                     </View>
                 )}
 

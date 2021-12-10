@@ -18,9 +18,12 @@ import analytics from '@react-native-firebase/analytics'
 // Navigators
 import Switch from './Switch'
 
+// Env
+import * as env from '@env'
+
 
 const linking: LinkingOptions<{}> = {
-    prefixes: ['tastit://'],
+    prefixes: [env.APIUri, 'tastit://'],
     config: {
         screens: {
             AuthStack: {
