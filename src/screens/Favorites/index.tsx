@@ -58,7 +58,7 @@ export default memo(() => {
     const [placeLists, placeListsResult] = usePlaceLists({ first: 100 });
 
     const focusedPlaceList = useRef<PlaceList>();
-    console.log(`*** placeLists: ${JSON.stringify(placeLists, null, 4)}`);
+    // console.log(`*** placeLists: ${JSON.stringify(placeLists, null, 4)}`);
     // console.log(`*** params: ${JSON.stringify(params, null, 4)}`);
 
     useEffect(

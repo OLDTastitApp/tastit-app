@@ -128,7 +128,7 @@ export default memo(() => {
     const edges = (template ? DEFAULT_POSTS : posts?.edges) as typeof posts['edges'];
     // posts.edges?.[0].node?.creator.picture.
 
-    console.log(`*** me: ${JSON.stringify(me, null, 4)}`);
+    // console.log(`*** me: ${JSON.stringify(me, null, 4)}`);
 
     return (
         <View style={{ flex: 1, backgroundColor: '#f2f2f2' }}>
