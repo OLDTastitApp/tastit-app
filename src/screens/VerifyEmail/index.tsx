@@ -1,9 +1,9 @@
 // React
-import React, { memo, useRef, useEffect } from 'react'
+import React, { memo, useRef, useState, useEffect } from 'react'
 
 // Components
+import { View, Text, StyleSheet, Alert, AppState } from 'react-native'
 import { MessagePopup, TouchableScale } from '@components'
-import { View, Text, StyleSheet, Alert } from 'react-native'
 
 // Helpers
 import { useNavigation, useRoute } from '@navigation/utils'
@@ -14,6 +14,7 @@ import { openInbox } from 'react-native-email-link'
 import { ui, color } from '@constants'
 
 // Types
+import { AppStateStatus } from 'react-native'
 import { MessagePopupRef } from '@components'
 
 
@@ -27,6 +28,33 @@ export default memo(function VerifyEmail() {
 
     const [verifyEmail, verifyEmailResult] = useVerifyEmail();
     const [logIn, logInResult] = useLogIn();
+
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+    const onAppStateChange = async (nextAppState: AppStateStatus) => {
+        if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === "active"
+        ) {
+            // console.log("App has come to the foreground!");
+            try {
+                await logIn.logInWithCredentials({
+                    username,
+                    password,
+                });
+            } catch (e) {
+            }
+        }
+    
+        appState.current = nextAppState;
+        setAppStateVisible(appState.current);
+    };
+
+    useEffect(() => {
+        AppState.addEventListener('change', onAppStateChange);
+        return () => AppState.removeEventListener('change', onAppStateChange);
+      }, []);
 
     useEffect(
         () => {

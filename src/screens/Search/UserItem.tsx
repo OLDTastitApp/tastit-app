@@ -37,9 +37,9 @@ export default memo((props: Props) => {
             ) : (
                 // <View style={styles.left} />
                 <View style={styles.left}>
-                    <Text style={{ fontSize: 30 }}>
+                    {/* <Text style={{ fontSize: 30 }}>
                         👽
-                    </Text>
+                    </Text> */}
                     <FontAwesome5
                         name='user-circle'
                         color='white'
