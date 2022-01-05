@@ -15,6 +15,7 @@ import Header from './Header'
 
 // Helpers
 import { usePlaces, useUsers, usePosts, useSearch } from '@helpers'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@navigation/utils'
 
 // Types
@@ -29,7 +30,8 @@ export default memo((props: Props) => {
 
     const navigation = useNavigation();
 
-    // const onFocus: () => 
+    const insets = useSafeAreaInsets();
+
     const [searchText, setSearchText] = useState<string>();
     const [focused, setFocused] = useState(false);
     const [index, setIndex] = useState(0);
@@ -37,7 +39,6 @@ export default memo((props: Props) => {
     const searchTextEmpty = !(searchText?.length > 0);
 
     const onBackPress = () => {
-        // const empty = !(searchText?.length > 0);
         setSearchText(undefined);
 
         if (!focused) {
@@ -107,19 +108,12 @@ export default memo((props: Props) => {
 
     const data = [search, users, places, posts][index];
 
-    // console.log(`searchText: ${searchText}`)
-    // console.log(`places: ${places?.edges?.length}`)
     const hasItems = data?.edges?.length > 0;
     const noResults = searchText?.length > 0 && !hasItems;
     const empty = !(searchText?.length > 0) && !hasItems;
 
-    // console.log(`users: ${users?.edges?.length}`);
-    // console.log(`places.error: ${placesResult.error}`);
-
     const renderItem = ({ item }) => {
-
-        console.log(`__typename: ${item.node.__typename}`);
-        const { __typename } = item.node;
+        const { __typename } = item.node;
 
         if (__typename === 'Place') {
             return (
@@ -148,28 +142,6 @@ export default memo((props: Props) => {
                 />
             )
         }
-
-        // return ({
-        //     place: () => (
-        //         <PlaceItem
-        //             onPress={onPlacePress}
-        //             item={item.node}
-        //         />
-        //     ),
-        //     user: () => (
-        //         <UserItem
-        //             onPress={onUserPress}
-        //             item={item.node}
-        //         />
-        //     ),
-        //     post: () => (
-        //         <PostItem
-        //             searchText={searchText}
-        //             onPress={onPostPress}
-        //             item={item.node}
-        //         />
-        //     )
-        // })[typeMap[index]]();
     };
 
     if (postsResult.error) {
@@ -204,12 +176,6 @@ export default memo((props: Props) => {
                     />
 
                     <FlatList
-                        // renderItem={({ item }) => (
-                        //     <PlaceItem
-                        //         onPress={onPlacePress}
-                        //         item={item.node}
-                        //     />
-                        // )}
                         renderItem={renderItem}
                         ListEmptyComponent={() => (
                             empty ? (
@@ -218,19 +184,12 @@ export default memo((props: Props) => {
                                 <NoResults />
                             ) : null
                         )}
-                        // contentContainerStyle={{ paddingVertical: 20, paddingBottom: 300 }}
-                        contentContainerStyle={{ paddingBottom: 300 }}
+                        contentContainerStyle={{ paddingBottom: insets.bottom + 10 }}
                         keyExtractor={({ node: { id } }) => id}
                         keyboardShouldPersistTaps='handled'
                         // keyboardDismissMode='on-drag'
                         data={data?.edges as any}
                     />
-
-                    {/* <ScrollView keyboardShouldPersistTaps='handled'>
-                        <Text>
-                            {placesResult.error && JSON.stringify(placesResult.error, null, 4)}
-                        </Text>
-                    </ScrollView> */}
                 </>
             )}
         </View>

@@ -12,6 +12,7 @@ const FrontItem = ({ item, color, size }: Props) => (
     <View
         style={[
             styles.container,
+            // { backgroundColor: `${color}33` },
             { backgroundColor: color },
         ]}
         pointerEvents='none'
@@ -35,8 +36,12 @@ export default memo(FrontItem);
 // Styles
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
         paddingHorizontal: 20,
+        justifyContent: 'center',
+        // paddingHorizontal: 20,
+        // paddingHorizontal: 15,
+        // marginHorizontal: 5,
+        // paddingHorizontal
         // marginHorizontal: 5,
         paddingVertical: 5,
     },

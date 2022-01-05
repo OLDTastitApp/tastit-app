@@ -69,7 +69,7 @@ export default memo((props: Props) => {
                 </Text>
             </TouchableScale>
 
-            <View style={{
+            {/* <View style={{
                 flexDirection: 'row',
                 // backgroundColor: 'red',
                 alignItems: 'center',
@@ -81,8 +81,7 @@ export default memo((props: Props) => {
                     ou
                 </Text>
                 <View style={styles.line} />
-            </View>
-
+            </View> */}
         
         </View>
     )

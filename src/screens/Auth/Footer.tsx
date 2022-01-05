@@ -2,11 +2,10 @@
 import React, { memo } from 'react'
 
 // Components
+import { FacebookSignIn, GoogleSignIn, AppleSignIn, TouchableScale } from '@components'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { View, Text, StyleSheet } from 'react-native'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MainIcon from '@assets/images/main.svg'
-import { TouchableScale } from '@components'
 
 // Utils
 import { ui, font, color } from '@constants'
@@ -69,6 +68,37 @@ export default memo((props: Props) => {
                 </TouchableScale>
 
                 <View style={{
+                    flexDirection: 'row',
+                    // backgroundColor: 'red',
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                    marginVertical: 10,
+                }}>
+                    <View style={styles.line} />
+                    <Text style={styles.or}>
+                        ou
+                    </Text>
+                    <View style={styles.line} />
+                </View>
+
+                <View style={{ alignItems: 'center' }}>
+                    {Platform.OS === 'ios' && (
+                        <AppleSignIn
+                            title='Continuer avec Apple'
+                            onPress={props.onAppleLogInPress}
+                        />
+                    )}
+                    <FacebookSignIn
+                        title='Continuer avec Facebook'
+                        onPress={props.onFacebookLogInPress}
+                    />
+                    <GoogleSignIn
+                        title='Continuer avec Google'
+                        onPress={props.onGoogleLogInPress}
+                    />
+                </View>
+
+                {/* <View style={{
                     // font
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -87,25 +117,7 @@ export default memo((props: Props) => {
                     >
                         Continuer avec les réseaux sociaux
                     </Text>
-                    {/* <FontAwesome
-                        style={{ marginHorizontal: 5 }}
-                        color={color.mediumGray}
-                        name='apple'
-                        size={20}
-                    />
-                    <FontAwesome
-                        style={{ marginHorizontal: 5 }}
-                        color={color.mediumGray}
-                        name='google'
-                        size={18}
-                    />
-                    <FontAwesome
-                        style={{ marginHorizontal: 5 }}
-                        color={color.mediumGray}
-                        name='facebook'
-                        size={18}
-                    /> */}
-                </View>
+                </View> */}
             </View>
         </View>
     )
@@ -164,10 +176,26 @@ const styles = StyleSheet.create({
         color: color.primary,
         fontSize: 16,
     },
+    line: {
+        backgroundColor: color.lightGray,
+        height: 1,
+        flex: 1,
+    },
+    or: {
+        fontFamily: 'Avenir Next',
+        color: color.lightGray,
+        marginHorizontal: 20,
+        textAlign: 'center',
+        fontWeight: '600',
+        fontSize: 18,
+    },
 })
 
 // Types
 type Props = {
+    onFacebookLogInPress: () => void,
+    onGoogleLogInPress: () => void,
+    onAppleLogInPress: () => void,
     onSignUpPress: () => void,
     onLogInPress: () => void,
 }

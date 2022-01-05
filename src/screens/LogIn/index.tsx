@@ -84,7 +84,7 @@ export default memo(() => {
                 onTOSPress={onTOSPress}
             />
 
-            <View style={{ alignItems: 'center' }}>
+            {/* <View style={{ alignItems: 'center' }}>
                 {Platform.OS === 'ios' && (
                     <AppleSignIn
                         title='Continuer avec Apple'
@@ -99,7 +99,7 @@ export default memo(() => {
                     title='Continuer avec Google'
                     onPress={actions.logInWithGoogle}
                 />
-            </View>
+            </View> */}
 
             <LegalLinks
                 style={{ marginHorizontal: 30 }}

@@ -11,9 +11,10 @@ import BackItem from './BackItem'
 import TextSize from 'react-native-text-size'
 
 // Constants
-import { font } from '@constants'
+import { font } from '@constants'
 
 // Constants
+// const PADDING_HORIZONTAL = 20;
 const PADDING_HORIZONTAL = 20;
 
 
@@ -53,7 +54,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
     //     this.resetSizes();
     // }
 
-    async resetSizes() {
+    async resetSizes() {
 
         let sizes = [];
         
@@ -61,8 +62,9 @@ export default class FancyTabs extends PureComponent<Props, State> {
             
             const size = await TextSize.measure({
                 // fontFamily: 'SFCompactRounded-Regular',
-                fontFamily: font.regular,
+                fontFamily: 'Avenir Next',
                 text: section.name,
+                fontWeight: '500',
                 // fontSize: 20,
                 fontSize: 16,
             });
@@ -88,10 +90,11 @@ export default class FancyTabs extends PureComponent<Props, State> {
     }
 
     private moveCursor = (index: number) => {
-        const { sizes, loaded } = this.state;
+        const { sizes, loaded } = this.state;
 
         if (!loaded) return;
 
+        // const padding = 2 * PADDING_HORIZONTAL;
         const padding = 2 * PADDING_HORIZONTAL;
         let toValue = padding * index;
 
@@ -141,8 +144,8 @@ export default class FancyTabs extends PureComponent<Props, State> {
     )
 
     render() {
-        const { sizes } = this.state;
-        const { data, color } = this.props;
+        const { sizes } = this.state;
+        const { data, color } = this.props;
 
         const wrapperX = Animated.add(
             Animated.multiply(-1, this.scrollX),
@@ -176,7 +179,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
                                 styles.wrapper,
                                 {
                                     transform: [
-                                        { translateX: wrapperX },
+                                        { translateX: wrapperX },
                                     ],
                                 }
                             ]}
@@ -186,6 +189,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
                                 style={[
                                     { width: this.cursorWidth },
                                     color && { backgroundColor: color },
+                                    // color && { backgroundColor: `${color}11` },
                                     styles.cursor,
                                 ]}
                             >
@@ -194,7 +198,7 @@ export default class FancyTabs extends PureComponent<Props, State> {
                                         styles.content,
                                         {
                                             transform: [
-                                                { translateX: contentX },
+                                                { translateX: contentX },
                                             ],
                                         }
                                     ]}
@@ -226,9 +230,11 @@ const styles = StyleSheet.create({
     },
     padding: {
         paddingHorizontal: PADDING_HORIZONTAL,
+        // paddingHorizontal: 15,
     },
     wrapper: {
         paddingHorizontal: PADDING_HORIZONTAL,
+        // paddingHorizontal: 10,
         position: 'absolute',
     },
     cursor: {
